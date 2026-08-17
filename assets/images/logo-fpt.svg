@@ -11,6 +11,6 @@
     <text x="10" y="19" font-family="Arial, sans-serif" font-weight="700" font-size="18" fill="white">F</text>
     <text x="42" y="19" font-family="Arial, sans-serif" font-weight="700" font-size="18" fill="white">P</text>
     <text x="75" y="19" font-family="Arial, sans-serif" font-weight="700" font-size="18" fill="white">T</text>
-    <text x="114" y="19" font-family="Arial, sans-serif" font-weight="700" font-size="18" fill="white">Telecom</text>
+    <text x="114" y="19" font-family="Arial, sans-serif" font-weight="700" font-size="18" fill="#1d1d1f">Telecom</text>
   </g>
 </svg>
