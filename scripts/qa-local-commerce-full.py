@@ -16,7 +16,7 @@ REQUIRED = (
     'local-plan-full-head','local-plan-full-metrics','local-plan-full-content',
     'local-plan-contract-grid','local-plan-benefit-list','local-plan-register',
     'Giá cước','VAT & chi phí khác','Thiết bị thực tế','Khuyến mãi','Hạ tầng','Ngày đối chiếu',
-    'Đối chiếu nguồn FPT','data-select-local-plan='
+    'Nguồn sản phẩm:','data-select-local-plan='
 )
 
 
