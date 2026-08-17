@@ -38,6 +38,38 @@ REQUIRED_JS = (
     "version: '10'",
     "FPTMotionSystem",
 )
+FULL_REQUIRED_CSS = (
+    '.motion-section{',
+    '.motion-heading{',
+    '.motion-cinematic-media{',
+    '.motion-nav-link{',
+    '.motion-ripple{',
+    '.motion-section-beam{',
+    '.motion-footer-field{',
+    '@keyframes full-ripple',
+    '@keyframes section-beam',
+    '@keyframes footer-float',
+    '@media(max-width:760px)',
+    '@media(prefers-reduced-motion:reduce)',
+)
+FULL_REQUIRED_JS = (
+    "prefers-reduced-motion: reduce",
+    'IntersectionObserver',
+    'requestAnimationFrame(updateFullPageScroll)',
+    "motion-section",
+    "motion-heading",
+    "motion-cinematic-media",
+    "motion-nav-link",
+    "motion-ripple-host",
+    "motion-section-beam",
+    "motion-footer-field",
+    "navigator.hardwareConcurrency",
+    "connection?.saveData",
+    "document.hidden",
+    "visibilitychange",
+    "version: '11'",
+    "FPTFullPageMotion",
+)
 
 
 def main() -> None:
@@ -50,26 +82,41 @@ def main() -> None:
 
     css_path = site / 'assets/css/motion-system.css'
     js_path = site / 'assets/js/motion-system.js'
+    full_css_path = site / 'assets/css/full-page-motion.css'
+    full_js_path = site / 'assets/js/full-page-motion.js'
     css = css_path.read_text(encoding='utf-8') if css_path.exists() else ''
     js = js_path.read_text(encoding='utf-8') if js_path.exists() else ''
+    full_css = full_css_path.read_text(encoding='utf-8') if full_css_path.exists() else ''
+    full_js = full_js_path.read_text(encoding='utf-8') if full_js_path.exists() else ''
+
     if not css_path.exists(): errors.append('Missing assets/css/motion-system.css')
     if not js_path.exists(): errors.append('Missing assets/js/motion-system.js')
+    if not full_css_path.exists(): errors.append('Missing assets/css/full-page-motion.css')
+    if not full_js_path.exists(): errors.append('Missing assets/js/full-page-motion.js')
 
     for token in REQUIRED_CSS:
         if token not in css: errors.append(f'motion-system.css missing: {token}')
     for token in REQUIRED_JS:
         if token not in js: errors.append(f'motion-system.js missing: {token}')
+    for token in FULL_REQUIRED_CSS:
+        if token not in full_css: errors.append(f'full-page-motion.css missing: {token}')
+    for token in FULL_REQUIRED_JS:
+        if token not in full_js: errors.append(f'full-page-motion.js missing: {token}')
 
     if '.motion-glow>*{position:' in css:
         errors.append('motion glow must not override child positioning')
-    if 'setInterval(' in js:
+    if 'setInterval(' in js or 'setInterval(' in full_js:
         errors.append('motion system must not use continuous setInterval loops')
     if 'cancelAnimationFrame' not in js:
         errors.append('fiber animation must stop its RAF when inactive')
     if 'clearTimeout(planFocusTimer)' not in js:
         errors.append('automated plan focus must be stoppable')
+    if 'requestAnimationFrame(updateFullPageScroll)' not in full_js:
+        errors.append('full-page scroll effects must be RAF throttled')
+    if 'pointermove' in full_js and 'requestAnimationFrame' not in full_js:
+        errors.append('full-page pointer effects must be RAF throttled')
 
-    styled = scripted = 0
+    styled = scripted = full_styled = full_scripted = 0
     for page in pages:
         html = page.read_text(encoding='utf-8')
         rel = page.relative_to(site)
@@ -81,17 +128,27 @@ def main() -> None:
             errors.append(f'{rel}: missing motion v10 script')
         else:
             scripted += 1
+        if 'full-page-motion.css?v=20260817-11' not in html or 'data-full-page-motion-style=' not in html:
+            errors.append(f'{rel}: missing full-page motion v11 stylesheet')
+        else:
+            full_styled += 1
+        if 'full-page-motion.js?v=20260817-11' not in html or 'data-full-page-motion-script=' not in html:
+            errors.append(f'{rel}: missing full-page motion v11 script')
+        else:
+            full_scripted += 1
 
     if errors:
         print('MOTION QA FAIL')
-        for item in errors[:80]: print(f'- {item}')
+        for item in errors[:100]: print(f'- {item}')
         raise SystemExit(1)
 
     print(
-        f'MOTION QA PASS: pages={len(pages)}, styled={styled}, scripted={scripted}, '
-        'reveal=ready, stagger=ready, fiber_canvas=ready, signal_waves=ready, '
-        'auto_focus=ready, glow=ready, tilt=ready, magnetic=ready, progress=ready, '
-        'visibility_pause=ready, low_power_guard=ready, reduced_motion=ready'
+        f'MOTION QA PASS: pages={len(pages)}, base_styled={styled}, base_scripted={scripted}, '
+        f'full_styled={full_styled}, full_scripted={full_scripted}, reveal=ready, stagger=ready, '
+        'fiber_canvas=ready, signal_waves=ready, auto_focus=ready, section_ambience=ready, '
+        'heading_mask=ready, cinematic_media=ready, nav_motion=ready, ripple=ready, '
+        'section_beam=ready, footer_ambient=ready, scroll_depth=ready, visibility_pause=ready, '
+        'low_power_guard=ready, reduced_motion=ready'
     )
 
 
