@@ -1,4 +1,4 @@
-name: Activate FormSubmit
+name: Test Lead Delivery
 
 on:
   push:
@@ -11,15 +11,15 @@ permissions:
   contents: read
 
 jobs:
-  activate:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger activation email once
+      - name: Send one-time delivery test
         shell: bash
         run: |
           set -euo pipefail
           curl --fail-with-body --silent --show-error \
             -H 'Content-Type: application/json' \
             -H 'Accept: application/json' \
-            -X POST 'https://formsubmit.co/ajax/hainambaseus2@gmail.com' \
-            --data '{"name":"Website activation test","phone":"0900000000","address":"Activation only - ignore","need":"Technical activation","note":"One-time technical submission used only to activate the form endpoint.","_subject":"Activate website lead form","_template":"table","_url":"https://capquangfptminhlh.github.io/fpt/lien-he/"}'
+            -X POST 'https://email.gosecureserver.in/api/send.php' \
+            --data '{"to":"hainambaseus2@gmail.com","subject":"[TEST] Website FPT lead delivery","name":"Website QA","phone":"0900000000","address":"Technical test only - ignore","need":"QA","message":"One-time delivery test. No customer data.","hp_email":""}'
