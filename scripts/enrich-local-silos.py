@@ -10,6 +10,7 @@ from pathlib import Path
 ORIGIN = "https://your-domain.example"
 ADMIN_SOURCE = "https://xaydungchinhsach.chinhphu.vn/chi-tiet-34-don-vi-hanh-chinh-cap-tinh-tu-12-6-2025-119250612141845533.htm"
 FPT_SOURCE = "https://fpt.vn/vi/"
+OBSERVED_AT = "2026-08-17"
 
 INTERNET = [
     ("Giga", "goi-cuoc/giga/", "Gói Internet FPT cho nhu cầu gia đình phổ thông."),
@@ -70,14 +71,22 @@ def catalog_section(name: str) -> str:
 
 
 def render_news(name: str, slug: str) -> str:
-    desc = f"Tin tức FPT tại {name}: nơi tập hợp cập nhật Internet, FPT Play, Camera và hướng dẫn địa phương có nguồn kiểm chứng."
+    desc = f"Tin tức FPT tại {name}: hub địa phương cho Internet, FPT Play và Camera; chỉ mở index khi có nội dung riêng đã được kiểm chứng."
     page = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         "name": f"Tin tức FPT {name}",
         "url": f"{ORIGIN}/khu-vuc/{slug}/tin-tuc/",
         "description": desc,
+        "inLanguage": "vi-VN",
+        "dateModified": OBSERVED_AT,
         "about": ["Internet FPT", "FPT Play", "Camera FPT", name],
+        "citation": [ADMIN_SOURCE, FPT_SOURCE],
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Tư vấn Internet FPT",
+            "url": ORIGIN + "/",
+        },
     }
     crumbs = {
         "@context": "https://schema.org",
@@ -90,12 +99,12 @@ def render_news(name: str, slug: str) -> str:
         ],
     }
     return f'''<!doctype html><html lang="vi"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Tin tức FPT {escape(name)} – Internet, FPT Play, Camera</title><meta name="description" content="{escape(desc)}"/><link rel="canonical" href="{ORIGIN}/khu-vuc/{slug}/tin-tuc/"/><meta name="robots" content="index,follow,max-image-preview:large"/><meta property="og:title" content="Tin tức FPT {escape(name)}"/><meta property="og:description" content="{escape(desc)}"/><meta property="og:type" content="website"/><meta property="og:url" content="{ORIGIN}/khu-vuc/{slug}/tin-tuc/"/><meta property="og:image" content="{ORIGIN}/assets/images/seo/khu-vuc-body.webp"/><link rel="stylesheet" href="../../../assets/css/styles.css"/><script type="application/ld+json">{schema_json(page)}</script><script type="application/ld+json">{schema_json(crumbs)}</script></head>
-<body class="local-news-page"><header class="topbar"><div class="container nav"><a class="brand" href="../../../index.html"><img src="../../../assets/images/logo-fpt.svg" width="180" height="48" alt="FPT Telecom"/></a><button class="mobile-toggle" aria-label="Mở menu">☰</button><nav class="nav-links" aria-label="Điều hướng chính"><a href="../../../index.html">Trang chủ</a><a href="../../../lap-mang-fpt/">Lắp mạng</a><a href="../../../goi-cuoc-fpt/">Gói cước</a><a href="../../../fpt-play/">FPT Play</a><a href="../../../camera-fpt/">Camera</a><a href="../../../tin-tuc/">Tin tức chung</a></nav><div class="nav-cta"><a class="hotline" href="tel:19006600">1900 6600 · CSKH</a></div></div></header>
-<main><section class="seo-hero"><img src="../../../assets/images/seo/khu-vuc-body.webp" width="1600" height="900" fetchpriority="high" alt="Tin tức FPT tại {escape(name)}"/><div class="container inner"><div class="breadcrumbs"><a href="../../../index.html">Trang chủ</a><span>›</span><a href="../../">Khu vực</a><span>›</span><a href="../">{escape(name)}</a><span>›</span><span>Tin tức</span></div><h1>Tin tức FPT tại {escape(name)}</h1><p>Cập nhật Internet, FPT Play, Camera và hướng dẫn địa phương theo nguyên tắc chỉ xuất bản thông tin có nguồn kiểm chứng.</p><div class="cta-row"><a class="btn btn-primary" href="../#dang-ky">Kiểm tra theo địa chỉ</a><a class="btn btn-secondary" href="../#goi-dich-vu-dia-phuong">Xem đủ gói tại {escape(name)}</a></div></div></section>
-<section class="section"><div class="container content-grid"><article class="content-card"><span class="eyebrow">Tin tức địa phương</span><h2>Cập nhật dành riêng cho {escape(name)}</h2><div class="hold-local"><strong>Tin địa phương chỉ xuất bản khi có nguồn.</strong> Không tạo bài đổi tên tỉnh, không suy diễn khuyến mãi, giá, sự cố, lịch bảo trì hoặc phạm vi hạ tầng nếu chưa có bằng chứng theo địa bàn và thời điểm.</div><h3>Nhóm nội dung sẽ được cập nhật</h3><ul><li>Thông báo hoặc thay đổi có nguồn liên quan Internet FPT tại {escape(name)}.</li><li>Thông tin FPT Play, truyền hình và nội dung áp dụng có căn cứ.</li><li>Camera FPT, thiết bị và hướng dẫn lắp đặt phù hợp nhu cầu địa phương.</li><li>Cẩm nang ghi địa chỉ sau thay đổi hành chính để kiểm tra chính xác hơn.</li></ul><p>Hiện tại trang này đóng vai trò hub địa phương. Bài mới chỉ được đưa vào khi có nguồn đủ mạnh và qua kiểm tra trùng lặp/cannibalization.</p></article><aside class="content-card"><span class="eyebrow">Đi nhanh</span><h2 style="font-size:26px">Dịch vụ tại {escape(name)}</h2><div class="link-grid" style="grid-template-columns:1fr"><a class="link-tile" href="../#goi-dich-vu-dia-phuong"><strong>Internet FPT</strong><span>Đủ nhóm gói đang có trên website</span></a><a class="link-tile" href="../../../fpt-play/"><strong>FPT Play</strong><span>Truyền hình và giải trí</span></a><a class="link-tile" href="../../../camera-fpt/"><strong>Camera FPT</strong><span>Camera và giám sát</span></a><a class="link-tile" href="../"><strong>Trang {escape(name)}</strong><span>Kiểm tra địa chỉ và gửi yêu cầu</span></a></div></aside></div></section>
-<section class="section"><div class="container"><div class="content-card"><span class="eyebrow">Nguồn &amp; kiểm chứng</span><h2>Nguyên tắc biên tập local</h2><p>Địa giới hành chính được đối chiếu với công bố của Báo Điện tử Chính phủ. Các thông tin sản phẩm/dịch vụ cần đối chiếu nguồn FPT Telecom và điều kiện tại địa chỉ trước khi biến thành claim địa phương.</p><p><a href="{ADMIN_SOURCE}" rel="nofollow noopener" target="_blank">Nguồn địa giới hành chính</a> · <a href="{FPT_SOURCE}" rel="nofollow noopener" target="_blank">FPT Telecom</a></p></div></div></section></main>
-<footer class="footer"><div class="container footer-grid"><div><img src="../../../assets/images/logo-fpt.svg" width="180" height="48" alt="FPT Telecom" style="height:36px;margin-bottom:12px"/><p>Hub tin tức địa phương phục vụ SEO/AEO/GEO theo nguyên tắc có bằng chứng.</p></div><div><h3>Khu vực</h3><ul><li><a href="../">{escape(name)}</a></li><li><a href="../../">34 tỉnh/thành</a></li></ul></div><div><h3>Dịch vụ</h3><ul><li><a href="../../../goi-cuoc-fpt/">Internet</a></li><li><a href="../../../fpt-play/">FPT Play</a></li><li><a href="../../../camera-fpt/">Camera</a></li></ul></div><div><h3>Đăng ký</h3><a class="btn btn-primary" href="../#dang-ky">Kiểm tra địa chỉ</a></div></div></footer><script src="../../../assets/js/main.js"></script></body></html>'''
+<title>Tin tức FPT {escape(name)} – Internet, FPT Play, Camera</title><meta name="description" content="{escape(desc)}"/><link rel="canonical" href="{ORIGIN}/khu-vuc/{slug}/tin-tuc/"/><meta name="robots" content="noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"/><meta property="og:locale" content="vi_VN"/><meta property="og:title" content="Tin tức FPT {escape(name)}"/><meta property="og:description" content="{escape(desc)}"/><meta property="og:type" content="website"/><meta property="og:url" content="{ORIGIN}/khu-vuc/{slug}/tin-tuc/"/><meta property="og:image" content="{ORIGIN}/assets/images/seo/khu-vuc-body.webp"/><link rel="stylesheet" href="../../../assets/css/styles.css"/><script type="application/ld+json">{schema_json(page)}</script><script type="application/ld+json">{schema_json(crumbs)}</script></head>
+<body class="local-news-page" data-local-news-status="empty"><header class="topbar"><div class="container nav"><a class="brand" href="../../../index.html"><img src="../../../assets/images/logo-fpt.svg" width="180" height="48" alt="FPT Telecom"/></a><button class="mobile-toggle" aria-label="Mở menu">☰</button><nav class="nav-links" aria-label="Điều hướng chính"><a href="../../../index.html">Trang chủ</a><a href="../../../lap-mang-fpt/">Lắp mạng</a><a href="../../../goi-cuoc-fpt/">Gói cước</a><a href="../../../fpt-play/">FPT Play</a><a href="../../../camera-fpt/">Camera</a><a href="../../../tin-tuc/">Tin tức chung</a></nav><div class="nav-cta"><a class="hotline" href="tel:19006600">1900 6600 · CSKH</a></div></div></header>
+<main><section class="seo-hero"><img src="../../../assets/images/seo/khu-vuc-body.webp" width="1600" height="900" fetchpriority="high" alt="Tin tức FPT tại {escape(name)}"/><div class="container inner"><div class="breadcrumbs"><a href="../../../index.html">Trang chủ</a><span>›</span><a href="../../">Khu vực</a><span>›</span><a href="../">{escape(name)}</a><span>›</span><span>Tin tức</span></div><h1>Tin tức FPT tại {escape(name)}</h1><p>Hub này chỉ được mở index khi đã có nội dung riêng cho {escape(name)} với nguồn đủ mạnh; hiện tại vẫn cho người dùng truy cập để xem nguyên tắc kiểm chứng và đi tới các dịch vụ liên quan.</p><div class="cta-row"><a class="btn btn-primary" href="../#dang-ky">Kiểm tra theo địa chỉ</a><a class="btn btn-secondary" href="../#goi-dich-vu-dia-phuong">Xem đủ gói tại {escape(name)}</a></div></div></section>
+<section class="section"><div class="container content-grid"><article class="content-card"><span class="eyebrow">Tin tức địa phương</span><h2>Cập nhật dành riêng cho {escape(name)}</h2><div class="local-evidence-note" style="padding:18px;border:1px solid #e5e7eb;border-radius:16px"><strong>Tin địa phương chỉ xuất bản khi có nguồn.</strong> Không tạo bài đổi tên tỉnh, không suy diễn khuyến mãi, giá, sự cố, lịch bảo trì hoặc phạm vi hạ tầng nếu chưa có bằng chứng theo địa bàn và thời điểm.</div><h3>Nhóm nội dung sẽ được cập nhật</h3><ul><li>Thông báo hoặc thay đổi có nguồn liên quan Internet FPT tại {escape(name)}.</li><li>Thông tin FPT Play, truyền hình và nội dung áp dụng có căn cứ.</li><li>Camera FPT, thiết bị và hướng dẫn lắp đặt phù hợp nhu cầu địa phương.</li><li>Cẩm nang ghi địa chỉ sau thay đổi hành chính để kiểm tra chính xác hơn.</li></ul><p>Trạng thái hiện tại: hub chưa có bài local đủ evidence nên đặt <strong>noindex,follow</strong>. Khi có ít nhất một bài riêng đã kiểm chứng và qua QA trùng lặp, hub mới được phép chuyển sang index.</p></article><aside class="content-card"><span class="eyebrow">Đi nhanh</span><h2 style="font-size:26px">Dịch vụ tại {escape(name)}</h2><div class="link-grid" style="grid-template-columns:1fr"><a class="link-tile" href="../#goi-dich-vu-dia-phuong"><strong>Internet FPT</strong><span>Đủ nhóm gói đang có trên website</span></a><a class="link-tile" href="../../../fpt-play/"><strong>FPT Play</strong><span>Truyền hình và giải trí</span></a><a class="link-tile" href="../../../camera-fpt/"><strong>Camera FPT</strong><span>Camera và giám sát</span></a><a class="link-tile" href="../"><strong>Trang {escape(name)}</strong><span>Kiểm tra địa chỉ và gửi yêu cầu</span></a></div></aside></div></section>
+<section class="section"><div class="container"><div class="content-card"><span class="eyebrow">Nguồn &amp; kiểm chứng</span><h2>Nguyên tắc biên tập local</h2><p>Địa giới hành chính được đối chiếu với công bố của Báo Điện tử Chính phủ. Các thông tin sản phẩm/dịch vụ cần đối chiếu nguồn FPT Telecom và điều kiện tại địa chỉ trước khi biến thành claim địa phương. Kiểm tra lại ngày {OBSERVED_AT}.</p><p><a href="{ADMIN_SOURCE}" rel="nofollow noopener" target="_blank">Nguồn địa giới hành chính</a> · <a href="{FPT_SOURCE}" rel="nofollow noopener" target="_blank">FPT Telecom</a></p></div></div></section></main>
+<footer class="footer"><div class="container footer-grid"><div><img src="../../../assets/images/logo-fpt.svg" width="180" height="48" alt="FPT Telecom" style="height:36px;margin-bottom:12px"/><p>Hub tin tức địa phương theo nguyên tắc có bằng chứng, không tạo nội dung hàng loạt chỉ để tăng số URL.</p></div><div><h3>Khu vực</h3><ul><li><a href="../">{escape(name)}</a></li><li><a href="../../">34 tỉnh/thành</a></li></ul></div><div><h3>Dịch vụ</h3><ul><li><a href="../../../goi-cuoc-fpt/">Internet</a></li><li><a href="../../../fpt-play/">FPT Play</a></li><li><a href="../../../camera-fpt/">Camera</a></li></ul></div><div><h3>Đăng ký</h3><a class="btn btn-primary" href="../#dang-ky">Kiểm tra địa chỉ</a></div></div></footer><script src="../../../assets/js/main.js"></script></body></html>'''
 
 
 def insert_catalog(path: Path) -> tuple[str, str]:
@@ -115,10 +124,10 @@ def enrich_hub(hub: Path, locations: list[tuple[str, str]]) -> None:
     if 'id="tin-tuc-theo-tinh"' in html:
         return
     links = "".join(
-        f'<a class="link-tile" href="{escape(slug)}/tin-tuc/"><strong>Tin tức {escape(name)}</strong><span>Internet · FPT Play · Camera</span></a>'
+        f'<a class="link-tile" href="{escape(slug)}/tin-tuc/"><strong>Tin tức {escape(name)}</strong><span>Internet · FPT Play · Camera · chờ nội dung kiểm chứng</span></a>'
         for name, slug in locations
     )
-    block = f'''<section class="section" id="tin-tuc-theo-tinh"><div class="container"><div class="section-head"><span class="eyebrow">Tin tức địa phương</span><h2>Tin tức theo 34 tỉnh/thành</h2><p>Mỗi tỉnh/thành có một hub tin tức riêng. Chỉ xuất bản bài có nguồn kiểm chứng; không tạo hàng loạt bài đổi tên địa phương.</p></div><div class="link-grid">{links}</div></div></section>'''
+    block = f'''<section class="section" id="tin-tuc-theo-tinh"><div class="container"><div class="section-head"><span class="eyebrow">Tin tức địa phương</span><h2>Tin tức theo 34 tỉnh/thành</h2><p>Mỗi tỉnh/thành có một hub riêng để giữ cấu trúc nội dung. Hub chưa có bài local đủ bằng chứng được giữ noindex; chỉ mở index sau khi có nội dung riêng đã kiểm chứng.</p></div><div class="link-grid">{links}</div></div></section>'''
     if "</main>" not in html:
         raise SystemExit("LOCAL SILO BUILD FAIL: hub missing </main>")
     hub.write_text(html.replace("</main>", block + "</main>", 1), encoding="utf-8")
@@ -164,7 +173,7 @@ def main() -> int:
 
     enrich_hub(local_root / "index.html", locations)
     nav_changed = add_khu_vuc_nav(site)
-    print(f"Local silos enriched: 34 catalogs + 34 news hubs; Khu vực nav injected on {nav_changed} pages")
+    print(f"Local silos enriched: 34 catalogs + 34 noindex news hubs; Khu vực nav injected on {nav_changed} pages")
     return 0
 
 
