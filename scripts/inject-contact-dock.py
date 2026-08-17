@@ -4,20 +4,26 @@ import argparse
 from pathlib import Path
 
 TRANSITION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/page-transition.css?v=20260817-1" data-page-transition-style="true"/>'
-APPLE_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/apple-polish.css?v=20260817-2" data-apple-polish-style="true"/>'
-APPLE_CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/apple-contact.css?v=20260817-1" data-apple-contact-style="true"/>'
-MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/motion-system.css?v=20260817-10" data-motion-system-style="true"/>'
-FULL_MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/full-page-motion.css?v=20260817-12" data-full-page-motion-style="true"/>'
-COLOR_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/color-stability.css?v=20260817-1" data-color-stability-style="true"/>'
-CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/contact-dock.css?v=20260817-12" data-contact-dock-style="true"/>'
-MOBILE_STABILITY_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/mobile-stability.css?v=20260817-2" data-mobile-stability-style="true"/>'
-MOBILE_CONTACT_FINAL_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/mobile-contact-final.css?v=20260817-1" data-mobile-contact-final-style="true"/>'
-MOBILE_NAV_FINAL_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/mobile-nav-final.css?v=20260817-1" data-mobile-nav-final-style="true"/>'
+UI_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/ui-reset.css?v=20260817-1" data-ui-reset-style="true"/>'
+UI_MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/ui-motion.css?v=20260817-1" data-ui-motion-style="true"/>'
 
 TRANSITION_SCRIPT = '<script defer src="/fpt/assets/js/page-transition.js?v=20260817-2" data-page-transition-script="true"></script>'
-MOTION_SCRIPT = '<script defer src="/fpt/assets/js/motion-system.js?v=20260817-10" data-motion-system-script="true"></script>'
-FULL_MOTION_SCRIPT = '<script defer src="/fpt/assets/js/full-page-motion.js?v=20260817-12" data-full-page-motion-script="true"></script>'
+UI_MOTION_SCRIPT = '<script defer src="/fpt/assets/js/ui-motion.js?v=20260817-1" data-ui-motion-script="true"></script>'
 CONTACT_SCRIPT = '<script defer src="/fpt/assets/js/contact-dock.js?v=20260817-10" data-contact-dock-script="true"></script>'
+
+LEGACY_MARKERS = (
+    'data-apple-polish-style=',
+    'data-apple-contact-style=',
+    'data-motion-system-style=',
+    'data-full-page-motion-style=',
+    'data-color-stability-style=',
+    'data-contact-dock-style=',
+    'data-mobile-stability-style=',
+    'data-mobile-contact-final-style=',
+    'data-mobile-nav-final-style=',
+    'data-motion-system-script=',
+    'data-full-page-motion-script=',
+)
 
 
 def inject(html: str) -> str:
@@ -25,27 +31,26 @@ def inject(html: str) -> str:
         raise ValueError('missing </head>')
     if '</body>' not in html:
         raise ValueError('missing </body>')
+    if any(marker in html for marker in LEGACY_MARKERS):
+        raise ValueError('legacy injected UI marker found in source HTML')
 
-    # Final cascade: theme -> motion -> color -> dock -> mobile layout -> contact safety -> isolated nav.
     head_assets: list[str] = []
-    if 'data-page-transition-style=' not in html: head_assets.append(TRANSITION_STYLE)
-    if 'data-apple-polish-style=' not in html: head_assets.append(APPLE_STYLE)
-    if 'data-apple-contact-style=' not in html: head_assets.append(APPLE_CONTACT_STYLE)
-    if 'data-motion-system-style=' not in html: head_assets.append(MOTION_STYLE)
-    if 'data-full-page-motion-style=' not in html: head_assets.append(FULL_MOTION_STYLE)
-    if 'data-color-stability-style=' not in html: head_assets.append(COLOR_STYLE)
-    if 'data-contact-dock-style=' not in html: head_assets.append(CONTACT_STYLE)
-    if 'data-mobile-stability-style=' not in html: head_assets.append(MOBILE_STABILITY_STYLE)
-    if 'data-mobile-contact-final-style=' not in html: head_assets.append(MOBILE_CONTACT_FINAL_STYLE)
-    if 'data-mobile-nav-final-style=' not in html: head_assets.append(MOBILE_NAV_FINAL_STYLE)
+    if 'data-page-transition-style=' not in html:
+        head_assets.append(TRANSITION_STYLE)
+    if 'data-ui-reset-style=' not in html:
+        head_assets.append(UI_STYLE)
+    if 'data-ui-motion-style=' not in html:
+        head_assets.append(UI_MOTION_STYLE)
     if head_assets:
         html = html.replace('</head>', ''.join(head_assets) + '</head>', 1)
 
     body_assets: list[str] = []
-    if 'data-page-transition-script=' not in html: body_assets.append(TRANSITION_SCRIPT)
-    if 'data-motion-system-script=' not in html: body_assets.append(MOTION_SCRIPT)
-    if 'data-full-page-motion-script=' not in html: body_assets.append(FULL_MOTION_SCRIPT)
-    if 'data-contact-dock-script=' not in html: body_assets.append(CONTACT_SCRIPT)
+    if 'data-page-transition-script=' not in html:
+        body_assets.append(TRANSITION_SCRIPT)
+    if 'data-ui-motion-script=' not in html:
+        body_assets.append(UI_MOTION_SCRIPT)
+    if 'data-contact-dock-script=' not in html:
+        body_assets.append(CONTACT_SCRIPT)
     if body_assets:
         html = html.replace('</body>', ''.join(body_assets) + '</body>', 1)
     return html
@@ -66,7 +71,7 @@ def main() -> None:
         if new != old:
             page.write_text(new, encoding='utf-8')
             changed += 1
-    print(f'Global UI assets injected: {len(pages)} pages ({changed} changed)')
+    print(f'UI reset assets injected: {len(pages)} pages ({changed} changed)')
 
 
 if __name__ == '__main__':
