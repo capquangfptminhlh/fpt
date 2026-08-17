@@ -46,6 +46,8 @@ FULL_REQUIRED_CSS = (
     '.motion-ripple{',
     '.motion-section-beam{',
     '.motion-footer-field{',
+    '--section-blue-alpha:',
+    '--section-line-scale:',
     '@keyframes full-ripple',
     '@keyframes section-beam',
     '@keyframes footer-float',
@@ -63,6 +65,9 @@ FULL_REQUIRED_JS = (
     "motion-ripple-host",
     "motion-section-beam",
     "motion-footer-field",
+    "applySectionMotion",
+    "--section-blue-alpha",
+    "--section-line-scale",
     "navigator.hardwareConcurrency",
     "connection?.saveData",
     "document.hidden",
@@ -115,6 +120,8 @@ def main() -> None:
         errors.append('full-page scroll effects must be RAF throttled')
     if 'pointermove' in full_js and 'requestAnimationFrame' not in full_js:
         errors.append('full-page pointer effects must be RAF throttled')
+    if '*.' in full_css or ')*' in full_css:
+        errors.append('full-page CSS must avoid unsupported calc multiplication syntax')
 
     styled = scripted = full_styled = full_scripted = 0
     for page in pages:
@@ -128,12 +135,12 @@ def main() -> None:
             errors.append(f'{rel}: missing motion v10 script')
         else:
             scripted += 1
-        if 'full-page-motion.css?v=20260817-11' not in html or 'data-full-page-motion-style=' not in html:
-            errors.append(f'{rel}: missing full-page motion v11 stylesheet')
+        if 'full-page-motion.css?v=20260817-11a' not in html or 'data-full-page-motion-style=' not in html:
+            errors.append(f'{rel}: missing full-page motion v11a stylesheet')
         else:
             full_styled += 1
-        if 'full-page-motion.js?v=20260817-11' not in html or 'data-full-page-motion-script=' not in html:
-            errors.append(f'{rel}: missing full-page motion v11 script')
+        if 'full-page-motion.js?v=20260817-11a' not in html or 'data-full-page-motion-script=' not in html:
+            errors.append(f'{rel}: missing full-page motion v11a script')
         else:
             full_scripted += 1
 
@@ -147,8 +154,8 @@ def main() -> None:
         f'full_styled={full_styled}, full_scripted={full_scripted}, reveal=ready, stagger=ready, '
         'fiber_canvas=ready, signal_waves=ready, auto_focus=ready, section_ambience=ready, '
         'heading_mask=ready, cinematic_media=ready, nav_motion=ready, ripple=ready, '
-        'section_beam=ready, footer_ambient=ready, scroll_depth=ready, visibility_pause=ready, '
-        'low_power_guard=ready, reduced_motion=ready'
+        'section_beam=ready, footer_ambient=ready, scroll_depth=ready, browser_compat=ready, '
+        'visibility_pause=ready, low_power_guard=ready, reduced_motion=ready'
     )
 
 
