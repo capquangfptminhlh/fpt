@@ -56,6 +56,7 @@ jobs:
           python3 scripts/qa-functional.py --site _site
           python3 scripts/qa-visual.py --site _site
           python3 scripts/qa-motion.py --site _site
+          python3 scripts/qa-colors.py --site _site
 
           node --check _site/assets/js/main.js
           node --check _site/assets/js/home-v2.js
@@ -63,6 +64,7 @@ jobs:
           node --check _site/assets/js/contact-dock.js
           node --check _site/assets/js/page-transition.js
           node --check _site/assets/js/motion-system.js
+          node --check _site/assets/js/full-page-motion.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
