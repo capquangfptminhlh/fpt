@@ -2,16 +2,6 @@ const isGitHubPagesProject = location.hostname === 'capquangfptminhlh.github.io'
 const siteBase = isGitHubPagesProject ? '/fpt' : '';
 const sitePath = (path = '/') => `${siteBase}${path.startsWith('/') ? path : `/${path}`}`;
 
-/* Load the dedicated phone design layer on every template. The homepage also
- * benefits from the same file, while desktop keeps the existing design system. */
-if (!document.querySelector('link[data-mobile-v3]')) {
-  const mobileStyles = document.createElement('link');
-  mobileStyles.rel = 'stylesheet';
-  mobileStyles.href = `${sitePath('/assets/css/mobile-v3.css')}?v=20260817-3`;
-  mobileStyles.dataset.mobileV3 = 'true';
-  document.head.appendChild(mobileStyles);
-}
-
 /* GitHub Pages project sites live below /fpt/. Normalize root-absolute internal
  * links so navigation never escapes to capquangfptminhlh.github.io/. */
 if (siteBase) {
@@ -60,30 +50,6 @@ if (toggle && navLinks) {
     if (!event.matches) closeMenu();
   });
 }
-
-/* Mobile conversion shell: one persistent call action and one registration
- * action across all 73 static pages without duplicating markup in each file. */
-const phoneViewport = window.matchMedia('(max-width:760px)');
-let mobileCta = null;
-
-const syncMobileCta = () => {
-  if (!mobileCta) {
-    mobileCta = document.createElement('nav');
-    mobileCta.className = 'mobile-bottom-cta';
-    mobileCta.setAttribute('aria-label', 'Liên hệ nhanh');
-    mobileCta.innerHTML = `
-      <a class="mobile-call" href="tel:19006600" aria-label="Gọi tổng đài 1900 6600">☎ Gọi ngay</a>
-      <a class="mobile-register" href="${sitePath('/lien-he/')}" aria-label="Đăng ký tư vấn lắp mạng FPT">Đăng ký tư vấn</a>
-    `;
-    document.body.appendChild(mobileCta);
-  }
-
-  document.body.classList.toggle('has-mobile-cta', phoneViewport.matches);
-  mobileCta.hidden = !phoneViewport.matches;
-};
-
-syncMobileCta();
-phoneViewport.addEventListener?.('change', syncMobileCta);
 
 const form = document.querySelector('#advisor-form');
 if (form) {
