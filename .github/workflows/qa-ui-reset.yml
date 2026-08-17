@@ -39,3 +39,8 @@ jobs:
           node --check _site/assets/js/contact-dock.js
           node --check _site/assets/js/page-transition.js
           node --check _site/assets/js/ui-motion.js
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-reset-preview
+          path: _site
