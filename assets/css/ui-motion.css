@@ -10,5 +10,10 @@ body.ui-scrolled .topbar{box-shadow:0 6px 24px rgba(15,23,42,.07)!important}
   .m-plan,.package,.solution-card,.use-card,.content-card,.contact-step,.contact-info,.lead-card{transition:transform .22s var(--ui-ease),box-shadow .22s ease,border-color .22s ease}
   .m-plan:hover,.package:hover,.solution-card:hover,.use-card:hover,.content-card:hover,.contact-step:hover,.contact-info:hover,.lead-card:hover{transform:translateY(-2px)}
 }
+@media(max-width:1180px){
+  .topbar,.home-v2 .topbar{z-index:700!important}
+  body.nav-open::after{z-index:650!important}
+  .nav-links{z-index:720!important}
+}
 @media(max-width:760px){.ui-motion-ready .ui-reveal{transform:translateY(4px)}}
 @media(prefers-reduced-motion:reduce){.ui-reveal,.ui-media{transform:none!important;transition:none!important}}
