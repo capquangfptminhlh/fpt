@@ -34,11 +34,12 @@ def main() -> int:
         raise SystemExit('PREMIUM CATALOG QA FAIL: premium JS missing or unexpectedly small')
 
     css_text = css.read_text(encoding='utf-8')
-    for marker in ('grid-template-columns:repeat(3,minmax(0,1fr))', '.premium-plan-card', '.premium-plan-actions', '@media(max-width:760px)'):
+    for marker in ('grid-template-columns:repeat(3,minmax(0,1fr))', '.premium-plan-card', '.premium-plan-actions', '.premium-plan-more', '@media(max-width:760px)'):
         if marker not in css_text:
             raise SystemExit(f'PREMIUM CATALOG QA FAIL: CSS missing {marker}')
 
     total = 0
+    internal_detail_links = 0
     for slug in EXPECTED:
         path = site / 'khu-vuc' / slug / 'index.html'
         if not path.exists():
@@ -61,6 +62,11 @@ def main() -> int:
             raise SystemExit(f'PREMIUM CATALOG QA FAIL: {slug} benefit blocks != 56')
         if block.count('class="premium-plan-drawer"') != 56:
             raise SystemExit(f'PREMIUM CATALOG QA FAIL: {slug} detail drawers != 56')
+        links = re.findall(r'<a class="premium-plan-more" href="([^"]+)">', block, flags=re.I)
+        if len(links) != 26:
+            raise SystemExit(f'PREMIUM CATALOG QA FAIL: {slug} internal package detail links != 26')
+        if any(not href.startswith(('../', './')) or 'fpt.vn' in href.lower() for href in links):
+            raise SystemExit(f'PREMIUM CATALOG QA FAIL: {slug} premium detail link is not internal')
         if 'local-plan-card-full' in block or 'local-plan-full-head' in block or 'local-plan-contract-grid' in block:
             raise SystemExit(f'PREMIUM CATALOG QA FAIL: {slug} legacy rich-card markup still visible')
         lowered = block.lower()
@@ -69,8 +75,9 @@ def main() -> int:
         if 'Giá & ưu đãi theo địa chỉ' not in block:
             raise SystemExit(f'PREMIUM CATALOG QA FAIL: {slug} commercial verification note missing')
         total += 56
+        internal_detail_links += len(links)
 
-    print(f'PREMIUM CATALOG QA PASS: 34/34 provinces × 56 premium cards = {total}; 3-column desktop + 2/1 responsive; compact fronts + inline details + CTA; no visible source links')
+    print(f'PREMIUM CATALOG QA PASS: 34/34 provinces × 56 premium cards = {total}; 3-column desktop + 2/1 responsive; compact fronts + inline details + CTA; no visible source links; internal package detail links={internal_detail_links}')
     return 0
 
 
