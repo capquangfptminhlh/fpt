@@ -35,6 +35,7 @@
 
   const isSameSiteNavigation = (anchor, event) => {
     if (!anchor || !anchor.href) return false;
+    if (anchor.hasAttribute('data-no-transition')) return false;
     if (anchor.target && anchor.target !== '_self') return false;
     if (anchor.hasAttribute('download')) return false;
     if (event.defaultPrevented || event.button !== 0) return false;
