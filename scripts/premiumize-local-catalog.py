@@ -10,6 +10,24 @@ def clean(value: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", unescape(value))).strip()
 
 
+def display_text(value: str) -> str:
+    value = clean(value)
+    replacements = (
+        (r"\s+theo nguồn FPT hiện hành", ""),
+        (r"\s+theo nguồn FPT", ""),
+        (r"\s+theo nguồn", ""),
+        (r"\s+theo trang FPT lắp Wi-?Fi", ""),
+        (r"\s+theo trang FPT", ""),
+        (r"\s+từ nguồn FPT", ""),
+        (r"\s+từ catalog chính thức", ""),
+    )
+    for pattern, replacement in replacements:
+        value = re.sub(pattern, replacement, value, flags=re.I)
+    value = re.sub(r"https?://\S+", "", value, flags=re.I)
+    value = re.sub(r"\s+", " ", value).strip(" ·-–—,;")
+    return value
+
+
 def capture(pattern: str, text: str, default: str = "") -> str:
     match = re.search(pattern, text, flags=re.I | re.S)
     return clean(match.group(1)) if match else default
@@ -24,7 +42,7 @@ def metric_pairs(card: str) -> list[tuple[str, str]]:
     if not block:
         return []
     return [
-        (clean(label), clean(value))
+        (display_text(label), display_text(value))
         for label, value in re.findall(r'<div><span>(.*?)</span><strong>(.*?)</strong></div>', block.group(1), flags=re.I | re.S)
     ]
 
@@ -34,7 +52,7 @@ def benefits(card: str) -> list[str]:
     if not block:
         return []
     rows = re.findall(r'<li[^>]*>(.*?)</li>', block.group(1), flags=re.I | re.S)
-    return [clean(row) for row in rows if clean(row)]
+    return [display_text(row) for row in rows if display_text(row)]
 
 
 def tone(name: str, kind: str, plan_id: str) -> tuple[str, str, str]:
@@ -65,15 +83,15 @@ def pick_metric(pairs: list[tuple[str, str]], keys: tuple[str, ...], fallback: s
 def render_card(card: str, location: str, index: int) -> str:
     plan_id = attr(card, "data-plan-id") or attr(card, "data-current-plan-id") or f"plan-{index}"
     kind = attr(card, "data-local-product") or attr(card, "data-current-plan-group") or "internet"
-    name = capture(r'<h3>(.*?)</h3>', card, "Gói Internet FPT")
-    price = capture(r'<div class="local-plan-full-price">.*?<strong>(.*?)</strong>', card, "Kiểm tra theo địa chỉ")
+    name = display_text(capture(r'<h3>(.*?)</h3>', card, "Gói Internet FPT"))
+    price = display_text(capture(r'<div class="local-plan-full-price">.*?<strong>(.*?)</strong>', card, "Kiểm tra theo địa chỉ"))
     pairs = metric_pairs(card)
-    download = pairs[0][1] if pairs else "Theo gói"
-    upload = pairs[1][1] if len(pairs) > 1 else "Theo gói"
-    device = pick_metric(pairs, ("thiết bị",), "Thiết bị theo gói")
-    fit = pick_metric(pairs, ("phù hợp",), "Gia đình và nhu cầu thực tế")
+    download = display_text(pairs[0][1] if pairs else "Theo gói")
+    upload = display_text(pairs[1][1] if len(pairs) > 1 else "Theo gói")
+    device = display_text(pick_metric(pairs, ("thiết bị",), "Thiết bị theo gói"))
+    fit = display_text(pick_metric(pairs, ("phù hợp",), "Gia đình và nhu cầu thực tế"))
     if fit == "Gia đình và nhu cầu thực tế":
-        fit = capture(r'<div class="local-plan-panel"><h4>Gói này phù hợp với ai\?</h4><p>(.*?)</p>', card, fit)
+        fit = display_text(capture(r'<div class="local-plan-panel"><h4>Gói này phù hợp với ai\?</h4><p>(.*?)</p>', card, fit))
     items = benefits(card)
     if not items:
         items = ["Cấu hình linh hoạt theo nhu cầu", "Hỗ trợ kỹ thuật 24/7", "Kiểm tra khả dụng tại địa chỉ lắp đặt"]
