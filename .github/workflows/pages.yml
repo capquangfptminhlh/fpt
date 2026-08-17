@@ -49,10 +49,14 @@ jobs:
             --exclude='/data/' \
             --exclude='/scripts/'
 
+          python3 scripts/generate-local-keywords.py
           python3 scripts/prepare-pages.py --site _site
+          python3 scripts/generate-local-pages.py --site _site
           python3 scripts/inject-contact-dock.py --site _site
           python3 scripts/qa-functional.py --site _site
           python3 scripts/qa-ui-reset.py --site _site
+          python3 scripts/qa-local.py --site _site
+          python3 -m py_compile scripts/generate-local-pages.py scripts/generate-local-keywords.py scripts/qa-local.py
 
           node --check _site/assets/js/main.js
           node --check _site/assets/js/home-v2.js
