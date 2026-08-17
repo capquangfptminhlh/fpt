@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 from pathlib import Path
 
 TRANSITION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/page-transition.css?v=20260817-1" data-page-transition-style="true"/>'
@@ -26,11 +27,20 @@ LEGACY_MARKERS = (
 )
 
 
+def strip_legacy_runtime_layers(html: str) -> str:
+    # prepare-pages historically injects mobile-v3.css. Remove it from the final artifact
+    # before the new single-authority visual layer is appended.
+    html = re.sub(r'<link\b[^>]*data-mobile-v3=["\'][^"\']*["\'][^>]*/?>', '', html, flags=re.I)
+    return html
+
+
 def inject(html: str) -> str:
     if '</head>' not in html:
         raise ValueError('missing </head>')
     if '</body>' not in html:
         raise ValueError('missing </body>')
+
+    html = strip_legacy_runtime_layers(html)
     if any(marker in html for marker in LEGACY_MARKERS):
         raise ValueError('legacy injected UI marker found in source HTML')
 
