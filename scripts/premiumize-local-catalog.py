@@ -5,6 +5,8 @@ import re
 from html import escape, unescape
 from pathlib import Path
 
+EXPECTED_CARDS = 103
+
 
 def clean(value: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", unescape(value))).strip()
@@ -20,6 +22,8 @@ def display_text(value: str) -> str:
         (r"\s+theo trang FPT", ""),
         (r"\s+từ nguồn FPT", ""),
         (r"\s+từ catalog chính thức", ""),
+        (r"\s+theo catalog hiện hành", ""),
+        (r"\s+theo catalog", ""),
     )
     for pattern, replacement in replacements:
         value = re.sub(pattern, replacement, value, flags=re.I)
@@ -41,10 +45,7 @@ def metric_pairs(card: str) -> list[tuple[str, str]]:
     block = re.search(r'<div class="local-plan-full-metrics">(.*?)</div>\s*<div class="local-plan-full-content">', card, flags=re.I | re.S)
     if not block:
         return []
-    return [
-        (display_text(label), display_text(value))
-        for label, value in re.findall(r'<div><span>(.*?)</span><strong>(.*?)</strong></div>', block.group(1), flags=re.I | re.S)
-    ]
+    return [(display_text(label), display_text(value)) for label, value in re.findall(r'<div><span>(.*?)</span><strong>(.*?)</strong></div>', block.group(1), flags=re.I | re.S)]
 
 
 def benefits(card: str) -> list[str]:
@@ -57,25 +58,26 @@ def benefits(card: str) -> list[str]:
 
 def tone(name: str, kind: str, plan_id: str) -> tuple[str, str, str]:
     key = f"{name} {kind} {plan_id}".lower()
-    if "speedx" in key or "wifi 7" in key:
+    if "speedx" in key or "wifi 7" in key or "wi‑fi 7" in key:
         return "premium-tone-electric", "Wi‑Fi 7", "✦"
     if "f-game" in key or "f‑game" in key or "game" in key:
         return "premium-tone-gaming", "Gaming", "⚡"
-    if "camera" in key:
+    if "camera" in key or "play4" in key or "iq4s" in key:
         return "premium-tone-camera", "Camera AI", "◉"
+    if "business" in kind or "biz" in key or "lux" in key:
+        return "premium-tone-violet", "Doanh nghiệp", "◆"
     if "meta" in key:
         return "premium-tone-violet", "Đề xuất", "♛"
     if "sky" in key:
         return "premium-tone-blue", "Phổ biến", "★"
-    if "combo" in key or kind in {"combo", "play", "play-extra"}:
+    if "combo" in key or "play" in kind or kind in {"combo", "play-extra"}:
         return "premium-tone-blue", "Combo", "✦"
     return "premium-tone-orange", "Giá tốt", "⚡"
 
 
 def pick_metric(pairs: list[tuple[str, str]], keys: tuple[str, ...], fallback: str) -> str:
     for label, value in pairs:
-        normalized = label.lower()
-        if any(key in normalized for key in keys):
+        if any(key in label.lower() for key in keys):
             return value
     return fallback
 
@@ -92,11 +94,8 @@ def render_card(card: str, location: str, index: int) -> str:
     fit = display_text(pick_metric(pairs, ("phù hợp",), "Gia đình và nhu cầu thực tế"))
     if fit == "Gia đình và nhu cầu thực tế":
         fit = display_text(capture(r'<div class="local-plan-panel"><h4>Gói này phù hợp với ai\?</h4><p>(.*?)</p>', card, fit))
-    items = benefits(card)
-    if not items:
-        items = ["Cấu hình linh hoạt theo nhu cầu", "Hỗ trợ kỹ thuật 24/7", "Kiểm tra khả dụng tại địa chỉ lắp đặt"]
-    front_items = items[:3]
-    all_items = items[:6]
+    items = benefits(card) or ["Cấu hình linh hoạt theo nhu cầu", "Hỗ trợ kỹ thuật 24/7", "Kiểm tra khả dụng tại địa chỉ lắp đặt"]
+    front_items, all_items = items[:3], items[:6]
     style, badge, icon = tone(name, kind, plan_id)
     featured = " is-featured" if badge in {"Phổ biến", "Đề xuất", "Wi‑Fi 7"} else ""
     detail_id = f"premium-detail-{re.sub(r'[^a-z0-9-]+', '-', plan_id.lower()).strip('-')}-{index}"
@@ -127,8 +126,8 @@ def premiumize(path: Path) -> None:
     block = section.group(0)
     article_re = re.compile(r'<article\b(?=[^>]*(?:local-plan-card-full|local-plan-card local-plan-card-full))[^>]*>.*?</article>', flags=re.I | re.S)
     cards = list(article_re.finditer(block))
-    if len(cards) != 56:
-        raise SystemExit(f"PREMIUM CATALOG BUILD FAIL: expected 56 rich cards in {path}, got {len(cards)}")
+    if len(cards) != EXPECTED_CARDS:
+        raise SystemExit(f"PREMIUM CATALOG BUILD FAIL: expected {EXPECTED_CARDS} rich cards in {path}, got {len(cards)}")
 
     parts: list[str] = []
     cursor = 0
@@ -139,25 +138,13 @@ def premiumize(path: Path) -> None:
     parts.append(block[cursor:])
     block = "".join(parts)
 
-    block = re.sub(
-        r'<div class="local-current-offerings-head">.*?</div>',
-        '<div class="local-current-offerings-head premium-offerings-head"><span class="eyebrow">Thêm lựa chọn theo nhu cầu</span><h3>Gói mở rộng cho nhà nhiều tầng, giải trí, gaming & camera</h3><p>Chọn cấu hình phù hợp, sau đó kiểm tra khả dụng thực tế tại địa chỉ lắp đặt.</p></div>',
-        block,
-        count=1,
-        flags=re.I | re.S,
-    )
-    block = re.sub(
-        r'<div class="local-catalog-source">.*?</div>',
-        f'<div class="premium-catalog-note"><strong>Giá & ưu đãi theo địa chỉ</strong><p>Mức hiển thị giúp so sánh nhanh. Khi đăng ký tại {escape(location)}, hệ thống sẽ kiểm tra hạ tầng, thiết bị và ưu đãi thực tế trước khi chốt.</p></div>',
-        block,
-        count=1,
-        flags=re.I | re.S,
-    )
-    block = block.replace('data-full-plan-details="true"', 'data-full-plan-details="true" data-premium-catalog="v3"', 1)
+    block = re.sub(r'<div class="local-current-offerings-head">.*?</div>', '<div class="local-current-offerings-head premium-offerings-head"><span class="eyebrow">Thêm lựa chọn theo nhu cầu</span><h3>Gói mở rộng cho nhà nhiều tầng, giải trí, gaming & camera</h3><p>Chọn cấu hình phù hợp, sau đó kiểm tra khả dụng thực tế tại địa chỉ lắp đặt.</p></div>', block, count=1, flags=re.I | re.S)
+    block = re.sub(r'<div class="local-catalog-source">.*?</div>', f'<div class="premium-catalog-note"><strong>Giá & ưu đãi theo địa chỉ</strong><p>Mức hiển thị giúp so sánh nhanh. Khi đăng ký tại {escape(location)}, hệ thống sẽ kiểm tra hạ tầng, thiết bị và ưu đãi thực tế trước khi chốt.</p></div>', block, count=1, flags=re.I | re.S)
+    block = block.replace('data-full-plan-details="true"', 'data-full-plan-details="true" data-premium-catalog="v4"', 1)
     html = html[:section.start()] + block + html[section.end():]
 
-    css = '<link rel="stylesheet" href="../../assets/css/local-catalog-premium.css" data-local-catalog-premium-style="v3"/>'
-    js = '<script src="../../assets/js/local-catalog-premium.js" data-local-catalog-premium-script="v3" defer></script>'
+    css = '<link rel="stylesheet" href="../../assets/css/local-catalog-premium.css" data-local-catalog-premium-style="v4"/>'
+    js = '<script src="../../assets/js/local-catalog-premium.js" data-local-catalog-premium-script="v4" defer></script>'
     if 'data-local-catalog-premium-style=' not in html:
         html = html.replace('</head>', css + '</head>', 1)
     if 'data-local-catalog-premium-script=' not in html:
@@ -174,7 +161,7 @@ def main() -> int:
         raise SystemExit(f"PREMIUM CATALOG BUILD FAIL: expected 34 province pages, got {len(pages)}")
     for page in pages:
         premiumize(page)
-    print('PREMIUM CATALOG BUILT: 34/34 provinces × 56 premium package cards = 1904; legacy rich cards replaced; visible source links removed; 26 internal package detail links/province preserved')
+    print(f'PREMIUM CATALOG BUILT: 34/34 provinces × {EXPECTED_CARDS} premium offer cards = {34 * EXPECTED_CARDS}; legacy rich cards replaced; visible source links removed; 26 internal package detail links/province preserved')
     return 0
 
 
