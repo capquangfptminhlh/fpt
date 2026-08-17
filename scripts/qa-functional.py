@@ -11,6 +11,8 @@ REQUIRED_CONTACT = (
     'https://zalo.me/fpttelecom',
     "phone: '19006600'",
     "sitePath('/lien-he/')",
+    'data-contact-action="zalo" data-no-transition',
+    'data-contact-action="call" data-no-transition',
 )
 REQUIRED_TRANSITION_JS = (
     "prefers-reduced-motion: reduce",
@@ -19,6 +21,7 @@ REQUIRED_TRANSITION_JS = (
     "pageshow",
     "FPTPageTransition",
     "mailto:|tel:|javascript:",
+    "anchor.hasAttribute('data-no-transition')",
 )
 
 
@@ -124,6 +127,8 @@ def main() -> None:
         for required in REQUIRED_CONTACT:
             if required not in contact_text:
                 errors.append(f'contact-dock.js missing required action config: {required}')
+        if 'target="_blank"' in contact_text:
+            errors.append('contact-dock.js must not force Zalo into a new tab')
         for action in ('zalo', 'call', 'register'):
             if f'data-contact-action="{action}"' not in contact_text:
                 errors.append(f'contact-dock.js missing rendered action: {action}')
@@ -146,6 +151,15 @@ def main() -> None:
         for required in ('.page-transition', '@media(prefers-reduced-motion:reduce)', '@keyframes modem-run', '@keyframes wifi-wave'):
             if required not in transition_style:
                 errors.append(f'page-transition.css missing animation/accessibility rule: {required}')
+
+    contact_css = site / 'assets/css/contact-dock.css'
+    if not contact_css.exists():
+        errors.append('Missing assets/css/contact-dock.css')
+    else:
+        contact_style = contact_css.read_text(encoding='utf-8')
+        for required in ('touch-action:manipulation', 'z-index:2147482000', 'pointer-events:auto', '@media(max-width:760px)'):
+            if required not in contact_style:
+                errors.append(f'contact-dock.css missing tap/stacking guard: {required}')
 
     lead_page = site / 'lien-he/index.html'
     lead_js = site / 'assets/js/lead-form.js'
@@ -178,7 +192,8 @@ def main() -> None:
 
     print(
         f'FUNCTIONAL QA PASS: pages={len(pages)}, internal_links={checked_links}, '
-        f'legacy_redirects={legacy_redirects}, contact_actions=3, lead_form=ready, modem_transition=ready'
+        f'legacy_redirects={legacy_redirects}, contact_actions=3, direct_contact=ready, '
+        f'lead_form=ready, modem_transition=ready'
     )
 
 
