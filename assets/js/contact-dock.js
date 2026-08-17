@@ -22,7 +22,7 @@
       <a class="contact-action contact-zalo" data-contact-action="zalo" data-no-transition
          href="${CONTACT.zalo}"
          aria-label="Mở Zalo FPT Telecom">
-        <span class="contact-icon" aria-hidden="true">Z</span>
+        <span class="contact-icon contact-icon-zalo" aria-hidden="true"><span>Zalo</span></span>
         <span class="contact-copy"><strong>Zalo</strong><small>Nhắn tin hỗ trợ</small></span>
       </a>
       <a class="contact-action contact-call" data-contact-action="call" data-no-transition
