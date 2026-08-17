@@ -13,13 +13,17 @@
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   const lowPower = Boolean(baseMotion.lowPower) || Boolean(connection?.saveData) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
 
-  body.classList.add('full-page-motion-v11');
+  body.classList.add('full-page-motion-v12');
 
-  const sectionSelectors = [
-    'main > section', 'main .section', '.home-v2 main > *', '.content-card', '.contact-section',
-    '.contact-callout', '.final-cta', '.trust-band', '.lead-bar', '.faq-pro', '.footer'
-  ];
-  const sections = unique(sectionSelectors.flatMap((selector) => select(selector))).filter((node) => !node.closest('.contact-dock'));
+  // Ambient motion belongs only to structural sections. Never turn nested cards/CTA blocks
+  // into independent color layers, because those stacks create visible color contamination.
+  const sectionCandidates = unique(select('main > section, main > .m-section, .subpage-hero, .seo-hero, .contact-hero, .footer'));
+  const sections = sectionCandidates.filter((node) => {
+    if (node.closest('.contact-dock')) return false;
+    const parentSection = node.parentElement?.closest('section');
+    return !parentSection;
+  });
+
   sections.forEach((section, index) => {
     section.classList.add('motion-section', `motion-tone-${index % 3}`);
     section.style.setProperty('--section-order', String(index));
@@ -31,11 +35,12 @@
     }
   });
 
-  const headingSelectors = 'main h1,main h2,main h3,.footer h2,.footer h3';
-  const headings = select(headingSelectors).filter((node) => !node.closest('.contact-dock') && !node.closest('[aria-hidden="true"]'));
+  const headings = select('main h1,main h2,main h3,.footer h2,.footer h3').filter((node) => {
+    return !node.closest('.contact-dock') && !node.closest('[aria-hidden="true"]');
+  });
   headings.forEach((heading, index) => {
     heading.classList.add('motion-heading');
-    heading.style.setProperty('--heading-delay', `${Math.min(index % 4, 3) * 55}ms`);
+    heading.style.setProperty('--heading-delay', `${Math.min(index % 4, 3) * 50}ms`);
   });
 
   const mediaSelectors = [
@@ -103,7 +108,7 @@
         if (entry.isIntersecting) activeSections.add(entry.target);
         else activeSections.delete(entry.target);
       });
-    }, { rootMargin: '12% 0px 12% 0px', threshold: 0.02 });
+    }, { rootMargin: '10% 0px 10% 0px', threshold: 0.02 });
     sections.forEach((node) => sectionObserver.observe(node));
   }
 
@@ -137,11 +142,11 @@
 
   const applySectionMotion = (section, progress, shift) => {
     const mobile = innerWidth <= 760;
-    const sectionOpacity = mobile ? .18 + progress * .34 : .28 + progress * .58;
-    const blueAlpha = mobile ? .012 + progress * .026 : .018 + progress * .052;
-    const warmAlpha = mobile ? .009 + progress * .019 : .014 + progress * .036;
-    const lineScale = .55 + progress * .45;
-    const lineOpacity = mobile ? .1 + progress * .2 : .2 + progress * .4;
+    const sectionOpacity = mobile ? .12 + progress * .18 : .16 + progress * .24;
+    const blueAlpha = mobile ? .006 + progress * .012 : .008 + progress * .018;
+    const warmAlpha = mobile ? .004 + progress * .008 : .006 + progress * .012;
+    const lineScale = .62 + progress * .38;
+    const lineOpacity = mobile ? .08 + progress * .12 : .12 + progress * .20;
     section.style.setProperty('--section-progress', progress.toFixed(3));
     section.style.setProperty('--section-shift', `${shift.toFixed(1)}px`);
     section.style.setProperty('--section-opacity', sectionOpacity.toFixed(3));
@@ -165,10 +170,11 @@
       const reach = viewport / 2 + rect.height / 2;
       const progress = 1 - clamp(distance / Math.max(1, reach), 0, 1);
       const normalized = clamp((viewport / 2 - center) / Math.max(viewport, rect.height), -.5, .5);
-      const shiftStrength = innerWidth <= 760 ? 10 : lowPower ? 12 : 22;
+      const shiftStrength = innerWidth <= 760 ? 6 : lowPower ? 8 : 12;
       applySectionMotion(section, progress, normalized * shiftStrength);
     });
   };
+
   const scheduleFullPageScroll = () => {
     if (scrollTicking) return;
     scrollTicking = true;
@@ -200,7 +206,7 @@
   });
 
   window.FPTFullPageMotion = Object.freeze({
-    version: '11',
+    version: '12',
     sections: sections.length,
     headings: headings.length,
     media: media.length,
