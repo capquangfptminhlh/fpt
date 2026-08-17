@@ -27,6 +27,9 @@
     button.addEventListener('click', () => setIntent(button.dataset.intent));
   });
 
+  const isGitHubPagesProject = location.hostname === 'capquangfptminhlh.github.io';
+  const siteBase = isGitHubPagesProject ? '/fpt' : '';
+
   const availabilityForm = document.querySelector('#availability-form');
   if (availabilityForm) {
     availabilityForm.addEventListener('submit', (event) => {
@@ -36,7 +39,7 @@
       const params = new URLSearchParams();
       if (address) params.set('address', address);
       if (need) params.set('need', need);
-      window.location.href = `/lien-he/${params.toString() ? `?${params}` : ''}`;
+      window.location.href = `${siteBase}/lien-he/${params.toString() ? `?${params}` : ''}`;
     });
   }
 
