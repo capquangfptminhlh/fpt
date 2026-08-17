@@ -1,0 +1,14 @@
+/* Lightweight UI motion — progressive enhancement, never hides content. */
+:root{--ui-ease:cubic-bezier(.22,1,.36,1)}
+.ui-reveal{transform:none;opacity:1}
+.ui-motion-ready .ui-reveal{transform:translateY(8px);transition:transform .5s var(--ui-ease),box-shadow .25s ease,border-color .25s ease}
+.ui-motion-ready .ui-reveal.is-in{transform:none}
+.ui-motion-ready .ui-media{transform:scale(1.006);transition:transform .7s var(--ui-ease)}
+.ui-motion-ready .ui-media.is-in{transform:scale(1)}
+body.ui-scrolled .topbar{box-shadow:0 6px 24px rgba(15,23,42,.07)!important}
+@media(hover:hover) and (pointer:fine){
+  .m-plan,.package,.solution-card,.use-card,.content-card,.contact-step,.contact-info,.lead-card{transition:transform .22s var(--ui-ease),box-shadow .22s ease,border-color .22s ease}
+  .m-plan:hover,.package:hover,.solution-card:hover,.use-card:hover,.content-card:hover,.contact-step:hover,.contact-info:hover,.lead-card:hover{transform:translateY(-2px)}
+}
+@media(max-width:760px){.ui-motion-ready .ui-reveal{transform:translateY(4px)}}
+@media(prefers-reduced-motion:reduce){.ui-reveal,.ui-media{transform:none!important;transition:none!important}}
