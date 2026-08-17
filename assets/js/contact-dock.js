@@ -9,8 +9,6 @@
   });
 
   const boot = () => {
-    // main.js previously created a 2-button mobile bar. Replace it with one
-    // universal 3-action dock so users never see duplicate conversion controls.
     document.querySelectorAll('.mobile-bottom-cta').forEach((node) => node.remove());
     document.body.classList.remove('has-mobile-cta');
 
@@ -21,13 +19,13 @@
     dock.dataset.contactDock = 'true';
     dock.setAttribute('aria-label', 'Liên hệ nhanh');
     dock.innerHTML = `
-      <a class="contact-action contact-zalo" data-contact-action="zalo"
-         href="${CONTACT.zalo}" target="_blank" rel="noopener noreferrer"
+      <a class="contact-action contact-zalo" data-contact-action="zalo" data-no-transition
+         href="${CONTACT.zalo}"
          aria-label="Mở Zalo FPT Telecom">
         <span class="contact-icon" aria-hidden="true">Z</span>
         <span class="contact-copy"><strong>Zalo</strong><small>Nhắn tin hỗ trợ</small></span>
       </a>
-      <a class="contact-action contact-call" data-contact-action="call"
+      <a class="contact-action contact-call" data-contact-action="call" data-no-transition
          href="tel:${CONTACT.phone}" aria-label="Gọi ${CONTACT.phoneLabel}">
         <span class="contact-icon" aria-hidden="true">☎</span>
         <span class="contact-copy"><strong>Gọi ngay</strong><small>${CONTACT.phoneLabel}</small></span>
