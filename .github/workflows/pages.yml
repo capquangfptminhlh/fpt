@@ -80,10 +80,11 @@ jobs:
           python3 scripts/premiumize-local-catalog.py --site _site
           python3 scripts/qa-local-catalog-premium.py --site _site
           python3 scripts/qa-search-quality.py --site _site
+          python3 scripts/qa-seo-90-day.py --site _site
           python3 scripts/qa-functional.py --site _site
           python3 scripts/qa-ui-reset.py --site _site
 
-          python3 -m py_compile scripts/generate-local-pages.py scripts/enrich-local-silos.py scripts/upgrade-local-catalog.py scripts/expand-local-plan-details.py scripts/add-local-current-offerings.py scripts/complete-official-catalog.py scripts/enrich-local-editorial.py scripts/premiumize-local-catalog.py scripts/fix-local-nav.py scripts/generate-local-keywords.py scripts/qa-local-pages.py scripts/qa-local-silos.py scripts/qa-local-commerce.py scripts/qa-local-commerce-full.py scripts/qa-local-current-offerings.py scripts/qa-official-catalog.py scripts/qa-local-editorial.py scripts/qa-local-catalog-premium.py scripts/qa-local-keywords.py scripts/qa-search-quality.py scripts/sync-sitemap.py
+          python3 -m py_compile scripts/generate-local-pages.py scripts/enrich-local-silos.py scripts/upgrade-local-catalog.py scripts/expand-local-plan-details.py scripts/add-local-current-offerings.py scripts/complete-official-catalog.py scripts/enrich-local-editorial.py scripts/premiumize-local-catalog.py scripts/fix-local-nav.py scripts/generate-local-keywords.py scripts/qa-local-pages.py scripts/qa-local-silos.py scripts/qa-local-commerce.py scripts/qa-local-commerce-full.py scripts/qa-local-current-offerings.py scripts/qa-official-catalog.py scripts/qa-local-editorial.py scripts/qa-local-catalog-premium.py scripts/qa-local-keywords.py scripts/qa-search-quality.py scripts/qa-seo-90-day.py scripts/sync-sitemap.py
           python3 - <<'PY'
           import re
           from pathlib import Path
