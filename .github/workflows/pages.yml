@@ -50,10 +50,12 @@ jobs:
             --exclude='/scripts/'
 
           python3 scripts/generate-local-pages.py --site _site
+          python3 scripts/enrich-local-silos.py --site _site
           python3 scripts/prepare-pages.py --site _site
           python3 scripts/inject-contact-dock.py --site _site
           python3 scripts/sync-sitemap.py --site _site --origin https://capquangfptminhlh.github.io/fpt
           python3 scripts/qa-local-pages.py --site _site
+          python3 scripts/qa-local-silos.py --site _site
           python3 scripts/qa-functional.py --site _site
           python3 scripts/qa-ui-reset.py --site _site
 
