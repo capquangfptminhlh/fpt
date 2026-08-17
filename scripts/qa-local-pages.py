@@ -29,6 +29,17 @@ def capture(pattern: str, html: str, label: str, path: Path) -> str:
     return re.sub(r'\s+', ' ', unescape(match.group(1))).strip()
 
 
+def without_sourced_catalog(html: str, path: Path) -> str:
+    pattern = re.compile(
+        r'<section\b(?=[^>]*\bclass=["\'][^"\']*\blocal-commerce\b[^"\']*["\'])[^>]*>.*?</section>',
+        flags=re.I | re.S,
+    )
+    matches = pattern.findall(html)
+    if len(matches) != 1:
+        raise SystemExit(f'LOCAL QA FAIL: expected exactly one sourced commerce catalog in {path}, got {len(matches)}')
+    return pattern.sub(' ', html, count=1)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--site', required=True)
@@ -59,17 +70,20 @@ def main() -> int:
             'data-lead-form', 'lead-form.js', 'data-contact-dock-script=', 'data-ui-reset-style=',
             'data-ui-motion-style=', 'data-page-transition-script=', 'xaydungchinhsach.chinhphu.vn',
             'Khả năng triển khai, thiết bị và ưu đãi phụ thuộc hạ tầng thực tế.',
-            'Giá, hạ tầng, thiết bị và ưu đãi cần được xác nhận lại theo địa chỉ.'
+            'Giá, hạ tầng, thiết bị và ưu đãi cần được xác nhận lại theo địa chỉ.',
+            'data-catalog-observed="2026-08-18"', 'data-local-catalog-style="v1"'
         )
         for marker in required:
             if marker not in html:
                 raise SystemExit(f'LOCAL QA FAIL: {slug} missing marker: {marker}')
         if text_words(html) < 650:
             raise SystemExit(f'LOCAL QA FAIL: {slug} too thin ({text_words(html)} words)')
-        if re.search(r'\b\d{2,4}(?:[.,]\d{3})+\s*(?:đ|vnđ|vnd|đồng)', html, flags=re.I):
-            raise SystemExit(f'LOCAL QA FAIL: unsupported numeric price claim in {slug}')
-        if re.search(r'\b\d+\s*(?:mbps|gbps)\b', html, flags=re.I):
-            raise SystemExit(f'LOCAL QA FAIL: unsupported numeric speed claim in {slug}')
+
+        non_catalog_html = without_sourced_catalog(html, path)
+        if re.search(r'\b\d{2,4}(?:[.,]\d{3})+\s*(?:đ|vnđ|vnd|đồng)', non_catalog_html, flags=re.I):
+            raise SystemExit(f'LOCAL QA FAIL: unsupported numeric price claim outside sourced catalog in {slug}')
+        if re.search(r'\b\d+(?:[.,]\d+)?\s*(?:mbps|gbps)\b', non_catalog_html, flags=re.I):
+            raise SystemExit(f'LOCAL QA FAIL: unsupported numeric speed claim outside sourced catalog in {slug}')
         if f'{slug}/' not in hub_html:
             raise SystemExit(f'LOCAL QA FAIL: hub missing link to {slug}')
 
@@ -80,7 +94,7 @@ def main() -> int:
         if bad in combined:
             raise SystemExit(f'LOCAL QA FAIL: legacy broken slug leaked: {bad}')
 
-    print('LOCAL QA PASS: 34/34 pages; unique title/H1/canonical; form + contact dock + UI motion + transition present; no unsupported numeric price/speed claims')
+    print('LOCAL QA PASS: 34/34 pages; unique title/H1/canonical; sourced commerce metrics isolated; unsupported local price/speed claims blocked outside catalog')
     return 0
 
 
