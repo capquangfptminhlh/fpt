@@ -9,6 +9,7 @@ APPLE_CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/apple-contac
 MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/motion-system.css?v=20260817-10" data-motion-system-style="true"/>'
 FULL_MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/full-page-motion.css?v=20260817-12" data-full-page-motion-style="true"/>'
 COLOR_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/color-stability.css?v=20260817-1" data-color-stability-style="true"/>'
+MOBILE_STABILITY_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/mobile-stability.css?v=20260817-1" data-mobile-stability-style="true"/>'
 CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/contact-dock.css?v=20260817-11" data-contact-dock-style="true"/>'
 
 TRANSITION_SCRIPT = '<script defer src="/fpt/assets/js/page-transition.js?v=20260817-2" data-page-transition-script="true"></script>'
@@ -23,8 +24,8 @@ def inject(html: str) -> str:
     if '</body>' not in html:
         raise ValueError('missing </body>')
 
-    # Cascade order matters: structural theme -> motion -> color safety -> contact dock.
-    # Contact dock is intentionally last so legacy polish rules cannot recolor/re-size it.
+    # Cascade order matters: structural theme -> motion -> color safety -> mobile safety -> contact dock.
+    # Contact dock stays last so legacy polish/mobile rules cannot recolor or resize it.
     head_assets: list[str] = []
     if 'data-page-transition-style=' not in html:
         head_assets.append(TRANSITION_STYLE)
@@ -38,6 +39,8 @@ def inject(html: str) -> str:
         head_assets.append(FULL_MOTION_STYLE)
     if 'data-color-stability-style=' not in html:
         head_assets.append(COLOR_STYLE)
+    if 'data-mobile-stability-style=' not in html:
+        head_assets.append(MOBILE_STABILITY_STYLE)
     if 'data-contact-dock-style=' not in html:
         head_assets.append(CONTACT_STYLE)
     if head_assets:
