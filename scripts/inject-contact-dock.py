@@ -3,19 +3,33 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-STYLE = '<link rel="stylesheet" href="/fpt/assets/css/contact-dock.css?v=20260817-1" data-contact-dock-style="true"/>'
-SCRIPT = '<script defer src="/fpt/assets/js/contact-dock.js?v=20260817-1" data-contact-dock-script="true"></script>'
+CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/contact-dock.css?v=20260817-1" data-contact-dock-style="true"/>'
+CONTACT_SCRIPT = '<script defer src="/fpt/assets/js/contact-dock.js?v=20260817-1" data-contact-dock-script="true"></script>'
+TRANSITION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/page-transition.css?v=20260817-1" data-page-transition-style="true"/>'
+TRANSITION_SCRIPT = '<script defer src="/fpt/assets/js/page-transition.js?v=20260817-1" data-page-transition-script="true"></script>'
 
 
 def inject(html: str) -> str:
+    if '</head>' not in html:
+        raise ValueError('missing </head>')
+    if '</body>' not in html:
+        raise ValueError('missing </body>')
+
+    head_assets: list[str] = []
     if 'data-contact-dock-style=' not in html:
-        if '</head>' not in html:
-            raise ValueError('missing </head>')
-        html = html.replace('</head>', f'{STYLE}</head>', 1)
+        head_assets.append(CONTACT_STYLE)
+    if 'data-page-transition-style=' not in html:
+        head_assets.append(TRANSITION_STYLE)
+    if head_assets:
+        html = html.replace('</head>', ''.join(head_assets) + '</head>', 1)
+
+    body_assets: list[str] = []
     if 'data-contact-dock-script=' not in html:
-        if '</body>' not in html:
-            raise ValueError('missing </body>')
-        html = html.replace('</body>', f'{SCRIPT}</body>', 1)
+        body_assets.append(CONTACT_SCRIPT)
+    if 'data-page-transition-script=' not in html:
+        body_assets.append(TRANSITION_SCRIPT)
+    if body_assets:
+        html = html.replace('</body>', ''.join(body_assets) + '</body>', 1)
     return html
 
 
@@ -39,7 +53,7 @@ def main() -> None:
             page.write_text(new, encoding='utf-8')
             changed += 1
 
-    print(f'Contact dock injected: {len(pages)} pages ({changed} changed)')
+    print(f'Global UI assets injected: {len(pages)} pages ({changed} changed)')
 
 
 if __name__ == '__main__':
