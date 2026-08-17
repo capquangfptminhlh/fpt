@@ -3,14 +3,14 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/contact-dock.css?v=20260817-4" data-contact-dock-style="true"/>'
-CONTACT_SCRIPT = '<script defer src="/fpt/assets/js/contact-dock.js?v=20260817-3" data-contact-dock-script="true"></script>'
+CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/contact-dock.css?v=20260817-10" data-contact-dock-style="true"/>'
+CONTACT_SCRIPT = '<script defer src="/fpt/assets/js/contact-dock.js?v=20260817-10" data-contact-dock-script="true"></script>'
 TRANSITION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/page-transition.css?v=20260817-1" data-page-transition-style="true"/>'
 TRANSITION_SCRIPT = '<script defer src="/fpt/assets/js/page-transition.js?v=20260817-2" data-page-transition-script="true"></script>'
 APPLE_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/apple-polish.css?v=20260817-2" data-apple-polish-style="true"/>'
 APPLE_CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/apple-contact.css?v=20260817-1" data-apple-contact-style="true"/>'
-MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/motion-system.css?v=20260817-8" data-motion-system-style="true"/>'
-MOTION_SCRIPT = '<script defer src="/fpt/assets/js/motion-system.js?v=20260817-8" data-motion-system-script="true"></script>'
+MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/motion-system.css?v=20260817-10" data-motion-system-style="true"/>'
+MOTION_SCRIPT = '<script defer src="/fpt/assets/js/motion-system.js?v=20260817-10" data-motion-system-script="true"></script>'
 
 
 def inject(html: str) -> str:
