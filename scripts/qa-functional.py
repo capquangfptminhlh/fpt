@@ -13,6 +13,8 @@ REQUIRED_CONTACT = (
     "sitePath('/lien-he/')",
     'data-contact-action="zalo" data-no-transition',
     'data-contact-action="call" data-no-transition',
+    'contact-icon contact-icon-zalo',
+    '<span>Zalo</span>',
 )
 REQUIRED_TRANSITION_JS = (
     "prefers-reduced-motion: reduce",
@@ -129,6 +131,8 @@ def main() -> None:
                 errors.append(f'contact-dock.js missing required action config: {required}')
         if 'target="_blank"' in contact_text:
             errors.append('contact-dock.js must not force Zalo into a new tab')
+        if 'aria-hidden="true">Z</span>' in contact_text:
+            errors.append('contact-dock.js must not use legacy placeholder Z icon')
         for action in ('zalo', 'call', 'register'):
             if f'data-contact-action="{action}"' not in contact_text:
                 errors.append(f'contact-dock.js missing rendered action: {action}')
@@ -193,7 +197,7 @@ def main() -> None:
     print(
         f'FUNCTIONAL QA PASS: pages={len(pages)}, internal_links={checked_links}, '
         f'legacy_redirects={legacy_redirects}, contact_actions=3, direct_contact=ready, '
-        f'lead_form=ready, modem_transition=ready'
+        f'zalo_polish=ready, lead_form=ready, modem_transition=ready'
     )
 
 
