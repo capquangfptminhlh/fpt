@@ -1,0 +1,92 @@
+/* FPT color stability layer — loaded after visual/motion CSS and before contact dock. */
+:root{
+  --brand-bg:#f4f7fb;
+  --brand-surface:#ffffff;
+  --brand-ink:#0b1324;
+  --brand-muted:#64748b;
+  --brand-navy:#071a3d;
+  --brand-navy-2:#0b285f;
+  --brand-blue:#0b72e7;
+  --brand-orange:#f37021;
+  --brand-orange-2:#ff8b3d;
+  --brand-green:#21a35b;
+  --bg:var(--brand-bg);
+  --surface:var(--brand-surface);
+  --text:var(--brand-ink);
+  --muted:var(--brand-muted);
+  --navy:var(--brand-navy);
+  --navy-2:var(--brand-navy-2);
+  --blue:var(--brand-blue);
+  --orange:var(--brand-orange);
+  --orange-2:var(--brand-orange-2);
+  --green:var(--brand-green);
+  --a-bg:var(--brand-bg);
+  --a-surface:var(--brand-surface);
+  --a-ink:var(--brand-ink);
+  --a-muted:var(--brand-muted);
+  --a-navy:var(--brand-navy);
+  --a-navy-2:var(--brand-navy-2);
+  --a-blue:var(--brand-blue);
+  --a-orange:var(--brand-orange);
+  --a-orange-2:var(--brand-orange-2);
+  --a-green:var(--brand-green);
+}
+
+html,body{background:var(--brand-bg);color:var(--brand-ink)}
+
+/* Dark surfaces must own their text colors; global typography must never leak into them. */
+.home-v2 .m-hero,
+.seo-hero,
+.home-v2 .trust-band,
+.home-v2 .final-cta,
+.lead-bar,
+.promo,
+.map-item.main,
+.contact-callout,
+.footer{color:#fff}
+
+.home-v2 .m-hero h1,.home-v2 .m-hero h2,.home-v2 .m-hero h3,.home-v2 .m-hero h4,
+.seo-hero h1,.seo-hero h2,.seo-hero h3,
+.home-v2 .trust-band h1,.home-v2 .trust-band h2,.home-v2 .trust-band h3,
+.home-v2 .final-cta h1,.home-v2 .final-cta h2,.home-v2 .final-cta h3,
+.lead-bar h1,.lead-bar h2,.lead-bar h3,
+.promo h1,.promo h2,.promo h3,
+.map-item.main h1,.map-item.main h2,.map-item.main h3,
+.contact-callout h1,.contact-callout h2,.contact-callout h3,
+.footer h1,.footer h2,.footer h3,.footer h4{color:#fff}
+
+.home-v2 .m-hero p,.home-v2 .m-hero li,
+.seo-hero p,.seo-hero li,
+.home-v2 .trust-band p,.home-v2 .trust-band span,
+.home-v2 .final-cta p,
+.lead-bar p,
+.promo p,.promo li,
+.map-item.main p,.map-item.main small,
+.contact-callout p,
+.footer p,.footer li{color:#c7d6e9}
+
+.footer a{color:#d6e1ef}.footer a:hover,.footer a:focus-visible{color:#fff}
+
+/* Light surfaces stay neutral even when nested inside animated sections. */
+.surface,.content-card,.package,.use-card,.article,.faq,.lead-card,.contact-info,.contact-step,.owner-link,.link-tile,.cluster-index a,.map-item:not(.main){color:var(--brand-ink)}
+.surface p,.content-card p,.package p,.use-card p,.article p,.faq p,.lead-card p,.contact-info p,.contact-step p,.owner-link p,.link-tile span,.map-item:not(.main) small{color:var(--brand-muted)}
+
+/* Preserve source image colors. Motion may reveal/scale images but must not recolor them. */
+.motion-cinematic-media,.motion-cinematic-media:hover{filter:none!important}
+.motion-fiber-canvas{mix-blend-mode:normal!important;opacity:.34!important}
+.motion-glow::before{mix-blend-mode:normal!important}
+
+/* Ambient motion must remain atmospheric, never become a section color wash. */
+.motion-section::before{pointer-events:none!important}
+
+/* Form controls use one readable palette across all page types. */
+input,select,textarea{color:var(--brand-ink)}
+input::placeholder,textarea::placeholder{color:#8a98aa;opacity:1}
+
+@media(max-width:760px){
+  .motion-fiber-canvas{opacity:.2!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .motion-fiber-canvas{display:none!important}
+}
