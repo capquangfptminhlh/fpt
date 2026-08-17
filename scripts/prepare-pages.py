@@ -39,7 +39,7 @@ TEXT_REPLACEMENTS = {
     "Dữ liệu form trong bản demo chưa kết nối CRM.": "",
     "SEO &amp; cấu trúc": "Thông tin bổ sung",
     "SEO & cấu trúc": "Thông tin bổ sung",
-    "Vì sao trang này tách riêng?": "Thông tin bạn nên biết",
+    "Vì sao trang này tách riêng?": "Câu hỏi thường gặp",
     "Trang owner cho transactional intent": "Đăng ký và tư vấn lắp đặt",
     "Trang danh mục &amp; use case": "Thông tin Internet theo nhu cầu",
     "Trang danh mục & use case": "Thông tin Internet theo nhu cầu",
@@ -91,6 +91,16 @@ def remove_internal_content(text: str) -> str:
         '', text, flags=re.I,
     )
 
+    # Remove paragraphs/list items that expose editorial architecture instead of user value.
+    text = re.sub(
+        r'<p>[^<]*(?:URL owner|cannibalization|kiến trúc SEO hub|internal link)[^<]*</p>',
+        '', text, flags=re.I,
+    )
+    text = re.sub(
+        r'<li>[^<]*(?:Trang owner|URL owner|SEO với|SEO intent|intent [“"\']|intent chính)[^<]*</li>',
+        '', text, flags=re.I,
+    )
+
     # Remove structured-data blocks that contain internal governance language.
     def clean_schema(match: re.Match[str]) -> str:
         block = match.group(0)
@@ -107,6 +117,7 @@ def remove_internal_content(text: str) -> str:
     # Any leftover architecture badges are not useful to visitors.
     text = re.sub(r'\b(?:INFORMATIONAL|COMMERCIAL|TRANSACTIONAL|NAVIGATIONAL)\s*·\s*[A-Z-]+\b', '', text)
     text = re.sub(r'\s*Metrics volume/KD/CPC:\s*UNKNOWN\s*', '', text, flags=re.I)
+    text = re.sub(r'<h3>\s*Câu hỏi thường gặp\s*</h3>\s*(?=<div class="faq")', '', text, flags=re.I)
     return text
 
 
@@ -129,6 +140,7 @@ def sanitize_html(text: str) -> str:
 
     # Avoid empty artifacts created by block removal.
     text = re.sub(r'<p>\s*</p>', '', text)
+    text = re.sub(r'<ul>\s*</ul>', '', text)
     text = re.sub(r'\n{3,}', '\n\n', text)
     return text
 
