@@ -53,6 +53,7 @@ jobs:
           python3 scripts/generate-local-pages.py --site _site
           python3 scripts/enrich-local-silos.py --site _site
           python3 scripts/upgrade-local-catalog.py --site _site
+          python3 scripts/expand-local-plan-details.py --site _site
           python3 scripts/fix-local-nav.py --site _site
           python3 scripts/prepare-pages.py --site _site
           python3 scripts/inject-contact-dock.py --site _site
@@ -60,11 +61,12 @@ jobs:
           python3 scripts/qa-local-pages.py --site _site
           python3 scripts/qa-local-silos.py --site _site
           python3 scripts/qa-local-commerce.py --site _site
+          python3 scripts/qa-local-commerce-full.py --site _site
           python3 scripts/qa-local-keywords.py --site _site
           python3 scripts/qa-search-quality.py --site _site
           python3 scripts/qa-functional.py --site _site
           python3 scripts/qa-ui-reset.py --site _site
-          python3 -m py_compile scripts/generate-local-pages.py scripts/enrich-local-silos.py scripts/upgrade-local-catalog.py scripts/fix-local-nav.py scripts/generate-local-keywords.py scripts/qa-local-pages.py scripts/qa-local-silos.py scripts/qa-local-commerce.py scripts/qa-local-keywords.py scripts/qa-search-quality.py scripts/sync-sitemap.py
+          python3 -m py_compile scripts/generate-local-pages.py scripts/enrich-local-silos.py scripts/upgrade-local-catalog.py scripts/expand-local-plan-details.py scripts/fix-local-nav.py scripts/generate-local-keywords.py scripts/qa-local-pages.py scripts/qa-local-silos.py scripts/qa-local-commerce.py scripts/qa-local-commerce-full.py scripts/qa-local-keywords.py scripts/qa-search-quality.py scripts/sync-sitemap.py
           python3 - <<'PY'
           import re
           from pathlib import Path
