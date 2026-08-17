@@ -11,12 +11,16 @@ EXPECTED = [
     'ca-mau','an-giang'
 ]
 
+BASE_COUNT = 26
+CURRENT_EXTRA_COUNT = 30
+TOTAL_COUNT = BASE_COUNT + CURRENT_EXTRA_COUNT
+
 REQUIRED = (
     'data-full-plan-details="true"','data-local-catalog-full-style="v2"',
     'local-plan-full-head','local-plan-full-metrics','local-plan-full-content',
     'local-plan-contract-grid','local-plan-benefit-list','local-plan-register',
     'Giá cước','VAT & chi phí khác','Thiết bị thực tế','Khuyến mãi','Hạ tầng','Ngày đối chiếu',
-    'Nguồn sản phẩm:','data-select-local-plan='
+    'Nguồn sản phẩm:','data-select-local-plan=','data-current-offerings="30"'
 )
 
 
@@ -37,18 +41,19 @@ def main() -> int:
         for marker in REQUIRED:
             if marker not in html:
                 raise SystemExit(f'LOCAL FULL PLAN QA FAIL: {slug} missing {marker}')
-        if html.count('class="local-plan-card local-plan-card-full"') != 26:
-            raise SystemExit(f'LOCAL FULL PLAN QA FAIL: {slug} does not have 26 full package blocks')
-        if html.count('local-plan-contract-grid') != 26:
-            raise SystemExit(f'LOCAL FULL PLAN QA FAIL: {slug} missing contract/detail blocks')
-        if html.count('local-plan-full-metrics') != 26:
-            raise SystemExit(f'LOCAL FULL PLAN QA FAIL: {slug} missing metrics blocks')
-        if html.count('local-plan-benefit-list') != 26:
-            raise SystemExit(f'LOCAL FULL PLAN QA FAIL: {slug} missing benefit blocks')
-        if html.count('data-select-local-plan=') != 26:
-            raise SystemExit(f'LOCAL FULL PLAN QA FAIL: {slug} registration CTA count != 26')
-        total += 26
-    print(f'LOCAL FULL PLAN QA PASS: 34/34 provinces × 26 full package blocks = {total}; specs + benefits + conditions + registration flow present')
+        if html.count('class="local-plan-card local-plan-card-full"') != BASE_COUNT:
+            raise SystemExit(f'LOCAL FULL PLAN QA FAIL: {slug} base full package blocks != {BASE_COUNT}')
+        if html.count('data-local-current-plan-card') != CURRENT_EXTRA_COUNT:
+            raise SystemExit(f'LOCAL FULL PLAN QA FAIL: {slug} current extra blocks != {CURRENT_EXTRA_COUNT}')
+        for marker in ('local-plan-contract-grid','local-plan-full-metrics','local-plan-benefit-list','local-plan-register'):
+            if html.count(marker) != TOTAL_COUNT:
+                raise SystemExit(f'LOCAL FULL PLAN QA FAIL: {slug} {marker} count != {TOTAL_COUNT}')
+        if html.count('data-select-local-plan=') != BASE_COUNT:
+            raise SystemExit(f'LOCAL FULL PLAN QA FAIL: {slug} base registration CTA count != {BASE_COUNT}')
+        if html.count('data-select-current-plan=') != CURRENT_EXTRA_COUNT:
+            raise SystemExit(f'LOCAL FULL PLAN QA FAIL: {slug} current registration CTA count != {CURRENT_EXTRA_COUNT}')
+        total += TOTAL_COUNT
+    print(f'LOCAL FULL PLAN QA PASS: 34/34 provinces × {TOTAL_COUNT} full package blocks = {total}; specs + benefits + conditions + registration flow present')
     return 0
 
 
