@@ -1,0 +1,64 @@
+name: QA Local Full Final
+
+on:
+  push:
+    branches:
+      - feat/local-seo-full-final
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build and validate full local SEO
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a ./ _site/ \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='_site/' \
+            --exclude='node_modules/' \
+            --exclude='/server.js' \
+            --exclude='/package.json' \
+            --exclude='/package-lock.json' \
+            --exclude='/README.md' \
+            --exclude='/QA_REPORT.md' \
+            --exclude='/seo/' \
+            --exclude='/data/' \
+            --exclude='/scripts/'
+
+          python3 scripts/generate-local-keywords.py
+          python3 scripts/generate-local-pages.py --site _site
+          python3 scripts/enrich-local-silos.py --site _site
+          python3 scripts/prepare-pages.py --site _site
+          python3 scripts/inject-contact-dock.py --site _site
+          python3 scripts/sync-sitemap.py --site _site --origin https://capquangfptminhlh.github.io/fpt
+          python3 scripts/qa-local-pages.py --site _site
+          python3 scripts/qa-local-silos.py --site _site
+          python3 scripts/qa-local-keywords.py --site _site
+          python3 scripts/qa-functional.py --site _site
+          python3 scripts/qa-ui-reset.py --site _site
+          python3 -m py_compile scripts/generate-local-pages.py scripts/enrich-local-silos.py scripts/generate-local-keywords.py scripts/qa-local-pages.py scripts/qa-local-silos.py scripts/qa-local-keywords.py scripts/sync-sitemap.py
+          python3 - <<'PY'
+          from pathlib import Path
+          sitemap = Path('_site/sitemap.xml').read_text(encoding='utf-8')
+          total = sitemap.count('<url>')
+          html_total = len(list(Path('_site').rglob('*.html')))
+          print(f'FINAL HTML COUNT: {html_total}')
+          print(f'FINAL SITEMAP URL COUNT: {total}')
+          if '/fpt/support/' in sitemap:
+              raise SystemExit('Legacy noindex /support/ must not be in sitemap')
+          PY
+
+          node --check _site/assets/js/main.js
+          node --check _site/assets/js/home-v2.js
+          node --check _site/assets/js/lead-form.js
+          node --check _site/assets/js/contact-dock.js
+          node --check _site/assets/js/page-transition.js
+          node --check _site/assets/js/ui-motion.js
