@@ -21,6 +21,17 @@ def capture(pattern: str, html: str, label: str, path: Path) -> str:
     return re.sub(r'\s+', ' ', unescape(match.group(1))).strip()
 
 
+def robots_content(html: str, path: Path) -> str:
+    match = re.search(
+        r'<meta\b(?=[^>]*\bname=["\']robots["\'])(?=[^>]*\bcontent=["\']([^"\']+)["\'])[^>]*>',
+        html,
+        flags=re.I | re.S,
+    )
+    if not match:
+        raise SystemExit(f'LOCAL SILO QA FAIL: missing robots meta: {path}')
+    return match.group(1).lower()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--site', required=True)
@@ -28,11 +39,16 @@ def main() -> int:
     site = Path(args.site)
     root = site / 'khu-vuc'
     hub = root / 'index.html'
+    sitemap_path = site / 'sitemap.xml'
     if not hub.exists():
         raise SystemExit('LOCAL SILO QA FAIL: missing khu-vuc hub')
-    hub_html = hub.read_text(encoding='utf-8')
+    if not sitemap_path.exists():
+        raise SystemExit('LOCAL SILO QA FAIL: missing sitemap.xml')
 
+    hub_html = hub.read_text(encoding='utf-8')
+    sitemap = sitemap_path.read_text(encoding='utf-8')
     news_titles, news_h1s, news_canonicals = set(), set(), set()
+
     for slug in EXPECTED:
         landing = root / slug / 'index.html'
         news = root / slug / 'tin-tuc' / 'index.html'
@@ -42,6 +58,8 @@ def main() -> int:
             raise SystemExit(f'LOCAL SILO QA FAIL: missing news hub {slug}')
 
         landing_html = landing.read_text(encoding='utf-8')
+        if 'noindex' in robots_content(landing_html, landing):
+            raise SystemExit(f'LOCAL SILO QA FAIL: local landing must remain indexable: {slug}')
         if 'id="goi-dich-vu-dia-phuong"' not in landing_html:
             raise SystemExit(f'LOCAL SILO QA FAIL: {slug} missing service catalog')
         if landing_html.count('data-local-product="internet"') != 8:
@@ -69,10 +87,21 @@ def main() -> int:
         canonical = capture(r'<link\b[^>]*rel=["\']canonical["\'][^>]*href=["\']([^"\']+)', news_html, 'news canonical', news)
         if f'/fpt/khu-vuc/{slug}/tin-tuc/' not in canonical:
             raise SystemExit(f'LOCAL SILO QA FAIL: wrong news canonical for {slug}: {canonical}')
-        news_titles.add(title); news_h1s.add(h1); news_canonicals.add(canonical)
+
+        robots = robots_content(news_html, news)
+        if 'noindex' not in robots or 'follow' not in robots:
+            raise SystemExit(f'LOCAL SILO QA FAIL: empty news hub must be noindex,follow: {slug}')
+        if 'data-local-news-status="empty"' not in news_html:
+            raise SystemExit(f'LOCAL SILO QA FAIL: {slug} missing empty-news status marker')
+        if canonical in sitemap:
+            raise SystemExit(f'LOCAL SILO QA FAIL: noindex news hub leaked into sitemap: {canonical}')
+
+        news_titles.add(title)
+        news_h1s.add(h1)
+        news_canonicals.add(canonical)
 
         for marker in (
-            'Khả năng triển khai, thiết bị và ưu đãi phụ thuộc hạ tầng thực tế.',
+            'Tin địa phương chỉ xuất bản khi có nguồn.',
             'data-contact-dock-script=', 'data-ui-reset-style=', 'data-ui-motion-style=', 'data-page-transition-script=',
             '../../../fpt-play/', '../../../camera-fpt/', '../#goi-dich-vu-dia-phuong'
         ):
@@ -104,7 +133,7 @@ def main() -> int:
         raise SystemExit(f'LOCAL SILO QA FAIL: suspicious nav page count {nav_pages}')
 
     print(
-        f'LOCAL SILO QA PASS: 34/34 service catalogs, 34/34 news hubs, '
+        f'LOCAL SILO QA PASS: 34/34 service catalogs, 34/34 noindex news hubs, '
         f'8 internet + 5 FPT Play/combo + 3 camera links per province; Khu vực nav pages={nav_pages}'
     )
     return 0
