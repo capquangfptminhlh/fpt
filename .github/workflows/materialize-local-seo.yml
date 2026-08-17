@@ -1,0 +1,97 @@
+name: Materialize Local SEO
+
+on:
+  push:
+    branches:
+      - feat/local-seo-34-full
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Generate full local source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('scripts/generate-local-pages.py')
+          text = p.read_text(encoding='utf-8')
+          replacements = {
+              'một URL canonical': 'một trang chính',
+              'làm owner cho nhóm truy vấn local': 'làm trang chính cho nhóm tra cứu theo khu vực',
+              'một URL owner hiện hành': 'một trang chính theo đơn vị hiện hành',
+              'Mỗi URL là owner': 'Mỗi URL là trang chính',
+              'không tạo doorway page theo tên cũ': 'không tạo trang trùng lặp theo tên cũ',
+          }
+          for old, new in replacements.items():
+              text = text.replace(old, new)
+          p.write_text(text, encoding='utf-8')
+
+          sitemap = Path('sitemap.xml')
+          sitemap.write_text(
+              sitemap.read_text(encoding='utf-8').replace(
+                  'https://your-domain.example',
+                  'https://capquangfptminhlh.github.io/fpt'
+              ),
+              encoding='utf-8'
+          )
+          PY
+
+          python3 scripts/generate-local-keywords.py
+          python3 scripts/generate-local-pages.py --site .
+          python3 -m py_compile scripts/generate-local-pages.py scripts/generate-local-keywords.py scripts/qa-local.py
+
+      - name: Validate production-shaped artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a ./ _site/ \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='_site/' \
+            --exclude='node_modules/' \
+            --exclude='/server.js' \
+            --exclude='/package.json' \
+            --exclude='/package-lock.json' \
+            --exclude='/README.md' \
+            --exclude='/QA_REPORT.md' \
+            --exclude='/seo/' \
+            --exclude='/data/' \
+            --exclude='/scripts/'
+          python3 scripts/generate-local-keywords.py
+          python3 scripts/prepare-pages.py --site _site
+          python3 scripts/generate-local-pages.py --site _site
+          python3 scripts/inject-contact-dock.py --site _site
+          python3 scripts/qa-functional.py --site _site
+          python3 scripts/qa-ui-reset.py --site _site
+          python3 scripts/qa-local.py --site _site
+          node --check _site/assets/js/main.js
+          node --check _site/assets/js/home-v2.js
+          node --check _site/assets/js/lead-form.js
+          node --check _site/assets/js/contact-dock.js
+          node --check _site/assets/js/page-transition.js
+          node --check _site/assets/js/ui-motion.js
+
+      - name: Commit materialized local SEO
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- . ':!_site'; then
+            echo 'No materialized changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/generate-local-pages.py sitemap.xml khu-vuc seo/local-keyword-map.csv
+          git commit -m '[local-materialized] feat(local): materialize 34 provinces and 3800 keywords'
+          git push origin HEAD:feat/local-seo-34-full
