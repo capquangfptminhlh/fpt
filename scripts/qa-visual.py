@@ -65,12 +65,15 @@ def main() -> None:
 
     for token in (
         '.contact-zalo{background:linear-gradient(',
+        '.contact-call{background:linear-gradient(',
+        '.contact-register{background:linear-gradient(',
         '.contact-icon-zalo{',
-        '.contact-icon-zalo::after{',
-        'color:#0068ff',
+        '.contact-icon-call{',
+        '.contact-icon-register{',
+        '.contact-icon svg{',
     ):
         if token not in dock_text:
-            errors.append(f'contact-dock.css missing polished Zalo treatment: {token}')
+            errors.append(f'contact-dock.css missing premium contact treatment: {token}')
 
     forbidden_css = ('@import url(', 'fonts.googleapis.com', 'use.typekit.net')
     combined = (text + '\n' + contact_text + '\n' + dock_text).lower()
@@ -113,7 +116,7 @@ def main() -> None:
     print(
         f'VISUAL QA PASS: pages={len(pages)}, apple_polish={tagged}, '
         f'apple_contact={contact_tagged}, mobile_dock_v4={dock_v4}, '
-        f'zalo_polish=ready, external_fonts=0, responsive=ready'
+        f'premium_contact_trio=ready, external_fonts=0, responsive=ready'
     )
 
 
