@@ -1,7 +1,7 @@
 # FULL FPT SEO WEBSITE — QA REPORT
 
 Date: 2026-08-17
-Status: **PASS — full local corpus + keyword map validated on production-shaped artifact**
+Status: **PASS — full local corpus + keyword map validated on latest main pipeline**
 
 ## Coverage
 - HTML pages: 141
@@ -17,7 +17,9 @@ Status: **PASS — full local corpus + keyword map validated on production-shape
 - Existing non-local keyword/query mapping baseline: 1,805 rows
 - Existing AEO question baseline: 277
 - SEO-specific unique WebP images: 118
-- Internal links checked: 4,285
+- Internal links checked: 4,412
+- Pages checked for visible Khu vực navigation: 140
+- Pages changed by final Khu vực nav normalization: 127
 
 ## Local page gates
 - Generated province landings: 34/34
@@ -36,7 +38,7 @@ Status: **PASS — full local corpus + keyword map validated on production-shape
 - Unique news title/H1/canonical: PASS
 - News source/disclosure markers after production sanitization: PASS
 - Unsupported numeric local price/speed claims in news hubs: 0
-- Pages carrying Khu vực navigation: 140
+- Khu vực navigation present across all 140 navigable pages checked by the silo gate.
 
 ## Keyword gates
 - Local keyword rows: 3,800/3,800
@@ -49,7 +51,7 @@ Status: **PASS — full local corpus + keyword map validated on production-shape
 
 ## Site-wide gates
 - HTML/assets sanitizer: PASS — 141 HTML, 118 SEO images, 0 forbidden internal phrases, 0 missing local assets
-- Functional QA: PASS — 4,285 internal links, 1 legacy redirect, contact actions=3, lead form ready, modem transition ready
+- Functional QA: PASS — 4,412 internal links, 1 legacy redirect, contact actions=3, lead form ready, modem transition ready
 - UI reset QA: PASS — 141/141 ordered pages, legacy runtime layers=0, mobile content visible, nav isolated, dock contained, motion progressive
 - Sitemap: 140 indexable HTML URLs; noindex excluded=1
 
@@ -58,17 +60,18 @@ Administrative context is grounded in current Government publications for the 34
 
 Former province names and common aliases are retained for search coverage but route to the relevant current province/city page. Local news beyond the evidence-safe hub is only appropriate when there is sufficiently strong locality/time-specific sourcing.
 
-## Latest full QA evidence
-GitHub Actions run `32042314191` reported:
+## Latest final-merge QA evidence
+GitHub Actions run `32042599336` reported:
 - `LOCAL KEYWORDS GENERATED: 3800 rows`
 - `Local pages generated: 34 + index`
 - `Local silos enriched: 34 catalogs + 34 news hubs`
+- `Khu vực nav fixed: checked=140, changed=127`
 - `QA PASS: 141 HTML pages, 118 SEO images, 0 forbidden internal phrases, 0 missing local assets`
 - `Sitemap synced: 140 indexable HTML URLs; noindex excluded=1`
 - `LOCAL QA PASS: 34/34 pages`
 - `LOCAL SILO QA PASS: 34/34 service catalogs, 34/34 news hubs, 8 internet + 5 FPT Play/combo + 3 camera links per province`
 - `LOCAL KEYWORD QA PASS: current_units=34, predecessor_names=63, aliases=76, patterns=50, keyword_rows=3800, canonical_urls=34`
-- `FUNCTIONAL QA PASS: pages=141, internal_links=4285, legacy_redirects=1, contact_actions=3, lead_form=ready, modem_transition=ready`
+- `FUNCTIONAL QA PASS: pages=141, internal_links=4412, legacy_redirects=1, contact_actions=3, lead_form=ready, modem_transition=ready`
 - `UI RESET QA PASS: pages=141, legacy_runtime_layers=0`
 - `FINAL HTML COUNT: 141`
 - `FINAL SITEMAP URL COUNT: 140`
