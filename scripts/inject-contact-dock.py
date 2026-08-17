@@ -11,6 +11,7 @@ FULL_MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/full-page-moti
 COLOR_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/color-stability.css?v=20260817-1" data-color-stability-style="true"/>'
 CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/contact-dock.css?v=20260817-12" data-contact-dock-style="true"/>'
 MOBILE_STABILITY_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/mobile-stability.css?v=20260817-2" data-mobile-stability-style="true"/>'
+MOBILE_CONTACT_FINAL_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/mobile-contact-final.css?v=20260817-1" data-mobile-contact-final-style="true"/>'
 
 TRANSITION_SCRIPT = '<script defer src="/fpt/assets/js/page-transition.js?v=20260817-2" data-page-transition-script="true"></script>'
 MOTION_SCRIPT = '<script defer src="/fpt/assets/js/motion-system.js?v=20260817-10" data-motion-system-script="true"></script>'
@@ -24,7 +25,7 @@ def inject(html: str) -> str:
     if '</body>' not in html:
         raise ValueError('missing </body>')
 
-    # Final cascade: structural theme -> motion -> color safety -> scoped contact dock -> mobile authority.
+    # Final cascade: theme -> motion -> color -> scoped dock -> mobile authority -> screenshot-driven safety.
     head_assets: list[str] = []
     if 'data-page-transition-style=' not in html: head_assets.append(TRANSITION_STYLE)
     if 'data-apple-polish-style=' not in html: head_assets.append(APPLE_STYLE)
@@ -34,6 +35,7 @@ def inject(html: str) -> str:
     if 'data-color-stability-style=' not in html: head_assets.append(COLOR_STYLE)
     if 'data-contact-dock-style=' not in html: head_assets.append(CONTACT_STYLE)
     if 'data-mobile-stability-style=' not in html: head_assets.append(MOBILE_STABILITY_STYLE)
+    if 'data-mobile-contact-final-style=' not in html: head_assets.append(MOBILE_CONTACT_FINAL_STYLE)
     if head_assets:
         html = html.replace('</head>', ''.join(head_assets) + '</head>', 1)
 
