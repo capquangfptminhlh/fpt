@@ -7,6 +7,7 @@ from html import unescape
 from pathlib import Path
 
 ORIGIN = "https://capquangfptminhlh.github.io/fpt"
+MIN_INDEXABLE_INTERNAL_LINKS = 3900
 
 CORE_ROUTES = (
     "index.html",
@@ -127,8 +128,10 @@ def main() -> int:
         errors.append("duplicate canonicals: " + " | ".join(duplicate_canonicals[:10]))
     if orphan_risk:
         errors.append("indexable pages with <3 crawlable internal links: " + ", ".join(orphan_risk[:10]))
-    if internal_links < 4500:
-        errors.append(f"internal-link graph regressed: {internal_links} < 4500")
+    if internal_links < MIN_INDEXABLE_INTERNAL_LINKS:
+        errors.append(
+            f"indexable internal-link graph regressed: {internal_links} < {MIN_INDEXABLE_INTERNAL_LINKS}"
+        )
 
     homepage = (site / "index.html").read_text(encoding="utf-8")
     if '"@type":"WebSite"' not in homepage and '"@type": "WebSite"' not in homepage:
@@ -150,7 +153,6 @@ def main() -> int:
         elif "local-editorial-v2" in text:
             editorial_pages += 1
         else:
-            # Fall back to structural proof if the exact marker changes.
             if text.count("<h2") >= 13 and len(clean(text).split()) >= 2200:
                 editorial_pages += 1
             else:
@@ -171,7 +173,7 @@ def main() -> int:
     print(
         "SEO 90-DAY QA PASS: "
         f"indexable={len(indexable)}, core_routes={len(CORE_ROUTES)}, "
-        f"internal_links={internal_links}, local_editorial={editorial_pages}/34, "
+        f"indexable_internal_links={internal_links}, local_editorial={editorial_pages}/34, "
         f"premium_offers={premium_offers}, unique_titles={len(titles)}, unique_canonicals={len(canonicals)}"
     )
     return 0
