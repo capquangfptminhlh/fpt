@@ -1,0 +1,51 @@
+pattern,intent,cluster
+lắp mạng fpt {loc},transactional,INSTALL
+lắp mạng fpt tại {loc},transactional,INSTALL
+lắp mạng fpt ở {loc},transactional,INSTALL
+đăng ký fpt {loc},transactional,INSTALL
+đăng ký mạng fpt {loc},transactional,INSTALL
+đăng ký internet fpt {loc},transactional,INSTALL
+tư vấn lắp mạng fpt {loc},transactional,INSTALL
+thủ tục lắp mạng fpt {loc},informational,INSTALL
+thời gian lắp mạng fpt {loc},informational,INSTALL
+kiểm tra hạ tầng fpt {loc},transactional,AVAILABILITY
+kiểm tra mạng fpt tại {loc},transactional,AVAILABILITY
+fpt có lắp ở {loc} không,informational,AVAILABILITY
+internet fpt {loc},commercial,INTERNET
+internet fpt tại {loc},commercial,INTERNET
+mạng fpt {loc},commercial,INTERNET
+mạng internet fpt {loc},commercial,INTERNET
+cáp quang fpt {loc},commercial,FTTH
+internet cáp quang fpt {loc},commercial,FTTH
+wifi fpt {loc},commercial,WIFI
+lắp wifi fpt {loc},transactional,WIFI
+modem wifi fpt {loc},commercial,WIFI
+router wifi fpt {loc},commercial,WIFI
+mesh wifi fpt {loc},commercial,WIFI
+wifi 6 fpt {loc},commercial,WIFI
+wifi 7 fpt {loc},commercial,WIFI
+xgs pon fpt {loc},commercial,TECH
+gói cước fpt {loc},commercial,PACKAGES
+gói internet fpt {loc},commercial,PACKAGES
+bảng giá fpt {loc},commercial,PRICE
+giá internet fpt {loc},commercial,PRICE
+giá lắp mạng fpt {loc},commercial,PRICE
+khuyến mãi fpt {loc},commercial,PROMO
+combo fpt {loc},commercial,COMBO
+combo internet truyền hình fpt {loc},commercial,COMBO
+fpt play {loc},commercial,FPT_PLAY
+camera fpt {loc},commercial,CAMERA
+camera an ninh fpt {loc},commercial,CAMERA
+f game fpt {loc},commercial,GAMING
+speedx fpt {loc},commercial,SPEEDX
+mạng fpt cho gia đình {loc},commercial,USE_CASE
+mạng fpt cho game {loc},commercial,USE_CASE
+mạng fpt cho văn phòng {loc},commercial,USE_CASE
+mạng fpt nhà nhiều tầng {loc},commercial,USE_CASE
+mạng fpt cho cửa hàng {loc},commercial,USE_CASE
+mạng fpt cho quán cafe {loc},commercial,USE_CASE
+tổng đài fpt {loc},navigational,SUPPORT
+hỗ trợ fpt {loc},navigational,SUPPORT
+sửa mạng fpt {loc},informational,SUPPORT
+mạng fpt chậm {loc},informational,SUPPORT
+đổi mật khẩu wifi fpt {loc},informational,SUPPORT
