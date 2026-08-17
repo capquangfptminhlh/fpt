@@ -58,6 +58,19 @@ jobs:
             sed -i 's#href="/#href="/fpt/#g; s#src="/#src="/fpt/#g' "$file"
           done < <(find _site -type f -name '*.html' -print0)
 
+          # Preload the dedicated mobile design layer in every HTML file so
+          # phone users do not see a flash of the older stacked layout.
+          python3 - <<'PY'
+          from pathlib import Path
+
+          tag = '<link rel="stylesheet" href="/fpt/assets/css/mobile-v3.css?v=20260817-3" data-mobile-v3="true"/>'
+          for file in Path('_site').rglob('*.html'):
+              text = file.read_text(encoding='utf-8')
+              if 'data-mobile-v3=' not in text and '</head>' in text:
+                  text = text.replace('</head>', f'{tag}</head>', 1)
+                  file.write_text(text, encoding='utf-8')
+          PY
+
           printf 'User-agent: *\nAllow: /fpt/\nSitemap: https://capquangfptminhlh.github.io/fpt/sitemap.xml\n' > _site/robots.txt
           touch _site/.nojekyll
 
