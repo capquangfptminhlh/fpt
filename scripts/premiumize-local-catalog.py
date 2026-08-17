@@ -103,6 +103,10 @@ def render_card(card: str, location: str, index: int) -> str:
     front_html = "".join(f'<li><span aria-hidden="true">✓</span>{escape(item)}</li>' for item in front_items)
     all_html = "".join(f'<li><span aria-hidden="true">✓</span>{escape(item)}</li>' for item in all_items)
     select_attr = "data-select-current-plan" if "data-current-plan-id=" in card else "data-select-local-plan"
+    internal_detail = capture(r'<a class="btn btn-secondary" href="([^"]+)">Xem trang gói gốc</a>', card, "")
+    detail_link = ""
+    if internal_detail.startswith(("../", "./")) and "fpt.vn" not in internal_detail.lower():
+        detail_link = f'<a class="premium-plan-more" href="{escape(internal_detail)}">Xem trang chi tiết gói <span aria-hidden="true">→</span></a>'
 
     return f'''<article class="premium-plan-card {style}{featured}" data-premium-plan-card data-premium-plan-id="{escape(plan_id)}" data-premium-plan-name="{escape(name)}">
 <div class="premium-plan-orb" aria-hidden="true">{escape(icon)}</div>
@@ -110,7 +114,7 @@ def render_card(card: str, location: str, index: int) -> str:
 <div class="premium-plan-speed"><div><span class="premium-metric-label">Download</span><strong><i aria-hidden="true">↓</i>{escape(download)}</strong></div><span class="premium-speed-divider" aria-hidden="true"></span><div><span class="premium-metric-label">Upload</span><strong><i aria-hidden="true">↑</i>{escape(upload)}</strong></div></div>
 <ul class="premium-plan-benefits">{front_html}</ul>
 <div class="premium-plan-actions"><button type="button" class="premium-btn premium-btn-secondary" data-premium-plan-toggle aria-expanded="false" aria-controls="{escape(detail_id)}">Xem chi tiết</button><a class="premium-btn premium-btn-primary" href="#dang-ky" {select_attr}="{escape(name)}" data-premium-select-plan="{escape(name)}">Đăng ký ngay <span aria-hidden="true">→</span></a></div>
-<div class="premium-plan-drawer" id="{escape(detail_id)}" hidden><div class="premium-plan-drawer-grid"><div><span class="premium-drawer-label">Thiết bị</span><strong>{escape(device)}</strong></div><div><span class="premium-drawer-label">Phù hợp</span><strong>{escape(fit)}</strong></div></div><h4>Quyền lợi nổi bật</h4><ul>{all_html}</ul><div class="premium-plan-notice"><strong>Kiểm tra theo địa chỉ</strong><span>Giá, thiết bị, hạ tầng và ưu đãi thực tế được xác nhận trước khi đăng ký.</span></div></div>
+<div class="premium-plan-drawer" id="{escape(detail_id)}" hidden><div class="premium-plan-drawer-grid"><div><span class="premium-drawer-label">Thiết bị</span><strong>{escape(device)}</strong></div><div><span class="premium-drawer-label">Phù hợp</span><strong>{escape(fit)}</strong></div></div><h4>Quyền lợi nổi bật</h4><ul>{all_html}</ul><div class="premium-plan-notice"><strong>Kiểm tra theo địa chỉ</strong><span>Giá, thiết bị, hạ tầng và ưu đãi thực tế được xác nhận trước khi đăng ký.</span></div>{detail_link}</div>
 </article>'''
 
 
@@ -170,7 +174,7 @@ def main() -> int:
         raise SystemExit(f"PREMIUM CATALOG BUILD FAIL: expected 34 province pages, got {len(pages)}")
     for page in pages:
         premiumize(page)
-    print('PREMIUM CATALOG BUILT: 34/34 provinces × 56 premium package cards = 1904; legacy rich cards replaced; visible source links removed')
+    print('PREMIUM CATALOG BUILT: 34/34 provinces × 56 premium package cards = 1904; legacy rich cards replaced; visible source links removed; 26 internal package detail links/province preserved')
     return 0
 
 
