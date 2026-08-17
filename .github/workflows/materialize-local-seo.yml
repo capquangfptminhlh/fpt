@@ -75,6 +75,16 @@ jobs:
           python3 scripts/qa-functional.py --site _site
           python3 scripts/qa-ui-reset.py --site _site
           python3 scripts/qa-local.py --site _site
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('_site/sitemap.xml').read_text(encoding='utf-8')
+          total = text.count('<url><loc>')
+          print(f'SITEMAP URL COUNT: {total}')
+          if total != 106:
+              raise SystemExit(f'Expected 106 indexable sitemap URLs, got {total}')
+          if '/fpt/support/' in text:
+              raise SystemExit('Legacy noindex /support/ must not be in sitemap')
+          PY
           node --check _site/assets/js/main.js
           node --check _site/assets/js/home-v2.js
           node --check _site/assets/js/lead-form.js
@@ -86,7 +96,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- . ':!_site'; then
+          if ! git status --porcelain -- scripts/generate-local-pages.py sitemap.xml khu-vuc seo/local-keyword-map.csv | grep -q .; then
             echo 'No materialized changes to commit.'
             exit 0
           fi
