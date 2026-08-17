@@ -9,8 +9,8 @@ from urllib.parse import urlsplit
 SITE_BASE = '/fpt'
 REQUIRED_CONTACT = (
     'https://zalo.me/fpttelecom',
-    'tel:19006600',
-    '/fpt/lien-he/',
+    "phone: '19006600'",
+    "sitePath('/lien-he/')",
 )
 
 
@@ -55,6 +55,11 @@ def local_target(site: Path, html_file: Path, href: str) -> Path | None:
     return target
 
 
+def is_legacy_redirect(text: str) -> bool:
+    low = text.lower()
+    return 'name="robots" content="noindex,follow"' in low and 'http-equiv="refresh"' in low
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--site', required=True)
@@ -63,6 +68,7 @@ def main() -> None:
     pages = sorted(site.rglob('*.html'))
     errors: list[str] = []
     checked_links = 0
+    legacy_redirects = 0
 
     if len(pages) < 70:
         errors.append(f'Expected >=70 HTML pages, found {len(pages)}')
@@ -72,8 +78,11 @@ def main() -> None:
         parsed = PageParser()
         parsed.feed(text)
         rel = page.relative_to(site)
+        legacy = is_legacy_redirect(text)
+        if legacy:
+            legacy_redirects += 1
 
-        if 'assets/js/main.js' not in text:
+        if not legacy and 'assets/js/main.js' not in text:
             errors.append(f'{rel}: missing main.js')
         if 'data-contact-dock-style=' not in text:
             errors.append(f'{rel}: missing contact dock stylesheet')
@@ -102,7 +111,10 @@ def main() -> None:
         contact_text = contact_js.read_text(encoding='utf-8')
         for required in REQUIRED_CONTACT:
             if required not in contact_text:
-                errors.append(f'contact-dock.js missing required action: {required}')
+                errors.append(f'contact-dock.js missing required action config: {required}')
+        for action in ('zalo', 'call', 'register'):
+            if f'data-contact-action="{action}"' not in contact_text:
+                errors.append(f'contact-dock.js missing rendered action: {action}')
 
     lead_page = site / 'lien-he/index.html'
     lead_js = site / 'assets/js/lead-form.js'
@@ -133,7 +145,10 @@ def main() -> None:
             print(f'- ... and {len(errors) - 80} more')
         raise SystemExit(1)
 
-    print(f'FUNCTIONAL QA PASS: pages={len(pages)}, internal_links={checked_links}, contact_actions=3, lead_form=ready')
+    print(
+        f'FUNCTIONAL QA PASS: pages={len(pages)}, internal_links={checked_links}, '
+        f'legacy_redirects={legacy_redirects}, contact_actions=3, lead_form=ready'
+    )
 
 
 if __name__ == '__main__':
