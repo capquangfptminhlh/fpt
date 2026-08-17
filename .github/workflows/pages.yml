@@ -59,20 +59,48 @@ jobs:
           python3 scripts/qa-local-pages.py --site _site
           python3 scripts/qa-local-silos.py --site _site
           python3 scripts/qa-local-keywords.py --site _site
+          python3 scripts/qa-search-quality.py --site _site
           python3 scripts/qa-functional.py --site _site
           python3 scripts/qa-ui-reset.py --site _site
-          python3 -m py_compile scripts/generate-local-pages.py scripts/enrich-local-silos.py scripts/fix-local-nav.py scripts/generate-local-keywords.py scripts/qa-local-pages.py scripts/qa-local-silos.py scripts/qa-local-keywords.py scripts/sync-sitemap.py
+          python3 -m py_compile scripts/generate-local-pages.py scripts/enrich-local-silos.py scripts/fix-local-nav.py scripts/generate-local-keywords.py scripts/qa-local-pages.py scripts/qa-local-silos.py scripts/qa-local-keywords.py scripts/qa-search-quality.py scripts/sync-sitemap.py
           python3 - <<'PY'
+          import re
           from pathlib import Path
-          html_total = len(list(Path('_site').rglob('*.html')))
+
+          html_files = list(Path('_site').rglob('*.html'))
+          html_total = len(html_files)
+          noindex_re = re.compile(
+              r'<meta\b(?=[^>]*\bname=["\']robots["\'])(?=[^>]*\bcontent=["\'][^"\']*\bnoindex\b)[^>]*>',
+              flags=re.I,
+          )
+          noindex_total = sum(
+              1 for path in html_files
+              if noindex_re.search(path.read_text(encoding='utf-8'))
+          )
+          indexable_total = html_total - noindex_total
           sitemap = Path('_site/sitemap.xml').read_text(encoding='utf-8')
           sitemap_total = sitemap.count('<url>')
+          local_news_noindex = sum(
+              1 for path in html_files
+              if '/khu-vuc/' in ('/' + path.relative_to('_site').as_posix())
+              and '/tin-tuc/index.html' in ('/' + path.relative_to('_site').as_posix())
+              and noindex_re.search(path.read_text(encoding='utf-8'))
+          )
+
           print(f'FINAL HTML COUNT: {html_total}')
+          print(f'FINAL INDEXABLE HTML COUNT: {indexable_total}')
+          print(f'FINAL NOINDEX HTML COUNT: {noindex_total}')
           print(f'FINAL SITEMAP URL COUNT: {sitemap_total}')
-          if html_total != 141:
-              raise SystemExit(f'Expected 141 HTML pages, got {html_total}')
-          if sitemap_total != 140:
-              raise SystemExit(f'Expected 140 indexable sitemap URLs, got {sitemap_total}')
+          print(f'FINAL LOCAL NEWS NOINDEX COUNT: {local_news_noindex}')
+
+          if html_total < 141:
+              raise SystemExit(f'Expected at least 141 HTML pages, got {html_total}')
+          if sitemap_total != indexable_total:
+              raise SystemExit(
+                  f'Sitemap/indexability mismatch: sitemap={sitemap_total}, indexable={indexable_total}'
+              )
+          if local_news_noindex != 34:
+              raise SystemExit(f'Expected 34 noindex local news hubs, got {local_news_noindex}')
           if '/fpt/support/' in sitemap:
               raise SystemExit('Legacy noindex /support/ must not be in sitemap')
           PY
