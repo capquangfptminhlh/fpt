@@ -3,8 +3,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/contact-dock.css?v=20260817-3" data-contact-dock-style="true"/>'
-CONTACT_SCRIPT = '<script defer src="/fpt/assets/js/contact-dock.js?v=20260817-2" data-contact-dock-script="true"></script>'
+CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/contact-dock.css?v=20260817-4" data-contact-dock-style="true"/>'
+CONTACT_SCRIPT = '<script defer src="/fpt/assets/js/contact-dock.js?v=20260817-3" data-contact-dock-script="true"></script>'
 TRANSITION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/page-transition.css?v=20260817-1" data-page-transition-style="true"/>'
 TRANSITION_SCRIPT = '<script defer src="/fpt/assets/js/page-transition.js?v=20260817-2" data-page-transition-script="true"></script>'
 APPLE_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/apple-polish.css?v=20260817-2" data-apple-polish-style="true"/>'
