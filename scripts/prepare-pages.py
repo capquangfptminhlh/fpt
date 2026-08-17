@@ -134,7 +134,7 @@ def remove_internal_content(text: str) -> str:
         '', text, flags=re.I,
     )
     text = re.sub(
-        r'<li>[^<]*(?:Trang owner|URL owner|SEO với|SEO intent|intent [“"\']|intent chính|internal link|topical authority|head term|hỗ trợ SEO)[^<]*</li>',
+        r'<li>[^<]*(?:Trang owner|URL owner|SEO với|SEO intent|intent [“"\']|intent chính|intent\s+(?:informational|commercial|transactional|navigational)|money page|internal link|topical authority|head term|hỗ trợ SEO)[^<]*</li>',
         '', text, flags=re.I,
     )
 
