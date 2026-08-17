@@ -53,7 +53,7 @@ def main() -> None:
         '@keyframes rail-glow-drift',
     ):
         if token not in dock_text:
-            errors.append(f'contact-dock.css missing v10 glass/motion treatment: {token}')
+            errors.append(f'contact-dock.css missing glass/motion treatment: {token}')
 
     forbidden_css = ('@import url(', 'fonts.googleapis.com', 'use.typekit.net')
     combined = (text + '\n' + contact_text + '\n' + dock_text).lower()
@@ -61,7 +61,7 @@ def main() -> None:
         if token in combined:
             errors.append(f'Visual CSS must not load external fonts: {token}')
 
-    tagged = contact_tagged = dock_v10 = 0
+    tagged = contact_tagged = dock_v11 = 0
     for page in pages:
         html = page.read_text(encoding='utf-8')
         rel = page.relative_to(site)
@@ -72,12 +72,12 @@ def main() -> None:
         else: tagged += 1
         if contact_pos < 0: errors.append(f'{rel}: missing Apple contact stylesheet')
         else: contact_tagged += 1
-        if 'contact-dock.css?v=20260817-10' not in html or 'contact-dock.js?v=20260817-10' not in html:
-            errors.append(f'{rel}: missing contact dock v10 assets')
+        if 'contact-dock.css?v=20260817-11' not in html or 'contact-dock.js?v=20260817-10' not in html:
+            errors.append(f'{rel}: missing contact dock color-safe assets')
         else:
-            dock_v10 += 1
+            dock_v11 += 1
         if transition_pos >= 0 and polish_pos >= 0 and polish_pos < transition_pos:
-            errors.append(f'{rel}: Apple polish must load after transition/contact styles')
+            errors.append(f'{rel}: Apple polish must load after transition styles')
         if polish_pos >= 0 and contact_pos >= 0 and contact_pos < polish_pos:
             errors.append(f'{rel}: Apple contact polish must load after global Apple polish')
 
@@ -86,7 +86,7 @@ def main() -> None:
         for item in errors[:80]: print(f'- {item}')
         raise SystemExit(1)
 
-    print(f'VISUAL QA PASS: pages={len(pages)}, apple_polish={tagged}, apple_contact={contact_tagged}, mobile_dock_v10={dock_v10}, glass_contact_rail=ready, external_fonts=0, responsive=ready')
+    print(f'VISUAL QA PASS: pages={len(pages)}, apple_polish={tagged}, apple_contact={contact_tagged}, mobile_dock_v11={dock_v11}, glass_contact_rail=ready, external_fonts=0, responsive=ready')
 
 
 if __name__ == '__main__':
