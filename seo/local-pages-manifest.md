@@ -4,12 +4,12 @@ Observed: 2026-08-17
 
 ## Production model
 - `/khu-vuc/` is the local SEO hub.
-- `scripts/generate-local-pages.py` builds 34 current province/city landing pages at `_site/khu-vuc/<slug>/index.html`.
-- `scripts/enrich-local-silos.py` adds one service catalog to each landing and creates 34 province/city news hubs at `_site/khu-vuc/<slug>/tin-tuc/index.html`.
+- `scripts/generate-local-pages.py` builds 34 current province/city landing pages.
+- `scripts/enrich-local-silos.py` adds 34 service catalogs and creates 34 province/city news hubs at `/khu-vuc/<slug>/tin-tuc/`.
+- `scripts/fix-local-nav.py` normalizes visible `Khu vực` navigation across the final artifact.
 - Each landing has unique title/H1/canonical, administrative/address context, FAQ, Service + AdministrativeArea schema, BreadcrumbList, internal links and lead form.
 - Each service catalog links 8 Internet entries, 5 FPT Play/combo entries and 3 Camera entries already represented on the website.
-- Each news hub has unique title/H1/canonical, source/disclosure guidance and links back to its province service catalog.
-- Shared production runtime is injected after generation: `ui-reset.css`, `ui-motion.css/js`, modem/WiFi page transition and contact dock.
+- Each news hub has unique title/H1/canonical, evidence/source guidance and links back to its province service catalog.
 - `scripts/sync-sitemap.py` rebuilds the sitemap from indexable HTML only.
 
 ## Full keyword model
@@ -25,17 +25,15 @@ Observed: 2026-08-17
 
 Patterns cover installation, address/infrastructure checks, Internet/FTTH, WiFi, WiFi 6/7, Mesh, XGS-PON, packages, price intent, promotion intent, combo, FPT Play, Camera, gaming, SpeedX, household/business use cases and support queries.
 
-Former province names and common aliases map to the relevant current province/city route. They do not create separate name-swap landing pages.
+Former province names and common aliases map to the relevant current province/city route. They do not create separate duplicate landing pages.
 
 ## Evidence policy
-Administrative context is grounded in the Government publication covering the 34 provincial-level administrative units after the 2025 reorganization:
+Administrative context is grounded in current Government publications for the 34 provincial-level units after the 2025 reorganization. Commercial information remains address/time dependent. Province pages and news hubs must not invent or generalize province-wide infrastructure coverage, price, installation fee, device allocation, speed, promotion, outage or maintenance schedule.
 
+Government administrative source:
 https://xaydungchinhsach.chinhphu.vn/chi-tiet-34-don-vi-hanh-chinh-cap-tinh-tu-12-6-2025-119250612141845533.htm
 
-Commercial information remains address/time dependent. Province pages and news hubs must not invent or generalize province-wide infrastructure coverage, price, installation fee, device allocation, speed, promotion, outage or maintenance schedule. Those facts remain subject to address/locality/time-specific verification.
-
-The production pages also point users to FPT Telecom's official site for current service information:
-
+FPT Telecom public service reference:
 https://fpt.vn/vi/
 
 ## Canonical province routes
@@ -74,19 +72,11 @@ https://fpt.vn/vi/
 33. Cà Mau — `/khu-vuc/ca-mau/`
 34. An Giang — `/khu-vuc/an-giang/`
 
-Each route also owns its `/tin-tuc/` news hub.
+Each route also owns its `/tin-tuc/` hub.
 
 ## Required CI gates
-`pages.yml` must pass, in order:
-1. Generate exactly 3,800 local keyword rows.
-2. Generate 34 province/city landings.
-3. Add 34 service catalogs and 34 news hubs.
-4. Run production sanitizer/path rewrite and inject UI/contact/transition runtime.
-5. Rebuild sitemap from indexable HTML only.
-6. `qa-local-pages.py` — 34/34 landings, unique title/H1/canonical, minimum depth, form/runtime/evidence disclosure, no unsupported numeric local price/speed claims.
-7. `qa-local-silos.py` — 34/34 catalogs, 34/34 news hubs, required product links, source/disclosure markers and Khu vực navigation.
-8. `qa-local-keywords.py` — 34 current routes, 63 predecessor names, 76 aliases, 50 patterns and 3,800 rows.
-9. Functional/UI-reset QA, Python compile checks and production JavaScript syntax checks.
-10. Final artifact must contain exactly 141 HTML pages and 140 indexable sitemap URLs; legacy `/support/` stays noindex and outside the sitemap.
+Production CI must generate the 3,800-keyword map, 34 landings, 34 service catalogs and 34 news hubs; normalize Khu vực navigation; sanitize/inject the shared runtime; build sitemap from indexable HTML only; then pass local page, silo, keyword, functional, UI, Python and JavaScript checks.
 
-Final branch QA run `32042314191` passed all gates with 4,285 internal links checked.
+Final artifact requirements: exactly **141 HTML pages**, **140 indexable sitemap URLs**, legacy `/support/` remains noindex and outside sitemap.
+
+Final merge QA run `32042599336` passed all gates with **4,412 internal links** checked; `Khu vực` navigation was checked on **140 pages** and normalized on **127 pages**.
