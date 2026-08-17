@@ -12,7 +12,8 @@ Static FPT advisory website with SEO/AEO/GEO architecture, responsive UI, local-
 - Local search routing covers all 63 provincial-unit names immediately before the June-2025 consolidation and maps them into the 34 current province/city routes rather than creating duplicate old-name pages.
 - Existing non-local SEO baseline remains tracked separately: 1,805 mapped keyword/query rows and 277 AEO questions. The local 3,800-row map is intentionally reported separately instead of claiming an unverified deduplicated grand total.
 - 118 unique SEO WebP assets (all >=1200×675).
-- 4,285 internal links checked in final QA.
+- 4,412 internal links checked in final QA.
+- Visible `Khu vực` navigation normalized across all 140 navigable pages in the final artifact.
 - Responsive desktop/mobile UI, lead forms on province landings, contact actions, modem page transition and lightweight progressive motion.
 - `robots.txt`, indexable-only `sitemap.xml`, structured data, canonical ownership and automated build gates.
 
@@ -44,12 +45,13 @@ Before GitHub Pages can deploy, CI must pass:
 1. Generate exactly 3,800 local keyword rows.
 2. Generate all 34 province/city landing pages.
 3. Add all 34 service catalogs and 34 local news hubs.
-4. Apply the production sanitizer and shared UI runtime.
-5. Build the sitemap from indexable HTML only.
-6. `qa-local-pages.py` for landing-page depth, unique title/H1/canonical, forms, schema/runtime and unsupported numeric local price/speed claims.
-7. `qa-local-silos.py` for 34 service catalogs, 34 news hubs, product-link counts, source/disclosure markers and global Khu vực navigation.
-8. `qa-local-keywords.py` for 34 current routes, 63 predecessor names, 76 aliases, 50 patterns and exactly 3,800 keyword rows.
-9. Functional/UI-reset QA, Python compile checks and production JavaScript syntax checks.
-10. Final artifact must contain exactly 141 HTML pages and 140 indexable sitemap URLs; legacy `/support/` must remain noindex and outside the sitemap.
+4. Normalize visible `Khu vực` navigation across the generated artifact.
+5. Apply the production sanitizer and shared UI runtime.
+6. Build the sitemap from indexable HTML only.
+7. `qa-local-pages.py` for landing-page depth, unique title/H1/canonical, forms, schema/runtime and unsupported numeric local price/speed claims.
+8. `qa-local-silos.py` for 34 service catalogs, 34 news hubs, product-link counts, source/disclosure markers and global Khu vực navigation.
+9. `qa-local-keywords.py` for 34 current routes, 63 predecessor names, 76 aliases, 50 patterns and exactly 3,800 keyword rows.
+10. Functional/UI-reset QA, Python compile checks and production JavaScript syntax checks.
+11. Final artifact must contain exactly 141 HTML pages and 140 indexable sitemap URLs; legacy `/support/` must remain noindex and outside the sitemap.
 
 See `QA_REPORT.md` and `seo/local-pages-manifest.md` for evidence and route details.
