@@ -1,0 +1,71 @@
+/* Mobile stability layer — final mobile-only cascade guard. */
+@media(max-width:760px){
+  html,body{width:100%;max-width:100%;overflow-x:clip!important}
+  body{min-width:0!important;position:relative}
+  main,.topbar,.footer{width:100%;max-width:100%;overflow-x:clip}
+  .container,.home-v2 .container{width:calc(100% - 24px)!important;max-width:calc(100% - 24px)!important;margin-inline:auto!important;padding-inline:0!important}
+
+  main :where(section,article,div,aside,form,fieldset,nav,ul,ol,li){min-width:0;max-width:100%}
+  :where(h1,h2,h3,h4,h5,h6,p,li,summary,label,strong,span,a){word-break:normal!important;overflow-wrap:break-word!important;hyphens:none}
+  :where(h1,h2,h3,h4,h5,h6){max-width:100%;text-wrap:pretty}
+  p,li{max-width:100%;text-wrap:pretty}
+  a,button,input,select,textarea{min-width:0;max-width:100%}
+  input,select,textarea{width:100%;font-size:16px!important}
+  img,picture,video,iframe,canvas,svg{max-width:100%}
+  pre{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+  .home-v2 .m-hero h1{font-size:clamp(36px,10.2vw,44px)!important;line-height:1.02!important;letter-spacing:-.05em!important}
+  .home-v2 .m-head h2,.section-head h2,.packages-head h2{font-size:clamp(28px,8.4vw,36px)!important;line-height:1.08!important;letter-spacing:-.045em!important}
+  .subpage-hero h1,.seo-hero h1,.contact-copy h1{font-size:clamp(32px,9.3vw,42px)!important;line-height:1.04!important;letter-spacing:-.05em!important}
+  .content-card h2,.contact-head h2{font-size:clamp(25px,7.2vw,32px)!important;line-height:1.12!important}
+  .content-card h3{font-size:clamp(19px,5.7vw,24px)!important;line-height:1.2!important}
+  .home-v2 .m-hero-copy>p,.home-v2 .m-head p,.subpage-hero p,.seo-hero p,.content-card p,.contact-copy>p{font-size:15px!important;line-height:1.58!important}
+
+  .home-v2 .m-actions,.home-v2 .process,.home-v2 .trust-points,.map-diagram,.link-grid,.cluster-index,.footer-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
+  .home-v2 .m-actions .m-btn,.home-v2 .process article,.home-v2 .trust-points div,.map-item,.link-tile,.cluster-index a{width:100%!important;max-width:100%!important}
+  .home-v2 .m-actions .m-btn{min-height:48px!important;white-space:normal!important;text-align:center!important}
+  .home-v2 .process article,.home-v2 .trust-points div{padding:15px!important}
+  .footer-grid>div{grid-column:auto!important;min-width:0!important}
+
+  .packages,.promos,.use-cases,.home-v2 .plan-grid,.home-v2 .solution-grid,.home-v2 .intent-switch{max-width:calc(100vw - 12px)!important;overscroll-behavior-x:contain!important}
+  .package,.promo,.use-card,.home-v2 .m-plan,.home-v2 .solution-card{max-width:calc(100vw - 48px)!important}
+  .home-v2 .m-plan,.home-v2 .solution-card{flex-basis:calc(100vw - 48px)!important}
+  .home-v2 .m-plan-body,.home-v2 .solution-copy,.home-v2 .eco-copy{min-width:0!important;max-width:100%!important}
+  .home-v2 .m-price strong{font-size:clamp(25px,8vw,30px)!important;white-space:nowrap}
+  .home-v2 .m-speed{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+  .home-v2 .m-speed div{min-width:0!important}
+  .home-v2 .m-speed b{overflow-wrap:normal!important;white-space:nowrap;font-size:13px!important}
+
+  .home-v2 .ecosystem,.home-v2 .eco-stack,.content-grid,.seo-grid,.contact-grid,.contact-split,.contact-steps,.advisor,.guides,.owner-links,.lead-form{grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:100%!important}
+  .home-v2 .eco-main,.home-v2 .eco-stack>article,.content-card,.lead-card,.contact-info,.contact-callout{width:100%!important;max-width:100%!important}
+  .home-v2 .eco-copy{left:15px!important;right:15px!important;bottom:15px!important}
+
+  .seo-hero{width:auto!important;max-width:calc(100% - 16px)!important;margin:8px!important;border-radius:24px!important;overflow:hidden!important}
+  .seo-hero .inner{width:100%!important;max-width:100%!important;padding:44px 16px!important}
+  .subpage-hero .wrap{grid-template-columns:minmax(0,1fr)!important;width:100%!important}
+  .subpage-hero .wrap>img{width:100%!important;max-width:100%!important;min-height:0!important;height:auto!important}
+
+  .data-table{display:block!important;width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
+  .data-table th,.data-table td{white-space:normal!important;min-width:110px}
+  .lead-form,.lead-field,.lead-field input,.lead-field select,.lead-field textarea{min-width:0!important;max-width:100%!important}
+
+  .motion-section{max-width:100%!important}
+  .motion-section::before{inset:4px 0!important;border-radius:24px!important;opacity:.16!important;transform:translate3d(0,var(--section-shift),0) scale(1)!important;filter:none!important}
+  .motion-section::after{width:calc(100% - 24px)!important;opacity:.18!important}
+  .motion-section-beam{left:12px!important;right:12px!important;opacity:.28!important}
+  .motion-cinematic-media{scale:1.006!important;filter:none!important}
+  .motion-cinematic-media.is-motion-media-visible{scale:1!important}
+  .motion-fiber-canvas{max-width:100%!important;opacity:.14!important;mix-blend-mode:normal!important}
+  .motion-footer-field i{opacity:.1!important}
+
+  body.has-contact-dock{padding-bottom:calc(102px + env(safe-area-inset-bottom))!important}
+}
+
+@media(max-width:380px){
+  .container,.home-v2 .container{width:calc(100% - 20px)!important;max-width:calc(100% - 20px)!important}
+  .home-v2 .m-hero h1{font-size:clamp(34px,10.5vw,40px)!important}
+  .home-v2 .m-head h2,.section-head h2,.packages-head h2{font-size:clamp(27px,8.5vw,33px)!important}
+  .subpage-hero h1,.seo-hero h1,.contact-copy h1{font-size:clamp(30px,9.5vw,37px)!important}
+  .package,.promo,.use-card,.home-v2 .m-plan,.home-v2 .solution-card{max-width:calc(100vw - 40px)!important}
+  .home-v2 .m-plan,.home-v2 .solution-card{flex-basis:calc(100vw - 40px)!important}
+}
