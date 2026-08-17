@@ -135,6 +135,22 @@
     }, { passive: true });
   }
 
+  const applySectionMotion = (section, progress, shift) => {
+    const mobile = innerWidth <= 760;
+    const sectionOpacity = mobile ? .18 + progress * .34 : .28 + progress * .58;
+    const blueAlpha = mobile ? .012 + progress * .026 : .018 + progress * .052;
+    const warmAlpha = mobile ? .009 + progress * .019 : .014 + progress * .036;
+    const lineScale = .55 + progress * .45;
+    const lineOpacity = mobile ? .1 + progress * .2 : .2 + progress * .4;
+    section.style.setProperty('--section-progress', progress.toFixed(3));
+    section.style.setProperty('--section-shift', `${shift.toFixed(1)}px`);
+    section.style.setProperty('--section-opacity', sectionOpacity.toFixed(3));
+    section.style.setProperty('--section-blue-alpha', blueAlpha.toFixed(3));
+    section.style.setProperty('--section-warm-alpha', warmAlpha.toFixed(3));
+    section.style.setProperty('--section-line-scale', lineScale.toFixed(3));
+    section.style.setProperty('--section-line-opacity', lineOpacity.toFixed(3));
+  };
+
   let scrollTicking = false;
   const updateFullPageScroll = () => {
     scrollTicking = false;
@@ -150,8 +166,7 @@
       const progress = 1 - clamp(distance / Math.max(1, reach), 0, 1);
       const normalized = clamp((viewport / 2 - center) / Math.max(viewport, rect.height), -.5, .5);
       const shiftStrength = innerWidth <= 760 ? 10 : lowPower ? 12 : 22;
-      section.style.setProperty('--section-progress', progress.toFixed(3));
-      section.style.setProperty('--section-shift', `${(normalized * shiftStrength).toFixed(1)}px`);
+      applySectionMotion(section, progress, normalized * shiftStrength);
     });
   };
   const scheduleFullPageScroll = () => {
@@ -165,8 +180,7 @@
 
   const resetMotion = () => {
     sections.forEach((section) => {
-      section.style.setProperty('--section-progress', '1');
-      section.style.setProperty('--section-shift', '0px');
+      applySectionMotion(section, 1, 0);
       section.classList.add('is-motion-section-active');
     });
     headings.forEach((node) => node.classList.add('is-motion-heading-visible'));
