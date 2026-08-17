@@ -8,6 +8,7 @@ CONTACT_SCRIPT = '<script defer src="/fpt/assets/js/contact-dock.js?v=20260817-1
 TRANSITION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/page-transition.css?v=20260817-1" data-page-transition-style="true"/>'
 TRANSITION_SCRIPT = '<script defer src="/fpt/assets/js/page-transition.js?v=20260817-1" data-page-transition-script="true"></script>'
 APPLE_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/apple-polish.css?v=20260817-1" data-apple-polish-style="true"/>'
+APPLE_CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/apple-contact.css?v=20260817-1" data-apple-contact-style="true"/>'
 
 
 def inject(html: str) -> str:
@@ -23,6 +24,8 @@ def inject(html: str) -> str:
         head_assets.append(TRANSITION_STYLE)
     if 'data-apple-polish-style=' not in html:
         head_assets.append(APPLE_STYLE)
+    if 'data-apple-contact-style=' not in html:
+        head_assets.append(APPLE_CONTACT_STYLE)
     if head_assets:
         html = html.replace('</head>', ''.join(head_assets) + '</head>', 1)
 
