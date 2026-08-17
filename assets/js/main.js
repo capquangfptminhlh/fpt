@@ -28,6 +28,10 @@ if (toggle && navLinks) {
   });
 }
 
+const isGitHubPagesProject = location.hostname === 'capquangfptminhlh.github.io';
+const siteBase = isGitHubPagesProject ? '/fpt' : '';
+const sitePath = (path = '/') => `${siteBase}${path.startsWith('/') ? path : `/${path}`}`;
+
 const form = document.querySelector('#advisor-form');
 if (form) {
   const map = {
@@ -45,18 +49,16 @@ if (form) {
     const picked = map[need] || map.family;
     if (!result) return;
 
-    result.innerHTML = `<div class="seo-box"><strong>Gợi ý nhanh:</strong> ${picked.text} <a href="/goi-cuoc/${picked.id}/" style="color:#1751c3;font-weight:800">Xem chi tiết →</a></div>`;
+    result.innerHTML = `<div class="seo-box"><strong>Gợi ý nhanh:</strong> ${picked.text} <a href="${sitePath(`/goi-cuoc/${picked.id}/`)}" style="color:#1751c3;font-weight:800">Xem chi tiết →</a></div>`;
     result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 }
 
 /*
  * Image routing
- * The repository already contains a large unique SEO image library. Older core
- * templates reused hero-family.webp or the same promo art on multiple pages.
- * This router upgrades visible imagery without changing canonical/SEO markup.
+ * Supports both normal hosting at / and GitHub Pages project hosting at /fpt/.
  */
-const imageRoot = '/assets/images/';
+const imageRoot = sitePath('/assets/images/');
 const seoRoot = `${imageRoot}seo/`;
 
 const manualHeroMap = {
@@ -95,7 +97,11 @@ const safeSwapImage = (element, nextSrc) => {
   probe.src = nextSrc;
 };
 
-const currentPath = (`/${location.pathname.split('/').filter(Boolean).join('/')}`).replace(/\/$/, '') || '/';
+let runtimePath = location.pathname;
+if (siteBase && runtimePath.startsWith(`${siteBase}/`)) runtimePath = runtimePath.slice(siteBase.length);
+if (siteBase && runtimePath === siteBase) runtimePath = '/';
+const currentPath = (`/${runtimePath.split('/').filter(Boolean).join('/')}`).replace(/\/$/, '') || '/';
+
 const standardHero = document.querySelector('.subpage-hero .wrap > img');
 const seoHero = document.querySelector('.seo-hero > img');
 
@@ -114,7 +120,6 @@ if (seoHero) {
   }
 }
 
-/* Give the three homepage package cards distinct, relevant images. */
 const packageImages = document.querySelectorAll('.package-media img');
 const packageArtwork = [
   `${seoRoot}goi-cuoc-fpt-hero.webp`,
@@ -123,7 +128,6 @@ const packageArtwork = [
 ];
 packageImages.forEach((image, index) => safeSwapImage(image, packageArtwork[index]));
 
-/* Images should never take down a layout if an asset is missing. */
 document.querySelectorAll('img').forEach((image) => {
   image.addEventListener('error', () => {
     image.classList.add('image-load-error');
