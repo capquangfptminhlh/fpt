@@ -1,0 +1,8 @@
+﻿query_family,source_url,observed_at,observation,decision
+internet / package discovery,https://fpt.vn/dich-vu-internet,2026-08-15,"Official FPT package landing with F-Game, Meta and combos",Use as first-party fact source
+game package,https://fpt.vn/internet/game-thu,2026-08-15,"Official game-intent page with Meta, F-Game, combo data",Use for F-Game/Meta facts
+WiFi 7 / XGS-PON,https://fpt.vn/dang-ky-nang-cap-wifi7,2026-08-15,"Official Wi-Fi 7 page: XGS-PON, MLO, high-device load",Use for technology entity
+internet combo,https://fpt.vn/uu-dai-internet/,2026-08-15,Official combo GIGA/SKY/META/F-Game listing,Use for combo facts
+camera,https://fpt.vn/camera,2026-08-15,Official FPT Camera products and Internet+Camera combos,Use for camera cluster
+camera play 3,https://www.fpt.vn/camera/camera-play-3/,2026-08-15,Official product page with 3MP/Cloud/AI details,Use for product entity
+camera play 4,https://fpt.vn/camera/camera-play-4,2026-08-15,Official product page with 3MP/Cloud/AI/two-way audio,Use for product entity

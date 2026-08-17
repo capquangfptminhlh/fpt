@@ -1,0 +1,16 @@
+﻿entity,type,source,fact,observed_at,status
+Internet Meta,package,https://fpt.vn/internet/game-thu,1 Gbps download / 1 Gbps upload; từ 295.000đ/tháng; Wi-Fi 6; khoảng 25 thiết bị,2026-08-15,VERIFIED
+Internet F-Game,package,https://fpt.vn/internet/game-thu,1 Gbps download / 300 Mbps upload; từ 225.000đ/tháng; Ultra Fast hỗ trợ 50+ tựa game,2026-08-15,VERIFIED
+Combo GIGA,package,https://fpt.vn/uu-dai-internet/,từ 200.000đ/tháng; 300/300 Mbps; modem Wi-Fi 6 + FPT Play Box,2026-08-15,VERIFIED
+Combo SKY,package,https://fpt.vn/uu-dai-internet/,từ 209.000đ/tháng; 1 Gbps/300 Mbps; modem Wi-Fi 6 + FPT Play Box,2026-08-15,VERIFIED
+Combo META,package,https://fpt.vn/uu-dai-internet/,từ 320.000đ/tháng; 1 Gbps/1 Gbps; modem Wi-Fi 6 + FPT Play Box,2026-08-15,VERIFIED
+Combo F-Game,package,https://fpt.vn/uu-dai-internet/,từ 270.000đ/tháng; 1 Gbps/300 Mbps; Ultra Fast + FPT Play Box,2026-08-15,VERIFIED
+Wi-Fi 7 SpeedX,technology,https://fpt.vn/dang-ky-nang-cap-wifi7,XGS-PON; các cấu hình đến 10 Gbps; Wi-Fi 7 3 băng tần; MLO; kết nối đến khoảng 100 thiết bị theo nguồn,2026-08-15,VERIFIED
+SpeedX2 Pro,package,https://fpt.vn/lap-internet-wifi-hcm,2 Gbps/2 Gbps; Wi-Fi 7; 01 Mesh; FPT Play Box; từ 1.099.000đ/tháng tại trang khu vực TPHCM,2026-08-15,VERIFIED_REGION_SPECIFIC
+SpeedX10 Pro,package,https://fpt.vn/lap-internet-wifi-hcm,10 Gbps/10 Gbps; Wi-Fi 7; 01 Mesh; FPT Play Box; từ 1.690.000đ/tháng tại trang khu vực TPHCM,2026-08-15,VERIFIED_REGION_SPECIFIC
+Camera Play 3,camera,https://www.fpt.vn/camera/camera-play-3/,3MP; quay ngang 355°; Cloud; AI phát hiện người; 510.000đ,2026-08-15,VERIFIED
+Camera Play 4,camera,https://fpt.vn/camera/camera-play-4,3MP; Cloud 24/7; AI phát hiện người/trẻ em khóc; đàm thoại 2 chiều; Wi-Fi 2.4GHz + Bluetooth; 510.000đ,2026-08-15,VERIFIED
+FPT Camera,service,https://fpt.vn/camera,"có camera AI, combo nhiều camera và gói Internet + Camera; giá thay đổi theo khu vực/thời điểm",2026-08-15,VERIFIED
+FPT Telecom hotline,support,https://fpt.vn/thong-tin/tong-dai-cskh-mang-fpt-telecom-615,1900 6600; CSKH 24/7; cuộc gọi có cước theo loại thuê bao,2026-08-15,VERIFIED
+GIGA regional variants,package,https://fpt.vn/shop/s/cvnuwa,FPT có các landing khu vực với cấu hình GIGA khác nhau; không dùng một tốc độ/giá toàn quốc trong trang generic,2026-08-15,VERIFIED_REGION_VARIATION
+SKY regional variants,package,https://fpt.vn/shop/s/cvnuwa,SKY có download 1 Gbps nhưng upload/giá có thể thay đổi theo khu vực/landing; cần kiểm tra theo địa chỉ,2026-08-15,VERIFIED_REGION_VARIATION

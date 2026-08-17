@@ -1,0 +1,73 @@
+﻿entity_type,entity_name,topic,cluster_id,canonical_owner,source_of_truth,verification_status
+service,Gói Cước FPT,Gói Cước FPT,PACKAGES,/goi-cuoc-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Bảng Giá FPT,Bảng Giá FPT,PACKAGES,/bang-gia-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Combo FPT,Combo FPT,COMBO,/combo-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Internet + Truyền Hình FPT,Internet + Truyền Hình FPT,COMBO,/internet-truyen-hinh-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,F-Game FPT,F-Game FPT,GAMING,/f-game-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+technology,Mesh WiFi FPT,Mesh WiFi FPT,WIFI,/mesh-wifi-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+technology,WiFi 6 FPT,WiFi 6 FPT,WIFI,/wifi-6-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+technology,XGS-PON FPT,XGS-PON FPT,WIFI7,/xgs-pon-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,SpeedX FPT,SpeedX FPT,WIFI7,/speedx-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,Gói F-Game FPT,Gói F-Game FPT,PACKAGES,/goi-cuoc/f-game/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,Combo GIGA FPT,Combo GIGA FPT,PACKAGES,/goi-cuoc/combo-giga/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,Combo SKY FPT,Combo SKY FPT,PACKAGES,/goi-cuoc/combo-sky/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,Combo META FPT,Combo META FPT,PACKAGES,/goi-cuoc/combo-meta/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,Combo F-Game FPT,Combo F-Game FPT,PACKAGES,/goi-cuoc/combo-f-game/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,SpeedX2 FPT,SpeedX2 FPT,PACKAGES,/goi-cuoc/speedx2/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,SpeedX2 Pro FPT,SpeedX2 Pro FPT,PACKAGES,/goi-cuoc/speedx2-pro/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,SpeedX10 FPT,SpeedX10 FPT,PACKAGES,/goi-cuoc/speedx10/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,SpeedX10 Pro FPT,SpeedX10 Pro FPT,PACKAGES,/goi-cuoc/speedx10-pro/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Camera Play 3 FPT,Camera Play 3 FPT,CAMERA,/camera-fpt/play-3/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Camera Play 4 FPT,Camera Play 4 FPT,CAMERA,/camera-fpt/play-4/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Mạng FPT cho gia đình,Mạng FPT cho gia đình,USE_FAMILY,/giai-phap/gia-dinh/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,WiFi FPT cho nhà nhiều tầng,WiFi FPT cho nhà nhiều tầng,USE_MULTIFLOOR,/giai-phap/nha-nhieu-tang/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Mạng FPT cho chung cư,Mạng FPT cho chung cư,USE_APARTMENT,/giai-phap/chung-cu/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Mạng FPT cho game thủ,Mạng FPT cho game thủ,USE_GAME,/giai-phap/game-thu/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Mạng FPT cho livestream,Mạng FPT cho livestream,USE_STREAM,/giai-phap/livestream/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Mạng FPT cho camera,Mạng FPT cho camera,USE_CAMERA,/giai-phap/camera/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Internet FPT cho Smart Home,Internet FPT cho Smart Home,USE_SMARTHOME,/giai-phap/smart-home/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Mạng FPT cho văn phòng,Mạng FPT cho văn phòng,USE_OFFICE,/giai-phap/van-phong/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Mạng FPT cho doanh nghiệp nhỏ,Mạng FPT cho doanh nghiệp nhỏ,USE_SME,/giai-phap/doanh-nghiep-nho/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Mạng FPT cho quán cafe,Mạng FPT cho quán cafe,USE_CAFE,/giai-phap/quan-cafe/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Mạng FPT cho homestay,Mạng FPT cho homestay,USE_HOMESTAY,/giai-phap/homestay/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Mạng FPT cho cửa hàng,Mạng FPT cho cửa hàng,USE_RETAIL,/giai-phap/cua-hang/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,FPT vs Viettel,FPT vs Viettel,COMPARE,/so-sanh/fpt-vs-viettel/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,FPT vs VNPT,FPT vs VNPT,COMPARE,/so-sanh/fpt-vs-vnpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+technology,WiFi 6 vs WiFi 7,WiFi 6 vs WiFi 7,COMPARE,/so-sanh/wifi-6-vs-wifi-7/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,GIGA vs SKY FPT,GIGA vs SKY FPT,COMPARE,/so-sanh/giga-vs-sky/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,SKY vs META FPT,SKY vs META FPT,COMPARE,/so-sanh/sky-vs-meta/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,F-Game vs META FPT,F-Game vs META FPT,COMPARE,/so-sanh/f-game-vs-meta/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Lắp mạng FPT mất bao lâu?,Lắp mạng FPT mất bao lâu?,SUPPORT,/ho-tro/lap-mang-fpt-mat-bao-lau/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Phí lắp đặt FPT,Phí lắp đặt FPT,SUPPORT,/ho-tro/phi-lap-dat-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+technology,Đổi mật khẩu WiFi FPT,Đổi mật khẩu WiFi FPT,SUPPORT,/ho-tro/doi-mat-khau-wifi-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+technology,WiFi FPT yếu,WiFi FPT yếu,SUPPORT,/ho-tro/wifi-fpt-yeu/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Mạng FPT chậm,Mạng FPT chậm,SUPPORT,/ho-tro/mang-fpt-cham/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Mất mạng FPT,Mất mạng FPT,SUPPORT,/ho-tro/mat-mang-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Chuyển địa điểm FPT,Chuyển địa điểm FPT,SUPPORT,/ho-tro/chuyen-dia-diem-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Nâng cấp gói FPT,Nâng cấp gói FPT,SUPPORT,/ho-tro/nang-cap-goi-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Hủy dịch vụ FPT,Hủy dịch vụ FPT,SUPPORT,/ho-tro/huy-goi-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Kiểm tra tốc độ mạng FPT,Kiểm tra tốc độ mạng FPT,SUPPORT,/ho-tro/kiem-tra-toc-do-mang-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+technology,Modem WiFi 6 FPT,Modem WiFi 6 FPT,SUPPORT,/kien-thuc/modem-wifi-6-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+technology,Mesh WiFi là gì?,Mesh WiFi là gì?,SUPPORT,/kien-thuc/mesh-wifi-la-gi/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,300 Mbps đủ dùng không?,300 Mbps đủ dùng không?,SUPPORT,/kien-thuc/300mbps-du-khong/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,1 Gbps dùng được bao nhiêu thiết bị?,1 Gbps dùng được bao nhiêu thiết bị?,SUPPORT,/kien-thuc/1gbps-bao-nhieu-thiet-bi/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,FTTH là gì?,FTTH là gì?,SUPPORT,/kien-thuc/ftth-la-gi/,FPT Telecom / project evidence,VERIFIED_OWNER
+technology,XGS-PON là gì?,XGS-PON là gì?,SUPPORT,/kien-thuc/xgs-pon-la-gi/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Giải pháp Internet FPT,Giải pháp Internet FPT,USE_CASE,/giai-phap/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,So sánh Internet FPT,So sánh Internet FPT,COMPARE,/so-sanh/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Hỗ trợ Internet FPT,Hỗ trợ Internet FPT,SUPPORT,/ho-tro/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Kiến thức Internet FPT,Kiến thức Internet FPT,KNOWLEDGE,/kien-thuc/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Lắp mạng FPT theo khu vực,Lắp mạng FPT theo khu vực,LOCAL,/khu-vuc/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Lắp mạng FPT,Lắp mạng FPT,INSTALL,/lap-mang-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Internet FPT,Internet FPT,INTERNET,/internet-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+technology,WiFi FPT,WiFi FPT,WIFI,/wifi-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Cáp quang FPT,Cáp quang FPT,FTTH,/cap-quang-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+technology,WiFi 7 FPT,WiFi 7 FPT,WIFI7,/wifi-7/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Camera FPT,Camera FPT,CAMERA,/camera-fpt/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,FPT Play,FPT Play,PLAY,/fpt-play/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Hỗ trợ FPT,Hỗ trợ FPT,SUPPORT,/support/,FPT Telecom / project evidence,VERIFIED_OWNER
+topic,Tin tức FPT,Tin tức FPT,NEWS,/tin-tuc/,FPT Telecom / project evidence,VERIFIED_OWNER
+service,Liên hệ FPT,Liên hệ FPT,CONTACT,/lien-he/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,GIGA FPT,GIGA FPT,PACKAGES,/goi-cuoc/giga/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,SKY FPT,SKY FPT,PACKAGES,/goi-cuoc/sky/,FPT Telecom / project evidence,VERIFIED_OWNER
+package,META FPT,META FPT,PACKAGES,/goi-cuoc/meta/,FPT Telecom / project evidence,VERIFIED_OWNER

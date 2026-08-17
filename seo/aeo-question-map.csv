@@ -1,0 +1,278 @@
+﻿question,intent,cluster_id,target_url,answer_strategy,observed_at
+gói cước fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc-fpt/,ANSWER_ON_OWNER,2026-08-15
+gói cước fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc-fpt/,ANSWER_ON_OWNER,2026-08-15
+gói cước fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn gói cước fpt?,COMMERCIAL,PACKAGES,/goi-cuoc-fpt/,ANSWER_ON_OWNER,2026-08-15
+bảng giá fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/bang-gia-fpt/,ANSWER_ON_OWNER,2026-08-15
+bảng giá fpt có tốt không?,COMMERCIAL,PACKAGES,/bang-gia-fpt/,ANSWER_ON_OWNER,2026-08-15
+bảng giá fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/bang-gia-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn bảng giá fpt?,COMMERCIAL,PACKAGES,/bang-gia-fpt/,ANSWER_ON_OWNER,2026-08-15
+combo fpt phù hợp với ai?,COMMERCIAL,COMBO,/combo-fpt/,ANSWER_ON_OWNER,2026-08-15
+combo fpt có tốt không?,COMMERCIAL,COMBO,/combo-fpt/,ANSWER_ON_OWNER,2026-08-15
+combo fpt khác gì lựa chọn khác?,COMMERCIAL,COMBO,/combo-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn combo fpt?,COMMERCIAL,COMBO,/combo-fpt/,ANSWER_ON_OWNER,2026-08-15
+internet + truyền hình fpt phù hợp với ai?,COMMERCIAL,COMBO,/internet-truyen-hinh-fpt/,ANSWER_ON_OWNER,2026-08-15
+internet + truyền hình fpt có tốt không?,COMMERCIAL,COMBO,/internet-truyen-hinh-fpt/,ANSWER_ON_OWNER,2026-08-15
+internet + truyền hình fpt khác gì lựa chọn khác?,COMMERCIAL,COMBO,/internet-truyen-hinh-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn internet + truyền hình fpt?,COMMERCIAL,COMBO,/internet-truyen-hinh-fpt/,ANSWER_ON_OWNER,2026-08-15
+f-game fpt phù hợp với ai?,COMMERCIAL,GAMING,/f-game-fpt/,ANSWER_ON_OWNER,2026-08-15
+f-game fpt có tốt không?,COMMERCIAL,GAMING,/f-game-fpt/,ANSWER_ON_OWNER,2026-08-15
+f-game fpt khác gì lựa chọn khác?,COMMERCIAL,GAMING,/f-game-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn f-game fpt?,COMMERCIAL,GAMING,/f-game-fpt/,ANSWER_ON_OWNER,2026-08-15
+mesh wifi fpt phù hợp với ai?,COMMERCIAL,WIFI,/mesh-wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+mesh wifi fpt có tốt không?,COMMERCIAL,WIFI,/mesh-wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+mesh wifi fpt khác gì lựa chọn khác?,COMMERCIAL,WIFI,/mesh-wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn mesh wifi fpt?,COMMERCIAL,WIFI,/mesh-wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+wifi 6 fpt là gì?,INFORMATIONAL,WIFI,/wifi-6-fpt/,ANSWER_ON_OWNER,2026-08-15
+wifi 6 fpt hoạt động thế nào?,INFORMATIONAL,WIFI,/wifi-6-fpt/,ANSWER_ON_OWNER,2026-08-15
+wifi 6 fpt có ưu nhược điểm gì?,INFORMATIONAL,WIFI,/wifi-6-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần wifi 6 fpt?,INFORMATIONAL,WIFI,/wifi-6-fpt/,ANSWER_ON_OWNER,2026-08-15
+xgs-pon fpt là gì?,INFORMATIONAL,WIFI7,/xgs-pon-fpt/,ANSWER_ON_OWNER,2026-08-15
+xgs-pon fpt hoạt động thế nào?,INFORMATIONAL,WIFI7,/xgs-pon-fpt/,ANSWER_ON_OWNER,2026-08-15
+xgs-pon fpt có ưu nhược điểm gì?,INFORMATIONAL,WIFI7,/xgs-pon-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần xgs-pon fpt?,INFORMATIONAL,WIFI7,/xgs-pon-fpt/,ANSWER_ON_OWNER,2026-08-15
+speedx fpt phù hợp với ai?,COMMERCIAL,WIFI7,/speedx-fpt/,ANSWER_ON_OWNER,2026-08-15
+speedx fpt có tốt không?,COMMERCIAL,WIFI7,/speedx-fpt/,ANSWER_ON_OWNER,2026-08-15
+speedx fpt khác gì lựa chọn khác?,COMMERCIAL,WIFI7,/speedx-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn speedx fpt?,COMMERCIAL,WIFI7,/speedx-fpt/,ANSWER_ON_OWNER,2026-08-15
+gói f-game fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/f-game/,ANSWER_ON_OWNER,2026-08-15
+gói f-game fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/f-game/,ANSWER_ON_OWNER,2026-08-15
+gói f-game fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/f-game/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn gói f-game fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/f-game/,ANSWER_ON_OWNER,2026-08-15
+combo giga fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-giga/,ANSWER_ON_OWNER,2026-08-15
+combo giga fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-giga/,ANSWER_ON_OWNER,2026-08-15
+combo giga fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-giga/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn combo giga fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-giga/,ANSWER_ON_OWNER,2026-08-15
+combo sky fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-sky/,ANSWER_ON_OWNER,2026-08-15
+combo sky fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-sky/,ANSWER_ON_OWNER,2026-08-15
+combo sky fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-sky/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn combo sky fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-sky/,ANSWER_ON_OWNER,2026-08-15
+combo meta fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-meta/,ANSWER_ON_OWNER,2026-08-15
+combo meta fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-meta/,ANSWER_ON_OWNER,2026-08-15
+combo meta fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-meta/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn combo meta fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-meta/,ANSWER_ON_OWNER,2026-08-15
+combo f-game fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-f-game/,ANSWER_ON_OWNER,2026-08-15
+combo f-game fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-f-game/,ANSWER_ON_OWNER,2026-08-15
+combo f-game fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-f-game/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn combo f-game fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/combo-f-game/,ANSWER_ON_OWNER,2026-08-15
+speedx2 fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx2/,ANSWER_ON_OWNER,2026-08-15
+speedx2 fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx2/,ANSWER_ON_OWNER,2026-08-15
+speedx2 fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx2/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn speedx2 fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx2/,ANSWER_ON_OWNER,2026-08-15
+speedx2 pro fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx2-pro/,ANSWER_ON_OWNER,2026-08-15
+speedx2 pro fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx2-pro/,ANSWER_ON_OWNER,2026-08-15
+speedx2 pro fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx2-pro/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn speedx2 pro fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx2-pro/,ANSWER_ON_OWNER,2026-08-15
+speedx10 fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx10/,ANSWER_ON_OWNER,2026-08-15
+speedx10 fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx10/,ANSWER_ON_OWNER,2026-08-15
+speedx10 fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx10/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn speedx10 fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx10/,ANSWER_ON_OWNER,2026-08-15
+speedx10 pro fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx10-pro/,ANSWER_ON_OWNER,2026-08-15
+speedx10 pro fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx10-pro/,ANSWER_ON_OWNER,2026-08-15
+speedx10 pro fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx10-pro/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn speedx10 pro fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/speedx10-pro/,ANSWER_ON_OWNER,2026-08-15
+camera play 3 fpt phù hợp với ai?,COMMERCIAL,CAMERA,/camera-fpt/play-3/,ANSWER_ON_OWNER,2026-08-15
+camera play 3 fpt có tốt không?,COMMERCIAL,CAMERA,/camera-fpt/play-3/,ANSWER_ON_OWNER,2026-08-15
+camera play 3 fpt khác gì lựa chọn khác?,COMMERCIAL,CAMERA,/camera-fpt/play-3/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn camera play 3 fpt?,COMMERCIAL,CAMERA,/camera-fpt/play-3/,ANSWER_ON_OWNER,2026-08-15
+camera play 4 fpt phù hợp với ai?,COMMERCIAL,CAMERA,/camera-fpt/play-4/,ANSWER_ON_OWNER,2026-08-15
+camera play 4 fpt có tốt không?,COMMERCIAL,CAMERA,/camera-fpt/play-4/,ANSWER_ON_OWNER,2026-08-15
+camera play 4 fpt khác gì lựa chọn khác?,COMMERCIAL,CAMERA,/camera-fpt/play-4/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn camera play 4 fpt?,COMMERCIAL,CAMERA,/camera-fpt/play-4/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho gia đình phù hợp với ai?,COMMERCIAL,USE_FAMILY,/giai-phap/gia-dinh/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho gia đình có tốt không?,COMMERCIAL,USE_FAMILY,/giai-phap/gia-dinh/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho gia đình khác gì lựa chọn khác?,COMMERCIAL,USE_FAMILY,/giai-phap/gia-dinh/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn mạng fpt cho gia đình?,COMMERCIAL,USE_FAMILY,/giai-phap/gia-dinh/,ANSWER_ON_OWNER,2026-08-15
+wifi fpt cho nhà nhiều tầng phù hợp với ai?,COMMERCIAL,USE_MULTIFLOOR,/giai-phap/nha-nhieu-tang/,ANSWER_ON_OWNER,2026-08-15
+wifi fpt cho nhà nhiều tầng có tốt không?,COMMERCIAL,USE_MULTIFLOOR,/giai-phap/nha-nhieu-tang/,ANSWER_ON_OWNER,2026-08-15
+wifi fpt cho nhà nhiều tầng khác gì lựa chọn khác?,COMMERCIAL,USE_MULTIFLOOR,/giai-phap/nha-nhieu-tang/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn wifi fpt cho nhà nhiều tầng?,COMMERCIAL,USE_MULTIFLOOR,/giai-phap/nha-nhieu-tang/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho chung cư phù hợp với ai?,COMMERCIAL,USE_APARTMENT,/giai-phap/chung-cu/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho chung cư có tốt không?,COMMERCIAL,USE_APARTMENT,/giai-phap/chung-cu/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho chung cư khác gì lựa chọn khác?,COMMERCIAL,USE_APARTMENT,/giai-phap/chung-cu/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn mạng fpt cho chung cư?,COMMERCIAL,USE_APARTMENT,/giai-phap/chung-cu/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho game thủ phù hợp với ai?,COMMERCIAL,USE_GAME,/giai-phap/game-thu/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho game thủ có tốt không?,COMMERCIAL,USE_GAME,/giai-phap/game-thu/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho game thủ khác gì lựa chọn khác?,COMMERCIAL,USE_GAME,/giai-phap/game-thu/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn mạng fpt cho game thủ?,COMMERCIAL,USE_GAME,/giai-phap/game-thu/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho livestream phù hợp với ai?,COMMERCIAL,USE_STREAM,/giai-phap/livestream/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho livestream có tốt không?,COMMERCIAL,USE_STREAM,/giai-phap/livestream/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho livestream khác gì lựa chọn khác?,COMMERCIAL,USE_STREAM,/giai-phap/livestream/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn mạng fpt cho livestream?,COMMERCIAL,USE_STREAM,/giai-phap/livestream/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho camera phù hợp với ai?,COMMERCIAL,USE_CAMERA,/giai-phap/camera/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho camera có tốt không?,COMMERCIAL,USE_CAMERA,/giai-phap/camera/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho camera khác gì lựa chọn khác?,COMMERCIAL,USE_CAMERA,/giai-phap/camera/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn mạng fpt cho camera?,COMMERCIAL,USE_CAMERA,/giai-phap/camera/,ANSWER_ON_OWNER,2026-08-15
+internet fpt cho smart home phù hợp với ai?,COMMERCIAL,USE_SMARTHOME,/giai-phap/smart-home/,ANSWER_ON_OWNER,2026-08-15
+internet fpt cho smart home có tốt không?,COMMERCIAL,USE_SMARTHOME,/giai-phap/smart-home/,ANSWER_ON_OWNER,2026-08-15
+internet fpt cho smart home khác gì lựa chọn khác?,COMMERCIAL,USE_SMARTHOME,/giai-phap/smart-home/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn internet fpt cho smart home?,COMMERCIAL,USE_SMARTHOME,/giai-phap/smart-home/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho văn phòng phù hợp với ai?,COMMERCIAL,USE_OFFICE,/giai-phap/van-phong/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho văn phòng có tốt không?,COMMERCIAL,USE_OFFICE,/giai-phap/van-phong/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho văn phòng khác gì lựa chọn khác?,COMMERCIAL,USE_OFFICE,/giai-phap/van-phong/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn mạng fpt cho văn phòng?,COMMERCIAL,USE_OFFICE,/giai-phap/van-phong/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho doanh nghiệp nhỏ phù hợp với ai?,COMMERCIAL,USE_SME,/giai-phap/doanh-nghiep-nho/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho doanh nghiệp nhỏ có tốt không?,COMMERCIAL,USE_SME,/giai-phap/doanh-nghiep-nho/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho doanh nghiệp nhỏ khác gì lựa chọn khác?,COMMERCIAL,USE_SME,/giai-phap/doanh-nghiep-nho/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn mạng fpt cho doanh nghiệp nhỏ?,COMMERCIAL,USE_SME,/giai-phap/doanh-nghiep-nho/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho quán cafe phù hợp với ai?,COMMERCIAL,USE_CAFE,/giai-phap/quan-cafe/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho quán cafe có tốt không?,COMMERCIAL,USE_CAFE,/giai-phap/quan-cafe/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho quán cafe khác gì lựa chọn khác?,COMMERCIAL,USE_CAFE,/giai-phap/quan-cafe/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn mạng fpt cho quán cafe?,COMMERCIAL,USE_CAFE,/giai-phap/quan-cafe/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho homestay phù hợp với ai?,COMMERCIAL,USE_HOMESTAY,/giai-phap/homestay/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho homestay có tốt không?,COMMERCIAL,USE_HOMESTAY,/giai-phap/homestay/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho homestay khác gì lựa chọn khác?,COMMERCIAL,USE_HOMESTAY,/giai-phap/homestay/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn mạng fpt cho homestay?,COMMERCIAL,USE_HOMESTAY,/giai-phap/homestay/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho cửa hàng phù hợp với ai?,COMMERCIAL,USE_RETAIL,/giai-phap/cua-hang/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho cửa hàng có tốt không?,COMMERCIAL,USE_RETAIL,/giai-phap/cua-hang/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt cho cửa hàng khác gì lựa chọn khác?,COMMERCIAL,USE_RETAIL,/giai-phap/cua-hang/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn mạng fpt cho cửa hàng?,COMMERCIAL,USE_RETAIL,/giai-phap/cua-hang/,ANSWER_ON_OWNER,2026-08-15
+fpt vs viettel khác nhau ở điểm nào?,COMPARISON,COMPARE,/so-sanh/fpt-vs-viettel/,ANSWER_ON_OWNER,2026-08-15
+nên chọn fpt vs viettel trong trường hợp nào?,COMPARISON,COMPARE,/so-sanh/fpt-vs-viettel/,ANSWER_ON_OWNER,2026-08-15
+fpt vs viettel cái nào phù hợp gia đình hơn?,COMPARISON,COMPARE,/so-sanh/fpt-vs-viettel/,ANSWER_ON_OWNER,2026-08-15
+fpt vs vnpt khác nhau ở điểm nào?,COMPARISON,COMPARE,/so-sanh/fpt-vs-vnpt/,ANSWER_ON_OWNER,2026-08-15
+nên chọn fpt vs vnpt trong trường hợp nào?,COMPARISON,COMPARE,/so-sanh/fpt-vs-vnpt/,ANSWER_ON_OWNER,2026-08-15
+fpt vs vnpt cái nào phù hợp gia đình hơn?,COMPARISON,COMPARE,/so-sanh/fpt-vs-vnpt/,ANSWER_ON_OWNER,2026-08-15
+wifi 6 vs wifi 7 khác nhau ở điểm nào?,COMPARISON,COMPARE,/so-sanh/wifi-6-vs-wifi-7/,ANSWER_ON_OWNER,2026-08-15
+nên chọn wifi 6 vs wifi 7 trong trường hợp nào?,COMPARISON,COMPARE,/so-sanh/wifi-6-vs-wifi-7/,ANSWER_ON_OWNER,2026-08-15
+wifi 6 vs wifi 7 cái nào phù hợp gia đình hơn?,COMPARISON,COMPARE,/so-sanh/wifi-6-vs-wifi-7/,ANSWER_ON_OWNER,2026-08-15
+giga vs sky fpt khác nhau ở điểm nào?,COMPARISON,COMPARE,/so-sanh/giga-vs-sky/,ANSWER_ON_OWNER,2026-08-15
+nên chọn giga vs sky fpt trong trường hợp nào?,COMPARISON,COMPARE,/so-sanh/giga-vs-sky/,ANSWER_ON_OWNER,2026-08-15
+giga vs sky fpt cái nào phù hợp gia đình hơn?,COMPARISON,COMPARE,/so-sanh/giga-vs-sky/,ANSWER_ON_OWNER,2026-08-15
+sky vs meta fpt khác nhau ở điểm nào?,COMPARISON,COMPARE,/so-sanh/sky-vs-meta/,ANSWER_ON_OWNER,2026-08-15
+nên chọn sky vs meta fpt trong trường hợp nào?,COMPARISON,COMPARE,/so-sanh/sky-vs-meta/,ANSWER_ON_OWNER,2026-08-15
+sky vs meta fpt cái nào phù hợp gia đình hơn?,COMPARISON,COMPARE,/so-sanh/sky-vs-meta/,ANSWER_ON_OWNER,2026-08-15
+f-game vs meta fpt khác nhau ở điểm nào?,COMPARISON,COMPARE,/so-sanh/f-game-vs-meta/,ANSWER_ON_OWNER,2026-08-15
+nên chọn f-game vs meta fpt trong trường hợp nào?,COMPARISON,COMPARE,/so-sanh/f-game-vs-meta/,ANSWER_ON_OWNER,2026-08-15
+f-game vs meta fpt cái nào phù hợp gia đình hơn?,COMPARISON,COMPARE,/so-sanh/f-game-vs-meta/,ANSWER_ON_OWNER,2026-08-15
+lắp mạng fpt mất bao lâu? là gì?,INFORMATIONAL,SUPPORT,/ho-tro/lap-mang-fpt-mat-bao-lau/,ANSWER_ON_OWNER,2026-08-15
+lắp mạng fpt mất bao lâu? hoạt động thế nào?,INFORMATIONAL,SUPPORT,/ho-tro/lap-mang-fpt-mat-bao-lau/,ANSWER_ON_OWNER,2026-08-15
+lắp mạng fpt mất bao lâu? có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/ho-tro/lap-mang-fpt-mat-bao-lau/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần lắp mạng fpt mất bao lâu??,INFORMATIONAL,SUPPORT,/ho-tro/lap-mang-fpt-mat-bao-lau/,ANSWER_ON_OWNER,2026-08-15
+phí lắp đặt fpt là gì?,INFORMATIONAL,SUPPORT,/ho-tro/phi-lap-dat-fpt/,ANSWER_ON_OWNER,2026-08-15
+phí lắp đặt fpt hoạt động thế nào?,INFORMATIONAL,SUPPORT,/ho-tro/phi-lap-dat-fpt/,ANSWER_ON_OWNER,2026-08-15
+phí lắp đặt fpt có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/ho-tro/phi-lap-dat-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần phí lắp đặt fpt?,INFORMATIONAL,SUPPORT,/ho-tro/phi-lap-dat-fpt/,ANSWER_ON_OWNER,2026-08-15
+đổi mật khẩu wifi fpt là gì?,INFORMATIONAL,SUPPORT,/ho-tro/doi-mat-khau-wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+đổi mật khẩu wifi fpt hoạt động thế nào?,INFORMATIONAL,SUPPORT,/ho-tro/doi-mat-khau-wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+đổi mật khẩu wifi fpt có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/ho-tro/doi-mat-khau-wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần đổi mật khẩu wifi fpt?,INFORMATIONAL,SUPPORT,/ho-tro/doi-mat-khau-wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+wifi fpt yếu là gì?,INFORMATIONAL,SUPPORT,/ho-tro/wifi-fpt-yeu/,ANSWER_ON_OWNER,2026-08-15
+wifi fpt yếu hoạt động thế nào?,INFORMATIONAL,SUPPORT,/ho-tro/wifi-fpt-yeu/,ANSWER_ON_OWNER,2026-08-15
+wifi fpt yếu có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/ho-tro/wifi-fpt-yeu/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần wifi fpt yếu?,INFORMATIONAL,SUPPORT,/ho-tro/wifi-fpt-yeu/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt chậm là gì?,INFORMATIONAL,SUPPORT,/ho-tro/mang-fpt-cham/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt chậm hoạt động thế nào?,INFORMATIONAL,SUPPORT,/ho-tro/mang-fpt-cham/,ANSWER_ON_OWNER,2026-08-15
+mạng fpt chậm có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/ho-tro/mang-fpt-cham/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần mạng fpt chậm?,INFORMATIONAL,SUPPORT,/ho-tro/mang-fpt-cham/,ANSWER_ON_OWNER,2026-08-15
+mất mạng fpt là gì?,INFORMATIONAL,SUPPORT,/ho-tro/mat-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+mất mạng fpt hoạt động thế nào?,INFORMATIONAL,SUPPORT,/ho-tro/mat-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+mất mạng fpt có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/ho-tro/mat-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần mất mạng fpt?,INFORMATIONAL,SUPPORT,/ho-tro/mat-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+chuyển địa điểm fpt là gì?,INFORMATIONAL,SUPPORT,/ho-tro/chuyen-dia-diem-fpt/,ANSWER_ON_OWNER,2026-08-15
+chuyển địa điểm fpt hoạt động thế nào?,INFORMATIONAL,SUPPORT,/ho-tro/chuyen-dia-diem-fpt/,ANSWER_ON_OWNER,2026-08-15
+chuyển địa điểm fpt có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/ho-tro/chuyen-dia-diem-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần chuyển địa điểm fpt?,INFORMATIONAL,SUPPORT,/ho-tro/chuyen-dia-diem-fpt/,ANSWER_ON_OWNER,2026-08-15
+nâng cấp gói fpt là gì?,INFORMATIONAL,SUPPORT,/ho-tro/nang-cap-goi-fpt/,ANSWER_ON_OWNER,2026-08-15
+nâng cấp gói fpt hoạt động thế nào?,INFORMATIONAL,SUPPORT,/ho-tro/nang-cap-goi-fpt/,ANSWER_ON_OWNER,2026-08-15
+nâng cấp gói fpt có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/ho-tro/nang-cap-goi-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần nâng cấp gói fpt?,INFORMATIONAL,SUPPORT,/ho-tro/nang-cap-goi-fpt/,ANSWER_ON_OWNER,2026-08-15
+hủy dịch vụ fpt là gì?,INFORMATIONAL,SUPPORT,/ho-tro/huy-goi-fpt/,ANSWER_ON_OWNER,2026-08-15
+hủy dịch vụ fpt hoạt động thế nào?,INFORMATIONAL,SUPPORT,/ho-tro/huy-goi-fpt/,ANSWER_ON_OWNER,2026-08-15
+hủy dịch vụ fpt có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/ho-tro/huy-goi-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần hủy dịch vụ fpt?,INFORMATIONAL,SUPPORT,/ho-tro/huy-goi-fpt/,ANSWER_ON_OWNER,2026-08-15
+kiểm tra tốc độ mạng fpt là gì?,INFORMATIONAL,SUPPORT,/ho-tro/kiem-tra-toc-do-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+kiểm tra tốc độ mạng fpt hoạt động thế nào?,INFORMATIONAL,SUPPORT,/ho-tro/kiem-tra-toc-do-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+kiểm tra tốc độ mạng fpt có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/ho-tro/kiem-tra-toc-do-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần kiểm tra tốc độ mạng fpt?,INFORMATIONAL,SUPPORT,/ho-tro/kiem-tra-toc-do-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+modem wifi 6 fpt là gì?,INFORMATIONAL,SUPPORT,/kien-thuc/modem-wifi-6-fpt/,ANSWER_ON_OWNER,2026-08-15
+modem wifi 6 fpt hoạt động thế nào?,INFORMATIONAL,SUPPORT,/kien-thuc/modem-wifi-6-fpt/,ANSWER_ON_OWNER,2026-08-15
+modem wifi 6 fpt có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/kien-thuc/modem-wifi-6-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần modem wifi 6 fpt?,INFORMATIONAL,SUPPORT,/kien-thuc/modem-wifi-6-fpt/,ANSWER_ON_OWNER,2026-08-15
+mesh wifi là gì? là gì?,INFORMATIONAL,SUPPORT,/kien-thuc/mesh-wifi-la-gi/,ANSWER_ON_OWNER,2026-08-15
+mesh wifi là gì? hoạt động thế nào?,INFORMATIONAL,SUPPORT,/kien-thuc/mesh-wifi-la-gi/,ANSWER_ON_OWNER,2026-08-15
+mesh wifi là gì? có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/kien-thuc/mesh-wifi-la-gi/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần mesh wifi là gì??,INFORMATIONAL,SUPPORT,/kien-thuc/mesh-wifi-la-gi/,ANSWER_ON_OWNER,2026-08-15
+300 mbps đủ dùng không? là gì?,INFORMATIONAL,SUPPORT,/kien-thuc/300mbps-du-khong/,ANSWER_ON_OWNER,2026-08-15
+300 mbps đủ dùng không? hoạt động thế nào?,INFORMATIONAL,SUPPORT,/kien-thuc/300mbps-du-khong/,ANSWER_ON_OWNER,2026-08-15
+300 mbps đủ dùng không? có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/kien-thuc/300mbps-du-khong/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần 300 mbps đủ dùng không??,INFORMATIONAL,SUPPORT,/kien-thuc/300mbps-du-khong/,ANSWER_ON_OWNER,2026-08-15
+1 gbps dùng được bao nhiêu thiết bị? là gì?,INFORMATIONAL,SUPPORT,/kien-thuc/1gbps-bao-nhieu-thiet-bi/,ANSWER_ON_OWNER,2026-08-15
+1 gbps dùng được bao nhiêu thiết bị? hoạt động thế nào?,INFORMATIONAL,SUPPORT,/kien-thuc/1gbps-bao-nhieu-thiet-bi/,ANSWER_ON_OWNER,2026-08-15
+1 gbps dùng được bao nhiêu thiết bị? có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/kien-thuc/1gbps-bao-nhieu-thiet-bi/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần 1 gbps dùng được bao nhiêu thiết bị??,INFORMATIONAL,SUPPORT,/kien-thuc/1gbps-bao-nhieu-thiet-bi/,ANSWER_ON_OWNER,2026-08-15
+ftth là gì? là gì?,INFORMATIONAL,SUPPORT,/kien-thuc/ftth-la-gi/,ANSWER_ON_OWNER,2026-08-15
+ftth là gì? hoạt động thế nào?,INFORMATIONAL,SUPPORT,/kien-thuc/ftth-la-gi/,ANSWER_ON_OWNER,2026-08-15
+ftth là gì? có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/kien-thuc/ftth-la-gi/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần ftth là gì??,INFORMATIONAL,SUPPORT,/kien-thuc/ftth-la-gi/,ANSWER_ON_OWNER,2026-08-15
+xgs-pon là gì? là gì?,INFORMATIONAL,SUPPORT,/kien-thuc/xgs-pon-la-gi/,ANSWER_ON_OWNER,2026-08-15
+xgs-pon là gì? hoạt động thế nào?,INFORMATIONAL,SUPPORT,/kien-thuc/xgs-pon-la-gi/,ANSWER_ON_OWNER,2026-08-15
+xgs-pon là gì? có ưu nhược điểm gì?,INFORMATIONAL,SUPPORT,/kien-thuc/xgs-pon-la-gi/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần xgs-pon là gì??,INFORMATIONAL,SUPPORT,/kien-thuc/xgs-pon-la-gi/,ANSWER_ON_OWNER,2026-08-15
+giải pháp internet fpt phù hợp với ai?,COMMERCIAL,USE_CASE,/giai-phap/,ANSWER_ON_OWNER,2026-08-15
+giải pháp internet fpt có tốt không?,COMMERCIAL,USE_CASE,/giai-phap/,ANSWER_ON_OWNER,2026-08-15
+giải pháp internet fpt khác gì lựa chọn khác?,COMMERCIAL,USE_CASE,/giai-phap/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn giải pháp internet fpt?,COMMERCIAL,USE_CASE,/giai-phap/,ANSWER_ON_OWNER,2026-08-15
+so sánh internet fpt khác nhau ở điểm nào?,COMPARISON,COMPARE,/so-sanh/,ANSWER_ON_OWNER,2026-08-15
+nên chọn so sánh internet fpt trong trường hợp nào?,COMPARISON,COMPARE,/so-sanh/,ANSWER_ON_OWNER,2026-08-15
+so sánh internet fpt cái nào phù hợp gia đình hơn?,COMPARISON,COMPARE,/so-sanh/,ANSWER_ON_OWNER,2026-08-15
+cách xử lý hỗ trợ internet fpt?,SUPPORT,SUPPORT,/ho-tro/,ANSWER_ON_OWNER,2026-08-15
+vì sao hỗ trợ internet fpt?,SUPPORT,SUPPORT,/ho-tro/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần gọi kỹ thuật về hỗ trợ internet fpt?,SUPPORT,SUPPORT,/ho-tro/,ANSWER_ON_OWNER,2026-08-15
+kiến thức internet fpt là gì?,INFORMATIONAL,KNOWLEDGE,/kien-thuc/,ANSWER_ON_OWNER,2026-08-15
+kiến thức internet fpt hoạt động thế nào?,INFORMATIONAL,KNOWLEDGE,/kien-thuc/,ANSWER_ON_OWNER,2026-08-15
+kiến thức internet fpt có ưu nhược điểm gì?,INFORMATIONAL,KNOWLEDGE,/kien-thuc/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần kiến thức internet fpt?,INFORMATIONAL,KNOWLEDGE,/kien-thuc/,ANSWER_ON_OWNER,2026-08-15
+lắp mạng fpt theo khu vực là gì?,LOCAL_TRANSACTIONAL,LOCAL,/khu-vuc/,ANSWER_ON_OWNER,2026-08-15
+lắp mạng fpt theo khu vực phù hợp với ai?,LOCAL_TRANSACTIONAL,LOCAL,/khu-vuc/,ANSWER_ON_OWNER,2026-08-15
+lắp mạng fpt bao nhiêu tiền?,TRANSACTIONAL,INSTALL,/lap-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+lắp mạng fpt mất bao lâu?,TRANSACTIONAL,INSTALL,/lap-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+lắp mạng fpt cần thủ tục gì?,TRANSACTIONAL,INSTALL,/lap-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+lắp mạng fpt có áp dụng ở khu vực của tôi không?,TRANSACTIONAL,INSTALL,/lap-mang-fpt/,ANSWER_ON_OWNER,2026-08-15
+internet fpt phù hợp với ai?,COMMERCIAL,INTERNET,/internet-fpt/,ANSWER_ON_OWNER,2026-08-15
+internet fpt có tốt không?,COMMERCIAL,INTERNET,/internet-fpt/,ANSWER_ON_OWNER,2026-08-15
+internet fpt khác gì lựa chọn khác?,COMMERCIAL,INTERNET,/internet-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn internet fpt?,COMMERCIAL,INTERNET,/internet-fpt/,ANSWER_ON_OWNER,2026-08-15
+wifi fpt phù hợp với ai?,COMMERCIAL,WIFI,/wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+wifi fpt có tốt không?,COMMERCIAL,WIFI,/wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+wifi fpt khác gì lựa chọn khác?,COMMERCIAL,WIFI,/wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn wifi fpt?,COMMERCIAL,WIFI,/wifi-fpt/,ANSWER_ON_OWNER,2026-08-15
+cáp quang fpt là gì?,INFORMATIONAL,FTTH,/cap-quang-fpt/,ANSWER_ON_OWNER,2026-08-15
+cáp quang fpt hoạt động thế nào?,INFORMATIONAL,FTTH,/cap-quang-fpt/,ANSWER_ON_OWNER,2026-08-15
+cáp quang fpt có ưu nhược điểm gì?,INFORMATIONAL,FTTH,/cap-quang-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần cáp quang fpt?,INFORMATIONAL,FTTH,/cap-quang-fpt/,ANSWER_ON_OWNER,2026-08-15
+wifi 7 fpt phù hợp với ai?,COMMERCIAL,WIFI7,/wifi-7/,ANSWER_ON_OWNER,2026-08-15
+wifi 7 fpt có tốt không?,COMMERCIAL,WIFI7,/wifi-7/,ANSWER_ON_OWNER,2026-08-15
+wifi 7 fpt khác gì lựa chọn khác?,COMMERCIAL,WIFI7,/wifi-7/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn wifi 7 fpt?,COMMERCIAL,WIFI7,/wifi-7/,ANSWER_ON_OWNER,2026-08-15
+camera fpt phù hợp với ai?,COMMERCIAL,CAMERA,/camera-fpt/,ANSWER_ON_OWNER,2026-08-15
+camera fpt có tốt không?,COMMERCIAL,CAMERA,/camera-fpt/,ANSWER_ON_OWNER,2026-08-15
+camera fpt khác gì lựa chọn khác?,COMMERCIAL,CAMERA,/camera-fpt/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn camera fpt?,COMMERCIAL,CAMERA,/camera-fpt/,ANSWER_ON_OWNER,2026-08-15
+fpt play phù hợp với ai?,COMMERCIAL,PLAY,/fpt-play/,ANSWER_ON_OWNER,2026-08-15
+fpt play có tốt không?,COMMERCIAL,PLAY,/fpt-play/,ANSWER_ON_OWNER,2026-08-15
+fpt play khác gì lựa chọn khác?,COMMERCIAL,PLAY,/fpt-play/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn fpt play?,COMMERCIAL,PLAY,/fpt-play/,ANSWER_ON_OWNER,2026-08-15
+cách xử lý hỗ trợ fpt?,SUPPORT,SUPPORT,/support/,ANSWER_ON_OWNER,2026-08-15
+vì sao hỗ trợ fpt?,SUPPORT,SUPPORT,/support/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần gọi kỹ thuật về hỗ trợ fpt?,SUPPORT,SUPPORT,/support/,ANSWER_ON_OWNER,2026-08-15
+tin tức fpt là gì?,INFORMATIONAL,NEWS,/tin-tuc/,ANSWER_ON_OWNER,2026-08-15
+tin tức fpt hoạt động thế nào?,INFORMATIONAL,NEWS,/tin-tuc/,ANSWER_ON_OWNER,2026-08-15
+tin tức fpt có ưu nhược điểm gì?,INFORMATIONAL,NEWS,/tin-tuc/,ANSWER_ON_OWNER,2026-08-15
+khi nào cần tin tức fpt?,INFORMATIONAL,NEWS,/tin-tuc/,ANSWER_ON_OWNER,2026-08-15
+liên hệ fpt bao nhiêu tiền?,TRANSACTIONAL,CONTACT,/lien-he/,ANSWER_ON_OWNER,2026-08-15
+liên hệ fpt mất bao lâu?,TRANSACTIONAL,CONTACT,/lien-he/,ANSWER_ON_OWNER,2026-08-15
+liên hệ fpt cần thủ tục gì?,TRANSACTIONAL,CONTACT,/lien-he/,ANSWER_ON_OWNER,2026-08-15
+liên hệ fpt có áp dụng ở khu vực của tôi không?,TRANSACTIONAL,CONTACT,/lien-he/,ANSWER_ON_OWNER,2026-08-15
+giga fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/giga/,ANSWER_ON_OWNER,2026-08-15
+giga fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/giga/,ANSWER_ON_OWNER,2026-08-15
+giga fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/giga/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn giga fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/giga/,ANSWER_ON_OWNER,2026-08-15
+sky fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/sky/,ANSWER_ON_OWNER,2026-08-15
+sky fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/sky/,ANSWER_ON_OWNER,2026-08-15
+sky fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/sky/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn sky fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/sky/,ANSWER_ON_OWNER,2026-08-15
+meta fpt phù hợp với ai?,COMMERCIAL,PACKAGES,/goi-cuoc/meta/,ANSWER_ON_OWNER,2026-08-15
+meta fpt có tốt không?,COMMERCIAL,PACKAGES,/goi-cuoc/meta/,ANSWER_ON_OWNER,2026-08-15
+meta fpt khác gì lựa chọn khác?,COMMERCIAL,PACKAGES,/goi-cuoc/meta/,ANSWER_ON_OWNER,2026-08-15
+khi nào nên chọn meta fpt?,COMMERCIAL,PACKAGES,/goi-cuoc/meta/,ANSWER_ON_OWNER,2026-08-15

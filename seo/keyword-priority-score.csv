@@ -1,0 +1,73 @@
+﻿target_url,entity,priority_tier,governance_score,business_intent,evidence_confidence,note
+/goi-cuoc-fpt/,Gói Cước FPT,P0,90,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/bang-gia-fpt/,Bảng Giá FPT,P0,90,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/combo-fpt/,Combo FPT,P0,90,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/internet-truyen-hinh-fpt/,Internet + Truyền Hình FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/f-game-fpt/,F-Game FPT,P0,90,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/mesh-wifi-fpt/,Mesh WiFi FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/wifi-6-fpt/,WiFi 6 FPT,P1,76,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/xgs-pon-fpt/,XGS-PON FPT,P1,76,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/speedx-fpt/,SpeedX FPT,P0,90,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/f-game/,Gói F-Game FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/combo-giga/,Combo GIGA FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/combo-sky/,Combo SKY FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/combo-meta/,Combo META FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/combo-f-game/,Combo F-Game FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/speedx2/,SpeedX2 FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/speedx2-pro/,SpeedX2 Pro FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/speedx10/,SpeedX10 FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/speedx10-pro/,SpeedX10 Pro FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/camera-fpt/play-3/,Camera Play 3 FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/camera-fpt/play-4/,Camera Play 4 FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/gia-dinh/,Mạng FPT cho gia đình,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/nha-nhieu-tang/,WiFi FPT cho nhà nhiều tầng,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/chung-cu/,Mạng FPT cho chung cư,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/game-thu/,Mạng FPT cho game thủ,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/livestream/,Mạng FPT cho livestream,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/camera/,Mạng FPT cho camera,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/smart-home/,Internet FPT cho Smart Home,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/van-phong/,Mạng FPT cho văn phòng,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/doanh-nghiep-nho/,Mạng FPT cho doanh nghiệp nhỏ,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/quan-cafe/,Mạng FPT cho quán cafe,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/homestay/,Mạng FPT cho homestay,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/cua-hang/,Mạng FPT cho cửa hàng,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/so-sanh/fpt-vs-viettel/,FPT vs Viettel,P1,76,MEDIUM,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/so-sanh/fpt-vs-vnpt/,FPT vs VNPT,P1,76,MEDIUM,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/so-sanh/wifi-6-vs-wifi-7/,WiFi 6 vs WiFi 7,P1,76,MEDIUM,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/so-sanh/giga-vs-sky/,GIGA vs SKY FPT,P1,76,MEDIUM,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/so-sanh/sky-vs-meta/,SKY vs META FPT,P1,76,MEDIUM,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/so-sanh/f-game-vs-meta/,F-Game vs META FPT,P1,76,MEDIUM,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/ho-tro/lap-mang-fpt-mat-bao-lau/,Lắp mạng FPT mất bao lâu?,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/ho-tro/phi-lap-dat-fpt/,Phí lắp đặt FPT,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/ho-tro/doi-mat-khau-wifi-fpt/,Đổi mật khẩu WiFi FPT,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/ho-tro/wifi-fpt-yeu/,WiFi FPT yếu,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/ho-tro/mang-fpt-cham/,Mạng FPT chậm,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/ho-tro/mat-mang-fpt/,Mất mạng FPT,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/ho-tro/chuyen-dia-diem-fpt/,Chuyển địa điểm FPT,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/ho-tro/nang-cap-goi-fpt/,Nâng cấp gói FPT,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/ho-tro/huy-goi-fpt/,Hủy dịch vụ FPT,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/ho-tro/kiem-tra-toc-do-mang-fpt/,Kiểm tra tốc độ mạng FPT,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/kien-thuc/modem-wifi-6-fpt/,Modem WiFi 6 FPT,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/kien-thuc/mesh-wifi-la-gi/,Mesh WiFi là gì?,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/kien-thuc/300mbps-du-khong/,300 Mbps đủ dùng không?,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/kien-thuc/1gbps-bao-nhieu-thiet-bi/,1 Gbps dùng được bao nhiêu thiết bị?,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/kien-thuc/ftth-la-gi/,FTTH là gì?,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/kien-thuc/xgs-pon-la-gi/,XGS-PON là gì?,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/giai-phap/,Giải pháp Internet FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/so-sanh/,So sánh Internet FPT,P1,76,MEDIUM,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/ho-tro/,Hỗ trợ Internet FPT,P1,76,MEDIUM,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/kien-thuc/,Kiến thức Internet FPT,P2,62,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/khu-vuc/,Lắp mạng FPT theo khu vực,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/lap-mang-fpt/,Lắp mạng FPT,P0,90,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/internet-fpt/,Internet FPT,P0,90,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/wifi-fpt/,WiFi FPT,P0,90,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/cap-quang-fpt/,Cáp quang FPT,P0,90,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/wifi-7/,WiFi 7 FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/camera-fpt/,Camera FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/fpt-play/,FPT Play,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/support/,Hỗ trợ FPT,P1,76,MEDIUM,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/tin-tuc/,Tin tức FPT,P1,76,LOW,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/lien-he/,Liên hệ FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/giga/,GIGA FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/sky/,SKY FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction
+/goi-cuoc/meta/,META FPT,P1,76,HIGH,MEDIUM,Internal governance score only; not search volume/KD/ranking prediction

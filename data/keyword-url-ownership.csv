@@ -1,0 +1,12 @@
+
+keyword,url_owner,intent,priority
+lắp mạng fpt,/lap-mang-fpt/,transactional,P0
+internet fpt,/internet-fpt/,commercial,P0
+wifi fpt,/wifi-fpt/,commercial,P0
+cáp quang fpt,/cap-quang-fpt/,commercial,P0
+gói giga fpt,/goi-cuoc/giga/,commercial,P1
+gói sky fpt,/goi-cuoc/sky/,commercial,P1
+gói meta fpt,/goi-cuoc/meta/,commercial,P1
+wifi 7 fpt,/wifi-7/,commercial,P1
+camera fpt,/camera-fpt/,commercial,P1
+fpt play,/fpt-play/,commercial,P1

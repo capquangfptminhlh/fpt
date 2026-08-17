@@ -1,0 +1,21 @@
+version: 1
+observed_at: 2026-08-15
+decision: PASS
+scope: full-fpt-seo-architecture-v1
+metrics_policy:
+  search_volume: UNKNOWN
+  kd: UNKNOWN
+  cpc: UNKNOWN
+  fabricated_metrics: FORBIDDEN
+ownership:
+  one_primary_intent_entity: one_canonical_indexable_owner
+local_seo:
+  administrative_scope: 34_provincial_units
+  publication_status: HOLD_LOCAL_EVIDENCE
+  rule: do_not_publish_name_swap_doorway_pages
+content_scaling:
+  status: ALLOWED_FOR_MAPPED_NON_LOCAL_CLUSTERS
+  local_status: HOLD
+source_policy:
+  first_party_priority: FPT Telecom
+  observed_at_required: true

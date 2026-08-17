@@ -1,0 +1,72 @@
+﻿url,primary_entity,primary_intent,cluster_id,priority,indexable,status
+/goi-cuoc-fpt/,Gói Cước FPT,COMMERCIAL,PACKAGES,P0,YES,OWNER
+/bang-gia-fpt/,Bảng Giá FPT,COMMERCIAL,PACKAGES,P0,YES,OWNER
+/combo-fpt/,Combo FPT,COMMERCIAL,COMBO,P0,YES,OWNER
+/internet-truyen-hinh-fpt/,Internet + Truyền Hình FPT,COMMERCIAL,COMBO,P1,YES,OWNER
+/f-game-fpt/,F-Game FPT,COMMERCIAL,GAMING,P0,YES,OWNER
+/mesh-wifi-fpt/,Mesh WiFi FPT,COMMERCIAL,WIFI,P1,YES,OWNER
+/wifi-6-fpt/,WiFi 6 FPT,INFORMATIONAL,WIFI,P1,YES,OWNER
+/xgs-pon-fpt/,XGS-PON FPT,INFORMATIONAL,WIFI7,P1,YES,OWNER
+/speedx-fpt/,SpeedX FPT,COMMERCIAL,WIFI7,P0,YES,OWNER
+/goi-cuoc/f-game/,Gói F-Game FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER
+/goi-cuoc/combo-giga/,Combo GIGA FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER
+/goi-cuoc/combo-sky/,Combo SKY FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER
+/goi-cuoc/combo-meta/,Combo META FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER
+/goi-cuoc/combo-f-game/,Combo F-Game FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER
+/goi-cuoc/speedx2/,SpeedX2 FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER
+/goi-cuoc/speedx2-pro/,SpeedX2 Pro FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER
+/goi-cuoc/speedx10/,SpeedX10 FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER
+/goi-cuoc/speedx10-pro/,SpeedX10 Pro FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER
+/camera-fpt/play-3/,Camera Play 3 FPT,COMMERCIAL,CAMERA,P1,YES,OWNER
+/camera-fpt/play-4/,Camera Play 4 FPT,COMMERCIAL,CAMERA,P1,YES,OWNER
+/giai-phap/gia-dinh/,Mạng FPT cho gia đình,COMMERCIAL,USE_FAMILY,P1,YES,OWNER
+/giai-phap/nha-nhieu-tang/,WiFi FPT cho nhà nhiều tầng,COMMERCIAL,USE_MULTIFLOOR,P1,YES,OWNER
+/giai-phap/chung-cu/,Mạng FPT cho chung cư,COMMERCIAL,USE_APARTMENT,P1,YES,OWNER
+/giai-phap/game-thu/,Mạng FPT cho game thủ,COMMERCIAL,USE_GAME,P1,YES,OWNER
+/giai-phap/livestream/,Mạng FPT cho livestream,COMMERCIAL,USE_STREAM,P1,YES,OWNER
+/giai-phap/camera/,Mạng FPT cho camera,COMMERCIAL,USE_CAMERA,P1,YES,OWNER
+/giai-phap/smart-home/,Internet FPT cho Smart Home,COMMERCIAL,USE_SMARTHOME,P1,YES,OWNER
+/giai-phap/van-phong/,Mạng FPT cho văn phòng,COMMERCIAL,USE_OFFICE,P1,YES,OWNER
+/giai-phap/doanh-nghiep-nho/,Mạng FPT cho doanh nghiệp nhỏ,COMMERCIAL,USE_SME,P1,YES,OWNER
+/giai-phap/quan-cafe/,Mạng FPT cho quán cafe,COMMERCIAL,USE_CAFE,P1,YES,OWNER
+/giai-phap/homestay/,Mạng FPT cho homestay,COMMERCIAL,USE_HOMESTAY,P1,YES,OWNER
+/giai-phap/cua-hang/,Mạng FPT cho cửa hàng,COMMERCIAL,USE_RETAIL,P1,YES,OWNER
+/so-sanh/fpt-vs-viettel/,FPT vs Viettel,COMPARISON,COMPARE,P1,YES,OWNER
+/so-sanh/fpt-vs-vnpt/,FPT vs VNPT,COMPARISON,COMPARE,P1,YES,OWNER
+/so-sanh/wifi-6-vs-wifi-7/,WiFi 6 vs WiFi 7,COMPARISON,COMPARE,P1,YES,OWNER
+/so-sanh/giga-vs-sky/,GIGA vs SKY FPT,COMPARISON,COMPARE,P1,YES,OWNER
+/so-sanh/sky-vs-meta/,SKY vs META FPT,COMPARISON,COMPARE,P1,YES,OWNER
+/so-sanh/f-game-vs-meta/,F-Game vs META FPT,COMPARISON,COMPARE,P1,YES,OWNER
+/ho-tro/lap-mang-fpt-mat-bao-lau/,Lắp mạng FPT mất bao lâu?,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/ho-tro/phi-lap-dat-fpt/,Phí lắp đặt FPT,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/ho-tro/doi-mat-khau-wifi-fpt/,Đổi mật khẩu WiFi FPT,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/ho-tro/wifi-fpt-yeu/,WiFi FPT yếu,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/ho-tro/mang-fpt-cham/,Mạng FPT chậm,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/ho-tro/mat-mang-fpt/,Mất mạng FPT,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/ho-tro/chuyen-dia-diem-fpt/,Chuyển địa điểm FPT,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/ho-tro/nang-cap-goi-fpt/,Nâng cấp gói FPT,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/ho-tro/huy-goi-fpt/,Hủy dịch vụ FPT,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/ho-tro/kiem-tra-toc-do-mang-fpt/,Kiểm tra tốc độ mạng FPT,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/kien-thuc/modem-wifi-6-fpt/,Modem WiFi 6 FPT,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/kien-thuc/mesh-wifi-la-gi/,Mesh WiFi là gì?,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/kien-thuc/300mbps-du-khong/,300 Mbps đủ dùng không?,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/kien-thuc/1gbps-bao-nhieu-thiet-bi/,1 Gbps dùng được bao nhiêu thiết bị?,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/kien-thuc/ftth-la-gi/,FTTH là gì?,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/kien-thuc/xgs-pon-la-gi/,XGS-PON là gì?,INFORMATIONAL,SUPPORT,P2,YES,OWNER
+/giai-phap/,Giải pháp Internet FPT,COMMERCIAL,USE_CASE,P1,YES,OWNER
+/so-sanh/,So sánh Internet FPT,COMPARISON,COMPARE,P1,YES,OWNER
+/ho-tro/,Hỗ trợ Internet FPT,SUPPORT,SUPPORT,P1,YES,OWNER
+/kien-thuc/,Kiến thức Internet FPT,INFORMATIONAL,KNOWLEDGE,P2,YES,OWNER
+/khu-vuc/,Lắp mạng FPT theo khu vực,LOCAL_TRANSACTIONAL,LOCAL,P1,YES,OWNER
+/lap-mang-fpt/,Lắp mạng FPT,TRANSACTIONAL,INSTALL,P0,YES,OWNER_EXISTING
+/internet-fpt/,Internet FPT,COMMERCIAL,INTERNET,P0,YES,OWNER_EXISTING
+/wifi-fpt/,WiFi FPT,COMMERCIAL,WIFI,P0,YES,OWNER_EXISTING
+/cap-quang-fpt/,Cáp quang FPT,INFORMATIONAL,FTTH,P0,YES,OWNER_EXISTING
+/wifi-7/,WiFi 7 FPT,COMMERCIAL,WIFI7,P1,YES,OWNER_EXISTING
+/camera-fpt/,Camera FPT,COMMERCIAL,CAMERA,P1,YES,OWNER_EXISTING
+/fpt-play/,FPT Play,COMMERCIAL,PLAY,P1,YES,OWNER_EXISTING
+/tin-tuc/,Tin tức FPT,INFORMATIONAL,NEWS,P1,YES,OWNER_EXISTING
+/lien-he/,Liên hệ FPT,TRANSACTIONAL,CONTACT,P1,YES,OWNER_EXISTING
+/goi-cuoc/giga/,GIGA FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER_EXISTING
+/goi-cuoc/sky/,SKY FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER_EXISTING
+/goi-cuoc/meta/,META FPT,COMMERCIAL,PACKAGES,P1,YES,OWNER_EXISTING

@@ -1,0 +1,14 @@
+{
+  "name": "fpt-full-seo-site-v1",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "FPT Full SEO Website Demo with 73 pages, structured data and clean routing.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

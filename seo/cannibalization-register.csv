@@ -1,0 +1,6 @@
+﻿intent_or_entity,primary_owner,potential_overlap,resolution,status
+lắp mạng FPT,/lap-mang-fpt/,/; /khu-vuc/,Homepage supports; local hub only; no duplicate transactional owner,RESOLVED
+Internet FPT,/internet-fpt/,/; /goi-cuoc-fpt/,Category owner separated from package comparison hub,RESOLVED
+WiFi FPT,/wifi-fpt/,/wifi-6-fpt/; /wifi-7/; /mesh-wifi-fpt/,Generic WiFi vs technology-specific owners,RESOLVED
+F-Game,/goi-cuoc/f-game/,/f-game-fpt/; /giai-phap/game-thu/,Entity page owns package; hub/use-case support and link to entity,RESOLVED
+WiFi 7,/wifi-7/,/speedx-fpt/; /xgs-pon-fpt/,Technology overview separated from product family and transport technology,RESOLVED

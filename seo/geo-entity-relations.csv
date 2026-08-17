@@ -1,0 +1,10 @@
+﻿subject,relation,object,object_type
+FPT Telecom,provides,Internet FPT,service
+Internet FPT,includes,GIGA / SKY / META / F-Game,package family
+FPT Telecom,provides,Wi-Fi 7 SpeedX,technology/service
+Wi-Fi 7 SpeedX,uses,XGS-PON,access technology
+FPT Telecom,provides,FPT Camera,service
+FPT Camera,includes,Camera Play 3 / Play 4,product
+FPT Telecom,provides,FPT Play,entertainment service
+Combo FPT,combines,Internet + FPT Play,bundle
+F-Game,uses,Ultra Fast,gaming optimization

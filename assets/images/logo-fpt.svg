@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="48" viewBox="0 0 180 48" role="img" aria-label="FPT Telecom">
+  <defs>
+    <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#1251d6"/><stop offset="1" stop-color="#1b7aff"/></linearGradient>
+    <linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#ff7a00"/><stop offset="1" stop-color="#ff9d2b"/></linearGradient>
+    <linearGradient id="g3" x1="0" x2="1"><stop offset="0" stop-color="#2ab73b"/><stop offset="1" stop-color="#58d86f"/></linearGradient>
+  </defs>
+  <g transform="translate(0 2)">
+    <rect x="0" y="0" width="38" height="28" rx="8" fill="url(#g1)" transform="skewX(-12)"/>
+    <rect x="32" y="0" width="38" height="28" rx="8" fill="url(#g2)" transform="skewX(-12)"/>
+    <rect x="64" y="0" width="38" height="28" rx="8" fill="url(#g3)" transform="skewX(-12)"/>
+    <text x="10" y="19" font-family="Arial, sans-serif" font-weight="700" font-size="18" fill="white">F</text>
+    <text x="42" y="19" font-family="Arial, sans-serif" font-weight="700" font-size="18" fill="white">P</text>
+    <text x="75" y="19" font-family="Arial, sans-serif" font-weight="700" font-size="18" fill="white">T</text>
+    <text x="114" y="19" font-family="Arial, sans-serif" font-weight="700" font-size="18" fill="white">Telecom</text>
+  </g>
+</svg>
