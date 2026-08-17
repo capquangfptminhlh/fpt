@@ -14,7 +14,7 @@ Evidence policy:
 - No invented local promotions, incidents, maintenance schedules, infrastructure coverage or product names.
 - Local news is a verified-source hub; articles are only added when local evidence passes editorial/QA gates.
 
-QA evidence from Run #52 attempt 2 before GitHub Pages returned HTTP 503:
+QA evidence from Run #52 attempt 2 and Run #53 attempt 2 before GitHub Pages returned HTTP 503:
 - 141 HTML pages.
 - 141 sitemap URLs.
 - Local page QA PASS 34/34.
@@ -23,5 +23,6 @@ QA evidence from Run #52 attempt 2 before GitHub Pages returned HTTP 503:
 - `Khu vực` navigation checked on 140 pages.
 - Functional QA PASS with 4,412 internal links.
 - UI reset QA PASS on 141/141 pages.
+- Artifact upload PASS; Pages deployment creation alone returned transient HTTP 503.
 
-This file is documentation only and exists to record the production checkpoint and trigger a fresh GitHub Pages run after the transient Pages deployment HTTP 503.
+This file is documentation only and records the production checkpoint while triggering a fresh GitHub Pages run after the transient Pages deployment failure.
