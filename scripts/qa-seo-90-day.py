@@ -31,6 +31,13 @@ CORE_ROUTES = (
     "kien-thuc/index.html",
 )
 
+TRUST_ROUTES = (
+    "gioi-thieu/index.html",
+    "phuong-phap-bien-tap/index.html",
+    "chinh-sach-cap-nhat/index.html",
+    "lien-he/index.html",
+)
+
 TITLE_RE = re.compile(r"<title>(.*?)</title>", re.I | re.S)
 DESC_RE = re.compile(r'<meta\b(?=[^>]*\bname=["\']description["\'])(?=[^>]*\bcontent=["\']([^"\']+)["\'])[^>]*>', re.I | re.S)
 CANON_RE = re.compile(r'<link\b(?=[^>]*\brel=["\']canonical["\'])(?=[^>]*\bhref=["\']([^"\']+)["\'])[^>]*>', re.I | re.S)
@@ -70,14 +77,14 @@ def main() -> int:
     site = Path(args.site)
 
     errors: list[str] = []
-    for rel in CORE_ROUTES:
+    for rel in CORE_ROUTES + TRUST_ROUTES:
         path = site / rel
         if not path.exists():
-            errors.append(f"core route missing: {rel}")
+            errors.append(f"required route missing: {rel}")
             continue
         text = path.read_text(encoding="utf-8")
         if noindex(text):
-            errors.append(f"core route is noindex: {rel}")
+            errors.append(f"required route is noindex: {rel}")
 
     indexable: list[tuple[Path, str]] = []
     for path in sorted(site.rglob("*.html")):
@@ -85,13 +92,14 @@ def main() -> int:
         if not noindex(text):
             indexable.append((path, text))
 
-    if len(indexable) < 106:
-        errors.append(f"expected at least 106 indexable pages, found {len(indexable)}")
+    if len(indexable) < 109:
+        errors.append(f"expected at least 109 indexable pages after trust rollout, found {len(indexable)}")
 
     titles: Counter[str] = Counter()
     canonicals: Counter[str] = Counter()
     internal_links = 0
     orphan_risk: list[str] = []
+    trust_footer_pages = 0
 
     for path, text in indexable:
         rel = path.relative_to(site).as_posix()
@@ -119,6 +127,11 @@ def main() -> int:
         internal_links += len(links)
         if len(links) < 3:
             orphan_risk.append(f"{rel} ({len(links)} internal links)")
+
+        if 'data-site-trust-links="v1"' in text:
+            trust_footer_pages += 1
+        else:
+            errors.append(f"{rel}: sitewide trust links missing")
 
     duplicate_titles = [title for title, count in titles.items() if count > 1]
     duplicate_canonicals = [url for url, count in canonicals.items() if count > 1]
@@ -172,9 +185,10 @@ def main() -> int:
 
     print(
         "SEO 90-DAY QA PASS: "
-        f"indexable={len(indexable)}, core_routes={len(CORE_ROUTES)}, "
-        f"indexable_internal_links={internal_links}, local_editorial={editorial_pages}/34, "
-        f"premium_offers={premium_offers}, unique_titles={len(titles)}, unique_canonicals={len(canonicals)}"
+        f"indexable={len(indexable)}, core_routes={len(CORE_ROUTES)}, trust_routes={len(TRUST_ROUTES)}, "
+        f"trust_footer={trust_footer_pages}/{len(indexable)}, indexable_internal_links={internal_links}, "
+        f"local_editorial={editorial_pages}/34, premium_offers={premium_offers}, "
+        f"unique_titles={len(titles)}, unique_canonicals={len(canonicals)}"
     )
     return 0
 
