@@ -1,6 +1,14 @@
-/* Contact mobile final — screenshot-driven stabilization. Loaded after mobile-stability and before scoped dock. */
+/* Contact mobile final — screenshot-driven stabilization. Loaded last on mobile. */
 @media(max-width:760px){
-  .motion-heading,.motion-heading.is-motion-heading-visible{opacity:1!important;clip-path:none!important;transform:none!important;transition:none!important;will-change:auto!important}
+  /* Content-first rule: no mobile text/media may stay hidden waiting for JS observers. */
+  .motion-heading,.motion-heading.is-motion-heading-visible,
+  .motion-ready [data-reveal],.motion-ready [data-reveal].is-visible,
+  .motion-ready .motion-stagger>*,.motion-ready .motion-stagger.is-visible>*{
+    opacity:1!important;clip-path:none!important;transform:none!important;transition:none!important;animation:none!important;will-change:auto!important
+  }
+  .motion-cinematic-media,.motion-cinematic-media.is-motion-media-visible{opacity:1!important;clip-path:none!important;transform:none!important;filter:none!important;will-change:auto!important}
+  .contact-dock{animation:none!important}
+
   .contact-page main{overflow:hidden!important;background:#fff!important}
   .contact-page .contact-hero{padding:28px 0 26px!important;background:linear-gradient(180deg,#fff 0%,#f8fbff 100%)!important;color:#172033!important;overflow:hidden!important}
   .contact-page .contact-grid{width:calc(100% - 28px)!important;max-width:calc(100% - 28px)!important;margin-inline:auto!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:22px!important}
@@ -9,19 +17,45 @@
   .contact-page .contact-copy .eyebrow::before{flex:0 0 7px!important;width:7px!important;height:7px!important;margin:0!important;box-shadow:0 0 0 5px rgba(243,112,33,.10)!important}
   .contact-page .contact-copy h1{display:block!important;width:100%!important;max-width:100%!important;margin:0 0 14px!important;color:#16191f!important;font-size:clamp(32px,9.2vw,40px)!important;line-height:1.04!important;letter-spacing:-.047em!important;text-wrap:pretty!important;opacity:1!important;visibility:visible!important;clip-path:none!important;transform:none!important}
   .contact-page .contact-copy>p{width:100%!important;max-width:100%!important;margin:0 0 20px!important;color:#626971!important;font-size:15px!important;line-height:1.58!important;text-wrap:pretty!important}
+
   .contact-page .contact-benefits{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:9px!important;width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;overflow:visible!important}
   .contact-page .contact-benefit{width:100%!important;max-width:100%!important;min-width:0!important;padding:14px 15px!important;border-radius:18px!important;background:#f4f5f7!important}
-  .contact-page .contact-benefit strong{font-size:14px!important;line-height:1.3!important;color:#1c2026!important}.contact-page .contact-benefit span{font-size:12px!important;line-height:1.45!important;color:#767d85!important}
+  .contact-page .contact-benefit strong{font-size:14px!important;line-height:1.3!important;color:#1c2026!important}
+  .contact-page .contact-benefit span{font-size:12px!important;line-height:1.45!important;color:#767d85!important}
   .contact-page .contact-trust{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:6px!important;width:100%!important;margin:12px 0 0!important}
   .contact-page .contact-trust span{width:max-content!important;max-width:100%!important;padding:7px 10px!important;border-radius:999px!important;background:#f1f2f4!important;color:#666d75!important;font-size:10.5px!important;line-height:1.25!important;white-space:normal!important}
+
   .contact-page .lead-card{width:100%!important;max-width:100%!important;margin:0!important;padding:17px!important;border-radius:22px!important;box-shadow:0 12px 32px rgba(15,23,42,.08)!important}
-  .contact-page .lead-card-head h2{font-size:25px!important;line-height:1.08!important}.contact-page .lead-form{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:9px!important}
+  .contact-page .lead-card-head h2{font-size:25px!important;line-height:1.08!important}
+  .contact-page .lead-form{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:9px!important}
   .contact-page .lead-field,.contact-page .lead-field.full,.contact-page .lead-consent,.contact-page .lead-submit,.contact-page .lead-note{grid-column:auto!important;width:100%!important;max-width:100%!important}
-  .contact-page .contact-section{padding:44px 0!important}.contact-page .contact-section>.container,.contact-page .contact-split,.contact-page .contact-faq{width:calc(100% - 28px)!important;max-width:calc(100% - 28px)!important;margin-inline:auto!important}
-  .contact-page .contact-head{margin:0 0 20px!important;text-align:left!important}.contact-page .contact-head h2{font-size:clamp(28px,8vw,34px)!important;line-height:1.08!important;margin:7px 0 8px!important}
-  .contact-page .contact-steps{grid-template-columns:minmax(0,1fr)!important;gap:9px!important}.contact-page .contact-info,.contact-page .contact-callout{padding:18px!important;border-radius:20px!important}.contact-page .contact-info h2{font-size:27px!important;line-height:1.08!important}.contact-page .contact-callout h3{font-size:25px!important;line-height:1.1!important}
-  .contact-page .contact-point{align-items:flex-start!important;min-width:0!important}.contact-page .contact-point span{overflow-wrap:break-word!important}
-  .contact-page .brand{display:flex!important;align-items:center!important;width:auto!important;max-width:170px!important;overflow:visible!important}.contact-page .brand img{display:block!important;width:auto!important;height:27px!important;max-width:160px!important;object-fit:contain!important;overflow:visible!important}.contact-page .mobile-toggle{width:42px!important;height:42px!important;border-radius:13px!important;font-size:22px!important}
-  body.contact-page .contact-dock{left:10px!important;right:10px!important;bottom:max(6px,env(safe-area-inset-bottom))!important;padding:4px!important;border-radius:20px!important}body.contact-page .contact-dock .contact-action{height:56px!important;gap:2px!important;border-radius:15px!important}body.contact-page .contact-dock .contact-visual{width:30px!important;height:30px!important;flex-basis:30px!important;border-radius:10px!important}body.contact-page .contact-dock .contact-icon{width:18px!important;height:18px!important}body.contact-page .contact-dock .contact-icon svg{width:16px!important;height:16px!important}body.contact-page .contact-dock .contact-icon-zalo{width:22px!important;height:17px!important;font-size:6.7px!important}body.contact-page .contact-dock .contact-copy strong{font-size:10px!important;line-height:1!important}body.contact-page .footer{padding-bottom:92px!important}
+
+  .contact-page .contact-section{padding:44px 0!important}
+  .contact-page .contact-section>.container,.contact-page .contact-split,.contact-page .contact-faq{width:calc(100% - 28px)!important;max-width:calc(100% - 28px)!important;margin-inline:auto!important}
+  .contact-page .contact-head{margin:0 0 20px!important;text-align:left!important}
+  .contact-page .contact-head h2{font-size:clamp(28px,8vw,34px)!important;line-height:1.08!important;margin:7px 0 8px!important}
+  .contact-page .contact-steps{grid-template-columns:minmax(0,1fr)!important;gap:9px!important}
+  .contact-page .contact-info,.contact-page .contact-callout{padding:18px!important;border-radius:20px!important}
+  .contact-page .contact-info h2{font-size:27px!important;line-height:1.08!important}
+  .contact-page .contact-callout h3{font-size:25px!important;line-height:1.1!important}
+  .contact-page .contact-point{align-items:flex-start!important;min-width:0!important}
+  .contact-page .contact-point span{overflow-wrap:break-word!important}
+
+  .contact-page .brand{display:flex!important;align-items:center!important;width:auto!important;max-width:170px!important;overflow:visible!important}
+  .contact-page .brand img{display:block!important;width:auto!important;height:27px!important;max-width:160px!important;object-fit:contain!important;overflow:visible!important}
+  .contact-page .mobile-toggle{width:42px!important;height:42px!important;border-radius:13px!important;font-size:22px!important}
+
+  body.contact-page .contact-dock{left:10px!important;right:10px!important;bottom:max(6px,env(safe-area-inset-bottom))!important;padding:4px!important;border-radius:20px!important}
+  body.contact-page .contact-dock .contact-action{height:56px!important;gap:2px!important;border-radius:15px!important}
+  body.contact-page .contact-dock .contact-visual{width:30px!important;height:30px!important;flex-basis:30px!important;border-radius:10px!important}
+  body.contact-page .contact-dock .contact-icon{width:18px!important;height:18px!important}
+  body.contact-page .contact-dock .contact-icon svg{width:16px!important;height:16px!important}
+  body.contact-page .contact-dock .contact-icon-zalo{width:22px!important;height:17px!important;font-size:6.7px!important}
+  body.contact-page .contact-dock .contact-copy strong{font-size:10px!important;line-height:1!important}
+  body.contact-page .footer{padding-bottom:92px!important}
 }
-@media(max-width:360px){.contact-page .contact-grid,.contact-page .contact-section>.container,.contact-page .contact-split,.contact-page .contact-faq{width:calc(100% - 20px)!important;max-width:calc(100% - 20px)!important}.contact-page .contact-copy h1{font-size:clamp(30px,9vw,35px)!important}body.contact-page .contact-dock .contact-action{height:54px!important}}
+@media(max-width:360px){
+  .contact-page .contact-grid,.contact-page .contact-section>.container,.contact-page .contact-split,.contact-page .contact-faq{width:calc(100% - 20px)!important;max-width:calc(100% - 20px)!important}
+  .contact-page .contact-copy h1{font-size:clamp(30px,9vw,35px)!important}
+  body.contact-page .contact-dock .contact-action{height:54px!important}
+}
