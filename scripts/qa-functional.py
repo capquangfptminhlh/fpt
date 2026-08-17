@@ -12,6 +12,14 @@ REQUIRED_CONTACT = (
     "phone: '19006600'",
     "sitePath('/lien-he/')",
 )
+REQUIRED_TRANSITION_JS = (
+    "prefers-reduced-motion: reduce",
+    "sessionStorage",
+    "next.origin !== location.origin",
+    "pageshow",
+    "FPTPageTransition",
+    "mailto:|tel:|javascript:",
+)
 
 
 class PageParser(HTMLParser):
@@ -88,6 +96,10 @@ def main() -> None:
             errors.append(f'{rel}: missing contact dock stylesheet')
         if 'data-contact-dock-script=' not in text:
             errors.append(f'{rel}: missing contact dock script')
+        if 'data-page-transition-style=' not in text:
+            errors.append(f'{rel}: missing page transition stylesheet')
+        if 'data-page-transition-script=' not in text:
+            errors.append(f'{rel}: missing page transition script')
 
         for href in parsed.links:
             if href.startswith(('http://', 'https://', 'mailto:', 'tel:', 'javascript:', '#')):
@@ -115,6 +127,25 @@ def main() -> None:
         for action in ('zalo', 'call', 'register'):
             if f'data-contact-action="{action}"' not in contact_text:
                 errors.append(f'contact-dock.js missing rendered action: {action}')
+
+    transition_js = site / 'assets/js/page-transition.js'
+    transition_css = site / 'assets/css/page-transition.css'
+    if not transition_js.exists():
+        errors.append('Missing assets/js/page-transition.js')
+    else:
+        transition_text = transition_js.read_text(encoding='utf-8')
+        for required in REQUIRED_TRANSITION_JS:
+            if required not in transition_text:
+                errors.append(f'page-transition.js missing behavior guard: {required}')
+        if 'page-transition__modem' not in transition_text or 'page-transition__waves' not in transition_text:
+            errors.append('page-transition.js missing modem/wifi loader markup')
+    if not transition_css.exists():
+        errors.append('Missing assets/css/page-transition.css')
+    else:
+        transition_style = transition_css.read_text(encoding='utf-8')
+        for required in ('.page-transition', '@media(prefers-reduced-motion:reduce)', '@keyframes modem-run', '@keyframes wifi-wave'):
+            if required not in transition_style:
+                errors.append(f'page-transition.css missing animation/accessibility rule: {required}')
 
     lead_page = site / 'lien-he/index.html'
     lead_js = site / 'assets/js/lead-form.js'
@@ -147,7 +178,7 @@ def main() -> None:
 
     print(
         f'FUNCTIONAL QA PASS: pages={len(pages)}, internal_links={checked_links}, '
-        f'legacy_redirects={legacy_redirects}, contact_actions=3, lead_form=ready'
+        f'legacy_redirects={legacy_redirects}, contact_actions=3, lead_form=ready, modem_transition=ready'
     )
 
 
