@@ -35,8 +35,6 @@ jobs:
           rm -rf _site
           mkdir -p _site
 
-          # Root-anchored excludes keep governance folders out of production
-          # without accidentally deleting assets/images/seo/.
           rsync -a ./ _site/ \
             --exclude='.git/' \
             --exclude='.github/' \
@@ -54,19 +52,14 @@ jobs:
           python3 scripts/prepare-pages.py --site _site
           python3 scripts/inject-contact-dock.py --site _site
           python3 scripts/qa-functional.py --site _site
-          python3 scripts/qa-visual.py --site _site
-          python3 scripts/qa-motion.py --site _site
-          python3 scripts/qa-colors.py --site _site
-          python3 scripts/qa-mobile.py --site _site
-          python3 scripts/qa-nav.py --site _site
+          python3 scripts/qa-ui-reset.py --site _site
 
           node --check _site/assets/js/main.js
           node --check _site/assets/js/home-v2.js
           node --check _site/assets/js/lead-form.js
           node --check _site/assets/js/contact-dock.js
           node --check _site/assets/js/page-transition.js
-          node --check _site/assets/js/motion-system.js
-          node --check _site/assets/js/full-page-motion.js
+          node --check _site/assets/js/ui-motion.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
