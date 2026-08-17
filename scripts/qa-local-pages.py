@@ -58,7 +58,8 @@ def main() -> int:
         required = (
             'data-lead-form', 'lead-form.js', 'data-contact-dock-script=', 'data-ui-reset-style=',
             'data-ui-motion-style=', 'data-page-transition-script=', 'xaydungchinhsach.chinhphu.vn',
-            'Không suy đoán hạ tầng', 'Giá, hạ tầng, thiết bị và ưu đãi cần được xác nhận lại theo địa chỉ.'
+            'Khả năng triển khai, thiết bị và ưu đãi phụ thuộc hạ tầng thực tế.',
+            'Giá, hạ tầng, thiết bị và ưu đãi cần được xác nhận lại theo địa chỉ.'
         )
         for marker in required:
             if marker not in html:
