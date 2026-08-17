@@ -64,8 +64,12 @@
     name: form.elements.name.value.trim(),
     phone: normalizePhone(form.elements.phone.value),
     address: form.elements.address.value.trim(),
-    need: form.elements.need.value,
+    need: needLabels[form.elements.need.value] || form.elements.need.value,
     note: form.elements.note.value.trim(),
+    _honey: form.elements._honey?.value || '',
+    _subject: 'Lead mới từ website tư vấn Internet FPT',
+    _template: 'table',
+    _url: location.href,
     page: location.href,
     created_at: new Date().toISOString()
   });
@@ -74,7 +78,7 @@
     `Họ tên: ${payload.name}`,
     `Điện thoại: ${payload.phone}`,
     `Địa chỉ: ${payload.address}`,
-    `Nhu cầu: ${needLabels[payload.need] || payload.need || 'Chưa chọn'}`,
+    `Nhu cầu: ${payload.need || 'Chưa chọn'}`,
     payload.note ? `Ghi chú: ${payload.note}` : null
   ].filter(Boolean).join('\n');
 
@@ -83,8 +87,8 @@
     if (!statusBox) return;
     statusBox.className = 'lead-status is-visible is-error';
     statusBox.innerHTML = `
-      <strong>Thông tin đã được kiểm tra.</strong><br>
-      Website hiện chạy trên GitHub Pages nên chưa có máy chủ nhận lead. Bạn có thể gọi CSKH hoặc sao chép thông tin vừa nhập để gửi qua kênh tư vấn đang sử dụng.
+      <strong>Chưa gửi được yêu cầu.</strong><br>
+      Bạn có thể gọi CSKH hoặc sao chép thông tin vừa nhập để không phải nhập lại.
       <div class="lead-actions">
         <a class="call" href="tel:19006600">☎ Gọi 1900 6600</a>
         <button class="copy" type="button" data-copy-lead>Sao chép thông tin</button>
@@ -113,7 +117,7 @@
   const renderSuccess = () => {
     if (!statusBox) return;
     statusBox.className = 'lead-status is-visible';
-    statusBox.innerHTML = '<strong>Đã gửi yêu cầu.</strong><br>Thông tin của bạn đã được ghi nhận. Hãy giữ điện thoại để tiện liên hệ lại.';
+    statusBox.innerHTML = '<strong>Đã gửi yêu cầu.</strong><br>Thông tin của bạn đã được chuyển tới hộp thư nhận lead. Hãy giữ điện thoại để tiện liên hệ lại.';
     statusBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   };
 
@@ -138,10 +142,17 @@
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify(payload)
       });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json().catch(() => null);
+      if (!response.ok || (data && data.success === false)) {
+        throw new Error(data?.message || `HTTP ${response.status}`);
+      }
+      sessionStorage.removeItem('fptLeadDraft');
       renderSuccess();
       form.reset();
     } catch (error) {
@@ -149,7 +160,7 @@
       renderFallback(payload);
     } finally {
       submitButton.disabled = false;
-      submitButton.textContent = 'Tiếp tục đăng ký';
+      submitButton.textContent = 'Gửi yêu cầu tư vấn';
     }
   });
 })();
