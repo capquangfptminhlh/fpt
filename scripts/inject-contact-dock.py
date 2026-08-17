@@ -11,6 +11,8 @@ APPLE_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/apple-polish.css?v=2
 APPLE_CONTACT_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/apple-contact.css?v=20260817-1" data-apple-contact-style="true"/>'
 MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/motion-system.css?v=20260817-10" data-motion-system-style="true"/>'
 MOTION_SCRIPT = '<script defer src="/fpt/assets/js/motion-system.js?v=20260817-10" data-motion-system-script="true"></script>'
+FULL_MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/full-page-motion.css?v=20260817-11" data-full-page-motion-style="true"/>'
+FULL_MOTION_SCRIPT = '<script defer src="/fpt/assets/js/full-page-motion.js?v=20260817-11" data-full-page-motion-script="true"></script>'
 
 
 def inject(html: str) -> str:
@@ -30,6 +32,8 @@ def inject(html: str) -> str:
         head_assets.append(APPLE_CONTACT_STYLE)
     if 'data-motion-system-style=' not in html:
         head_assets.append(MOTION_STYLE)
+    if 'data-full-page-motion-style=' not in html:
+        head_assets.append(FULL_MOTION_STYLE)
     if head_assets:
         html = html.replace('</head>', ''.join(head_assets) + '</head>', 1)
 
@@ -40,6 +44,8 @@ def inject(html: str) -> str:
         body_assets.append(TRANSITION_SCRIPT)
     if 'data-motion-system-script=' not in html:
         body_assets.append(MOTION_SCRIPT)
+    if 'data-full-page-motion-script=' not in html:
+        body_assets.append(FULL_MOTION_SCRIPT)
     if body_assets:
         html = html.replace('</body>', ''.join(body_assets) + '</body>', 1)
     return html
