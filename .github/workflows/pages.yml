@@ -57,6 +57,7 @@ jobs:
           python3 scripts/add-local-current-offerings.py --site _site
           python3 scripts/fix-local-nav.py --site _site
           python3 scripts/prepare-pages.py --site _site
+          python3 scripts/inject-trust-footer.py --site _site
           python3 scripts/inject-contact-dock.py --site _site
           python3 scripts/sync-sitemap.py --site _site --origin https://capquangfptminhlh.github.io/fpt
 
@@ -84,7 +85,7 @@ jobs:
           python3 scripts/qa-functional.py --site _site
           python3 scripts/qa-ui-reset.py --site _site
 
-          python3 -m py_compile scripts/generate-local-pages.py scripts/enrich-local-silos.py scripts/upgrade-local-catalog.py scripts/expand-local-plan-details.py scripts/add-local-current-offerings.py scripts/complete-official-catalog.py scripts/enrich-local-editorial.py scripts/premiumize-local-catalog.py scripts/fix-local-nav.py scripts/generate-local-keywords.py scripts/qa-local-pages.py scripts/qa-local-silos.py scripts/qa-local-commerce.py scripts/qa-local-commerce-full.py scripts/qa-local-current-offerings.py scripts/qa-official-catalog.py scripts/qa-local-editorial.py scripts/qa-local-catalog-premium.py scripts/qa-local-keywords.py scripts/qa-search-quality.py scripts/qa-seo-90-day.py scripts/sync-sitemap.py
+          python3 -m py_compile scripts/generate-local-pages.py scripts/enrich-local-silos.py scripts/upgrade-local-catalog.py scripts/expand-local-plan-details.py scripts/add-local-current-offerings.py scripts/complete-official-catalog.py scripts/enrich-local-editorial.py scripts/premiumize-local-catalog.py scripts/inject-trust-footer.py scripts/fix-local-nav.py scripts/generate-local-keywords.py scripts/qa-local-pages.py scripts/qa-local-silos.py scripts/qa-local-commerce.py scripts/qa-local-commerce-full.py scripts/qa-local-current-offerings.py scripts/qa-official-catalog.py scripts/qa-local-editorial.py scripts/qa-local-catalog-premium.py scripts/qa-local-keywords.py scripts/qa-search-quality.py scripts/qa-seo-90-day.py scripts/sync-sitemap.py
           python3 - <<'PY'
           import re
           from pathlib import Path
@@ -115,8 +116,10 @@ jobs:
           print(f'FINAL SITEMAP URL COUNT: {sitemap_total}')
           print(f'FINAL LOCAL NEWS NOINDEX COUNT: {local_news_noindex}')
 
-          if html_total < 141:
-              raise SystemExit(f'Expected at least 141 HTML pages, got {html_total}')
+          if html_total < 144:
+              raise SystemExit(f'Expected at least 144 HTML pages after trust rollout, got {html_total}')
+          if indexable_total < 109:
+              raise SystemExit(f'Expected at least 109 indexable HTML pages after trust rollout, got {indexable_total}')
           if sitemap_total != indexable_total:
               raise SystemExit(
                   f'Sitemap/indexability mismatch: sitemap={sitemap_total}, indexable={indexable_total}'
