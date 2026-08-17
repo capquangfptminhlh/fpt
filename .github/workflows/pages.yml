@@ -1,0 +1,71 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Prepare static site
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a ./ _site/ \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='_site/' \
+            --exclude='node_modules/' \
+            --exclude='server.js' \
+            --exclude='package.json' \
+            --exclude='package-lock.json' \
+            --exclude='README.md' \
+            --exclude='QA_REPORT.md' \
+            --exclude='seo/' \
+            --exclude='data/'
+
+          OLD_ORIGIN='https://your-domain.example'
+          NEW_ORIGIN='https://capquangfptminhlh.github.io/fpt'
+
+          while IFS= read -r -d '' file; do
+            sed -i "s#${OLD_ORIGIN}#${NEW_ORIGIN}#g" "$file"
+          done < <(find _site -type f \( -name '*.html' -o -name '*.xml' -o -name '*.txt' \) -print0)
+
+          while IFS= read -r -d '' file; do
+            sed -i 's#href="/#href="/fpt/#g; s#src="/#src="/fpt/#g' "$file"
+          done < <(find _site -type f -name '*.html' -print0)
+
+          printf 'User-agent: *\nAllow: /fpt/\nSitemap: https://capquangfptminhlh.github.io/fpt/sitemap.xml\n' > _site/robots.txt
+          touch _site/.nojekyll
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
