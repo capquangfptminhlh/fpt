@@ -23,6 +23,16 @@ FORBIDDEN = (
     "fpt seo demo",
     "website demo",
     "bản coded demo",
+    "local seo gate",
+    "hold_local_evidence",
+    "topical authority",
+    "internal link",
+    "seo owner",
+    "intent informational",
+    "intent giải trí",
+    "money page",
+    "faq chuẩn seo",
+    "hỗ trợ seo",
 )
 
 TEXT_REPLACEMENTS = {
@@ -46,6 +56,26 @@ TEXT_REPLACEMENTS = {
     "Trang công nghệ &amp; phủ sóng": "Công nghệ và vùng phủ WiFi",
     "Trang công nghệ & phủ sóng": "Công nghệ và vùng phủ WiFi",
     "Trang entity cho từng gói": "So sánh và chọn gói Internet",
+    "Trang FPT Play mô tả lợi ích combo internet + truyền hình, định vị rõ intent giải trí và nội dung đi kèm.":
+        "FPT Play kết hợp Internet và truyền hình, tập trung trải nghiệm giải trí và nội dung đi kèm.",
+    "Trang danh mục Internet FPT với bảng gói cước, trường hợp sử dụng, công nghệ WiFi và các route hỗ trợ SEO.":
+        "Internet FPT với bảng gói cước, trường hợp sử dụng, công nghệ WiFi và các hướng dẫn liên quan.",
+    "Trang SEO owner cho nhóm từ khóa cáp quang FPT, giải thích công nghệ FTTH và định hướng lựa chọn gói cước phù hợp.":
+        "Tìm hiểu cáp quang FPT, công nghệ FTTH và cách lựa chọn gói cước phù hợp.",
+    "Trang dịch vụ lắp mạng FPT với quy trình đăng ký, khu vực hỗ trợ, gói cước nổi bật và FAQ chuẩn SEO.":
+        "Thông tin lắp mạng FPT với quy trình đăng ký, khu vực hỗ trợ, gói cước nổi bật và câu hỏi thường gặp.",
+    "Tra cứu khu vực ở cấp tỉnh/thành, nhưng chỉ mở trang địa phương khi có bằng chứng local thật.":
+        "Tra cứu khu vực lắp mạng FPT ở cấp tỉnh/thành và kiểm tra hạ tầng theo địa chỉ trước khi đăng ký.",
+    "Nguồn/fact nhạy thời gian được kiểm tra ngày 15/08/2026; các nội dung biến động cần tái xác minh trước khi xuất bản thật.":
+        "Thông tin có thể thay đổi theo thời điểm; dữ liệu về giá, ưu đãi và thiết bị nên được xác minh lại trước khi đăng ký.",
+    "Trang tư vấn các dịch vụ Internet FPT, WiFi, Camera và FPT Play theo nhu cầu và khu vực.":
+        "Website tư vấn độc lập về Internet FPT, WiFi, Camera và FPT Play theo nhu cầu và khu vực.",
+    '<h1>WiFi mạnh ở <span>đúng nơi</span> bạn cần.</h1>':
+        '<h1>Lắp mạng FPT — WiFi mạnh ở <span>đúng nơi</span> bạn cần.</h1>',
+    "<td>Support</td>": "<td>Hỗ trợ</td>",
+    "<td>Commercial</td>": "<td>Lựa chọn dịch vụ</td>",
+    "<td>Informational</td>": "<td>Kiến thức</td>",
+    "<td>Freshness</td>": "<td>Cập nhật mới</td>",
 }
 
 
@@ -61,7 +91,7 @@ def prefix_project_paths(text: str) -> str:
 
 
 def remove_internal_content(text: str) -> str:
-    # Visible blocks that were useful during SEO architecture work but should never be public-facing.
+    # Visible blocks that were useful during architecture work but should never be public-facing.
     text = re.sub(
         r'<h2[^>]*>\s*SEO intent và URL ownership\s*</h2>\s*<p>.*?</p>',
         '', text, flags=re.I | re.S,
@@ -91,13 +121,20 @@ def remove_internal_content(text: str) -> str:
         '', text, flags=re.I,
     )
 
+    # Replace local-governance status with a user-facing availability note.
+    text = re.sub(
+        r'<div class="hold-local"[^>]*>.*?</div>',
+        '<div class="hold-local"><strong>Kiểm tra theo địa chỉ:</strong> Khả năng triển khai, thiết bị và ưu đãi phụ thuộc hạ tầng thực tế. Vui lòng xác minh trước khi đăng ký.</div>',
+        text, flags=re.I | re.S,
+    )
+
     # Remove paragraphs/list items that expose editorial architecture instead of user value.
     text = re.sub(
         r'<p>[^<]*(?:URL owner|cannibalization|kiến trúc SEO hub|internal link)[^<]*</p>',
         '', text, flags=re.I,
     )
     text = re.sub(
-        r'<li>[^<]*(?:Trang owner|URL owner|SEO với|SEO intent|intent [“"\']|intent chính)[^<]*</li>',
+        r'<li>[^<]*(?:Trang owner|URL owner|SEO với|SEO intent|intent [“"\']|intent chính|internal link|topical authority|head term|hỗ trợ SEO)[^<]*</li>',
         '', text, flags=re.I,
     )
 
@@ -105,7 +142,10 @@ def remove_internal_content(text: str) -> str:
     def clean_schema(match: re.Match[str]) -> str:
         block = match.group(0)
         low = block.lower()
-        if any(term in low for term in ("url owner", "cannibalization", "seo intent", "fpt seo demo", "fpt telecom demo")):
+        if any(term in low for term in (
+            "url owner", "cannibalization", "seo intent", "fpt seo demo", "fpt telecom demo",
+            "local seo gate", "hold_local_evidence", "topical authority", "internal link",
+        )):
             return ''
         return block
 
@@ -130,7 +170,7 @@ def sanitize_html(text: str) -> str:
 
     text = remove_internal_content(text)
 
-    # Clean a few generic public-facing leftovers after the targeted replacements.
+    # Clean generic public-facing leftovers after targeted replacements.
     text = re.sub(r'(?i)\bFPT\s+SEO\s+demo\b', 'Tư vấn Internet FPT', text)
     text = re.sub(r'(?i)\bFPT\s+Telecom\s+Demo\b', 'Tư vấn Internet FPT', text)
     text = re.sub(r'(?i)\bWebsite\s+demo\b', 'Website', text)
