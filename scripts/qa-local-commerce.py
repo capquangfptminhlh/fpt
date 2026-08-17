@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 from pathlib import Path
 
 EXPECTED = [
@@ -21,13 +22,34 @@ REQUIRED_PLAN_IDS = (
 REQUIRED_VERIFIED_MARKERS = (
     '195.000đ/tháng','295.000đ/tháng','225.000đ/tháng','999.000đ/tháng',
     '1.099.000đ/tháng','1.599.000đ/tháng','1.690.000đ/tháng',
-    '300 / 300 Mbps','1 Gbps / 300 Mbps','1 Gbps / 1 Gbps','2 Gbps / 2 Gbps','10 Gbps / 10 Gbps',
     '200.000đ/tháng','209.000đ/tháng','320.000đ/tháng','270.000đ/tháng',
     '269.000đ/tháng','369.000đ/tháng','510.000đ','950.000đ','1.150.000đ','2.100.000đ',
     '220.000đ/tháng','245.000đ/tháng',
     'https://fpt.vn/lap-wifi','https://fpt.vn/internet/game-thu',
     'https://fpt.vn/internet/speed-x2-pro','https://fpt.vn/internet/speed-x10-pro','https://fpt.vn/camera'
 )
+
+PLAN_METRICS = {
+    'giga': ('195.000đ/tháng', '300', 'Mbps'),
+    'sky': ('195.000đ/tháng', '1 Gbps', '300 Mbps'),
+    'meta': ('295.000đ/tháng', '1 Gbps'),
+    'f-game': ('225.000đ/tháng', '1 Gbps', '300 Mbps'),
+    'speedx2': ('999.000đ/tháng', '2 Gbps'),
+    'speedx2-pro': ('1.099.000đ/tháng', '2 Gbps'),
+    'speedx10': ('1.599.000đ/tháng', '10 Gbps'),
+    'speedx10-pro': ('1.690.000đ/tháng', '10 Gbps'),
+}
+
+
+def plan_block(html: str, plan_id: str) -> str:
+    match = re.search(
+        rf'<article\b(?=[^>]*data-plan-id="{re.escape(plan_id)}")[^>]*>.*?</article>',
+        html,
+        flags=re.I | re.S,
+    )
+    if not match:
+        raise SystemExit(f'LOCAL COMMERCE QA FAIL: cannot isolate plan block {plan_id}')
+    return match.group(0)
 
 
 def main() -> int:
@@ -70,6 +92,13 @@ def main() -> int:
         for marker in REQUIRED_VERIFIED_MARKERS:
             if marker not in html:
                 raise SystemExit(f'LOCAL COMMERCE QA FAIL: {slug} missing verified marker {marker}')
+        for plan_id, markers in PLAN_METRICS.items():
+            block = plan_block(html, plan_id)
+            if 'local-plan-full-metrics' not in block:
+                raise SystemExit(f'LOCAL COMMERCE QA FAIL: {slug} {plan_id} missing split full metrics')
+            for marker in markers:
+                if marker not in block:
+                    raise SystemExit(f'LOCAL COMMERCE QA FAIL: {slug} {plan_id} missing metric {marker}')
         if html.count('data-select-local-plan=') != 26:
             raise SystemExit(f'LOCAL COMMERCE QA FAIL: {slug} registration CTA count != 26')
         for marker in (
@@ -82,7 +111,7 @@ def main() -> int:
             if marker not in html:
                 raise SystemExit(f'LOCAL COMMERCE QA FAIL: {slug} missing safety/UX marker {marker}')
 
-    print('LOCAL COMMERCE QA PASS: 34/34 provinces × 26 product cards = 884 cards; prices/speeds sourced, disclaimer + CTA + responsive CSS present')
+    print('LOCAL COMMERCE QA PASS: 34/34 provinces × 26 full product blocks = 884; sourced prices + split speed metrics + disclaimer + CTA verified')
     return 0
 
 
