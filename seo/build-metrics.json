@@ -1,8 +1,19 @@
 {
-  "new_pages": 59,
-  "new_unique_images": 118,
-  "keyword_rows": 236,
-  "sitemap_urls": 73,
-  "local_keyword_rows": 68,
-  "generated_at": "2026-08-15"
+  "html_pages": 141,
+  "indexable_pages": 140,
+  "legacy_noindex_pages": 1,
+  "sitemap_urls": 140,
+  "local_landing_pages": 34,
+  "local_news_hubs": 34,
+  "local_service_catalogs": 34,
+  "local_keyword_rows": 3800,
+  "local_keyword_patterns": 50,
+  "local_search_aliases": 76,
+  "current_provincial_units": 34,
+  "pre_consolidation_provincial_names": 63,
+  "non_local_keyword_query_rows_baseline": 1805,
+  "aeo_questions_baseline": 277,
+  "seo_unique_webp_images": 118,
+  "internal_links_checked": 4285,
+  "generated_at": "2026-08-17"
 }
