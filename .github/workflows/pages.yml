@@ -63,9 +63,15 @@ jobs:
           python3 -m py_compile scripts/generate-local-pages.py scripts/enrich-local-silos.py scripts/generate-local-keywords.py scripts/qa-local-pages.py scripts/qa-local-silos.py scripts/qa-local-keywords.py scripts/sync-sitemap.py
           python3 - <<'PY'
           from pathlib import Path
+          html_total = len(list(Path('_site').rglob('*.html')))
           sitemap = Path('_site/sitemap.xml').read_text(encoding='utf-8')
-          total = sitemap.count('<url>')
-          print(f'SITEMAP URL COUNT: {total}')
+          sitemap_total = sitemap.count('<url>')
+          print(f'FINAL HTML COUNT: {html_total}')
+          print(f'FINAL SITEMAP URL COUNT: {sitemap_total}')
+          if html_total != 141:
+              raise SystemExit(f'Expected 141 HTML pages, got {html_total}')
+          if sitemap_total != 140:
+              raise SystemExit(f'Expected 140 indexable sitemap URLs, got {sitemap_total}')
           if '/fpt/support/' in sitemap:
               raise SystemExit('Legacy noindex /support/ must not be in sitemap')
           PY
