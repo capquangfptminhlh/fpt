@@ -72,7 +72,8 @@ def main() -> int:
         news_titles.add(title); news_h1s.add(h1); news_canonicals.add(canonical)
 
         for marker in (
-            'Tin địa phương chỉ xuất bản khi có nguồn.',
+            'Khả năng triển khai, thiết bị và ưu đãi phụ thuộc hạ tầng thực tế.',
+            'Giá, hạ tầng, thiết bị và ưu đãi cần được xác nhận lại theo địa chỉ.',
             'data-contact-dock-script=', 'data-ui-reset-style=', 'data-ui-motion-style=', 'data-page-transition-script=',
             '../../../fpt-play/', '../../../camera-fpt/', '../#goi-dich-vu-dia-phuong'
         ):
@@ -93,10 +94,11 @@ def main() -> int:
     nav_pages = 0
     for path in site.rglob('*.html'):
         html = path.read_text(encoding='utf-8')
-        if 'nav-links' not in html:
+        nav = re.search(r'<nav\b[^>]*class=["\'][^"\']*nav-links[^"\']*["\'][^>]*>(.*?)</nav>', html, flags=re.I | re.S)
+        if not nav:
             continue
         nav_pages += 1
-        if not re.search(r'>\s*Khu vực\s*</a>', html, flags=re.I):
+        if not re.search(r'>\s*Khu vực\s*</a>', nav.group(1), flags=re.I):
             raise SystemExit(f'LOCAL SILO QA FAIL: Khu vực nav missing in {path.relative_to(site)}')
 
     if nav_pages < 100:
