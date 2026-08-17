@@ -73,7 +73,6 @@ def main() -> int:
 
         for marker in (
             'Khả năng triển khai, thiết bị và ưu đãi phụ thuộc hạ tầng thực tế.',
-            'Giá, hạ tầng, thiết bị và ưu đãi cần được xác nhận lại theo địa chỉ.',
             'data-contact-dock-script=', 'data-ui-reset-style=', 'data-ui-motion-style=', 'data-page-transition-script=',
             '../../../fpt-play/', '../../../camera-fpt/', '../#goi-dich-vu-dia-phuong'
         ):
