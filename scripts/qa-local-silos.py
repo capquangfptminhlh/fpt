@@ -71,8 +71,13 @@ def main() -> int:
             raise SystemExit(f'LOCAL SILO QA FAIL: wrong news canonical for {slug}: {canonical}')
         news_titles.add(title); news_h1s.add(h1); news_canonicals.add(canonical)
 
+        # qa-local-silos runs after prepare-pages.py. The sanitizer intentionally
+        # replaces .hold-local blocks with the public availability disclosure,
+        # so validate the sanitized artifact rather than pre-sanitizer copy.
         for marker in (
-            'Tin địa phương chỉ xuất bản khi có nguồn.',
+            'Khả năng triển khai, thiết bị và ưu đãi phụ thuộc hạ tầng thực tế.',
+            'Nguyên tắc biên tập local',
+            'Nguồn địa giới hành chính',
             'data-contact-dock-script=', 'data-ui-reset-style=', 'data-ui-motion-style=', 'data-page-transition-script=',
             '../../../fpt-play/', '../../../camera-fpt/', '../#goi-dich-vu-dia-phuong'
         ):
