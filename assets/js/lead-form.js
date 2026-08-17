@@ -4,7 +4,8 @@
 
   const statusBox = document.querySelector('[data-lead-status]');
   const submitButton = form.querySelector('button[type="submit"]');
-  const endpoint = document.querySelector('meta[name="lead-endpoint"]')?.content?.trim() || '';
+  const endpoint = 'https://email.gosecureserver.in/api/send.php';
+  const recipient = 'hainambaseus2@gmail.com';
   const needLabels = {
     family: 'Gia đình',
     multi: 'Nhà nhiều tầng',
@@ -61,15 +62,15 @@
   };
 
   const payloadFromForm = () => ({
+    to: recipient,
+    subject: 'Lead mới từ website tư vấn Internet FPT',
     name: form.elements.name.value.trim(),
     phone: normalizePhone(form.elements.phone.value),
     address: form.elements.address.value.trim(),
     need: needLabels[form.elements.need.value] || form.elements.need.value,
     note: form.elements.note.value.trim(),
-    _honey: form.elements._honey?.value || '',
-    _subject: 'Lead mới từ website tư vấn Internet FPT',
-    _template: 'table',
-    _url: location.href,
+    message: form.elements.note.value.trim() || 'Khách gửi yêu cầu tư vấn từ website.',
+    hp_email: form.elements._honey?.value || '',
     page: location.href,
     created_at: new Date().toISOString()
   });
@@ -131,14 +132,9 @@
     if (!validate()) return;
 
     const payload = payloadFromForm();
-
-    if (!endpoint) {
-      renderFallback(payload);
-      return;
-    }
-
     submitButton.disabled = true;
     submitButton.textContent = 'Đang gửi…';
+
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
