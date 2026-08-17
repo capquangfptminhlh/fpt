@@ -57,6 +57,16 @@ jobs:
           python3 scripts/qa-ui-reset.py --site _site
           python3 scripts/qa-local.py --site _site
           python3 -m py_compile scripts/generate-local-pages.py scripts/generate-local-keywords.py scripts/qa-local.py
+          python3 - <<'PY'
+          from pathlib import Path
+          sitemap = Path('_site/sitemap.xml').read_text(encoding='utf-8')
+          total = sitemap.count('<url><loc>')
+          print(f'SITEMAP URL COUNT: {total}')
+          if total != 106:
+              raise SystemExit(f'Expected 106 indexable sitemap URLs, got {total}')
+          if '/fpt/support/' in sitemap:
+              raise SystemExit('Legacy noindex /support/ must not be in sitemap')
+          PY
 
           node --check _site/assets/js/main.js
           node --check _site/assets/js/home-v2.js
