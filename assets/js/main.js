@@ -1,3 +1,27 @@
+const isGitHubPagesProject = location.hostname === 'capquangfptminhlh.github.io';
+const siteBase = isGitHubPagesProject ? '/fpt' : '';
+const sitePath = (path = '/') => `${siteBase}${path.startsWith('/') ? path : `/${path}`}`;
+
+/* Load the dedicated phone design layer on every template. The homepage also
+ * benefits from the same file, while desktop keeps the existing design system. */
+if (!document.querySelector('link[data-mobile-v3]')) {
+  const mobileStyles = document.createElement('link');
+  mobileStyles.rel = 'stylesheet';
+  mobileStyles.href = `${sitePath('/assets/css/mobile-v3.css')}?v=20260817-3`;
+  mobileStyles.dataset.mobileV3 = 'true';
+  document.head.appendChild(mobileStyles);
+}
+
+/* GitHub Pages project sites live below /fpt/. Normalize root-absolute internal
+ * links so navigation never escapes to capquangfptminhlh.github.io/. */
+if (siteBase) {
+  document.querySelectorAll('a[href^="/"]').forEach((anchor) => {
+    const href = anchor.getAttribute('href');
+    if (!href || href === siteBase || href.startsWith(`${siteBase}/`)) return;
+    anchor.setAttribute('href', sitePath(href));
+  });
+}
+
 const toggle = document.querySelector('.mobile-toggle');
 const navLinks = document.querySelector('.nav-links');
 
@@ -6,13 +30,17 @@ if (toggle && navLinks) {
 
   const closeMenu = () => {
     navLinks.classList.remove('open');
+    document.body.classList.remove('nav-open');
     toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Mở menu');
   };
 
   toggle.addEventListener('click', (event) => {
     event.stopPropagation();
     const isOpen = navLinks.classList.toggle('open');
+    document.body.classList.toggle('nav-open', isOpen);
     toggle.setAttribute('aria-expanded', String(isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'Đóng menu' : 'Mở menu');
   });
 
   navLinks.addEventListener('click', (event) => {
@@ -26,11 +54,36 @@ if (toggle && navLinks) {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeMenu();
   });
+
+  const menuBreakpoint = window.matchMedia('(max-width:1180px)');
+  menuBreakpoint.addEventListener?.('change', (event) => {
+    if (!event.matches) closeMenu();
+  });
 }
 
-const isGitHubPagesProject = location.hostname === 'capquangfptminhlh.github.io';
-const siteBase = isGitHubPagesProject ? '/fpt' : '';
-const sitePath = (path = '/') => `${siteBase}${path.startsWith('/') ? path : `/${path}`}`;
+/* Mobile conversion shell: one persistent call action and one registration
+ * action across all 73 static pages without duplicating markup in each file. */
+const phoneViewport = window.matchMedia('(max-width:760px)');
+let mobileCta = null;
+
+const syncMobileCta = () => {
+  if (!mobileCta) {
+    mobileCta = document.createElement('nav');
+    mobileCta.className = 'mobile-bottom-cta';
+    mobileCta.setAttribute('aria-label', 'Liên hệ nhanh');
+    mobileCta.innerHTML = `
+      <a class="mobile-call" href="tel:19006600" aria-label="Gọi tổng đài 1900 6600">☎ Gọi ngay</a>
+      <a class="mobile-register" href="${sitePath('/lien-he/')}" aria-label="Đăng ký tư vấn lắp mạng FPT">Đăng ký tư vấn</a>
+    `;
+    document.body.appendChild(mobileCta);
+  }
+
+  document.body.classList.toggle('has-mobile-cta', phoneViewport.matches);
+  mobileCta.hidden = !phoneViewport.matches;
+};
+
+syncMobileCta();
+phoneViewport.addEventListener?.('change', syncMobileCta);
 
 const form = document.querySelector('#advisor-form');
 if (form) {
@@ -54,10 +107,7 @@ if (form) {
   });
 }
 
-/*
- * Image routing
- * Supports both normal hosting at / and GitHub Pages project hosting at /fpt/.
- */
+/* Image routing supports both normal hosting at / and GitHub Pages at /fpt/. */
 const imageRoot = sitePath('/assets/images/');
 const seoRoot = `${imageRoot}seo/`;
 
