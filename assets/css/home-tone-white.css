@@ -1,0 +1,90 @@
+/* Homepage white-tone typography override — loaded after ui-reset + home-neo. */
+body.fpt-neo{
+  font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI Variable","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* Header: always dark + white, never inherit the global light-header reset. */
+.fpt-neo .topbar,
+.fpt-neo .topbar.is-scrolled{
+  background:rgba(4,12,28,.88)!important;
+  border-bottom-color:rgba(255,255,255,.09)!important;
+}
+.fpt-neo .nav-links{
+  color:#fff!important;
+  font-weight:600!important;
+  letter-spacing:-.01em;
+}
+.fpt-neo .nav-links a,
+.fpt-neo .nav-links a:visited,
+.fpt-neo .nav-links a.active,
+.fpt-neo .nav-links a[aria-current="page"],
+.fpt-neo .nav-links a:hover{
+  color:#fff!important;
+  opacity:1!important;
+}
+.fpt-neo .nav-links a::after{
+  background:#ff6a00!important;
+}
+.fpt-neo .header-call{color:#fff!important;font-weight:700!important}
+.fpt-neo .mobile-toggle{color:#fff!important;border-color:rgba(255,255,255,.16)!important;background:rgba(255,255,255,.08)!important}
+
+/* Hero typography: cleaner, lighter, pure white. */
+.fpt-neo .neo-kicker{
+  color:#fff!important;
+  font-weight:650!important;
+}
+.fpt-neo .neo-hero h1{
+  color:#fff!important;
+  font-size:clamp(52px,5.7vw,80px)!important;
+  font-weight:780!important;
+  line-height:.98!important;
+  letter-spacing:-.048em!important;
+}
+.fpt-neo .neo-hero h1 span{
+  display:block;
+  background:none!important;
+  -webkit-background-clip:initial!important;
+  background-clip:initial!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+.fpt-neo .neo-hero-copy>p{
+  color:#e4edf9!important;
+  font-weight:430!important;
+  line-height:1.62!important;
+}
+.fpt-neo .neo-proof{color:#e7eef8!important;font-weight:600!important}
+.fpt-neo .neo-proof i{color:#fff!important}
+
+/* Keep dark visual cards entirely white-toned. */
+.fpt-neo .neo-float,
+.fpt-neo .neo-float strong,
+.fpt-neo .neo-float span,
+.fpt-neo .neo-float b{color:#fff!important}
+.fpt-neo .neo-float{background:rgba(5,16,36,.80)!important}
+
+/* Buttons should feel modern, not heavy. */
+.fpt-neo .neo-btn{font-weight:700!important;letter-spacing:-.012em!important}
+.fpt-neo .header-register{font-weight:700!important}
+
+@media(max-width:1180px){
+  .fpt-neo .nav-links.open{
+    background:#071328!important;
+    border-color:rgba(255,255,255,.10)!important;
+  }
+  .fpt-neo .nav-links.open a{color:#fff!important}
+}
+
+@media(max-width:760px){
+  .fpt-neo .neo-hero h1{
+    font-size:clamp(44px,13vw,62px)!important;
+    letter-spacing:-.042em!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .fpt-neo .nav-links a,
+  .fpt-neo .neo-btn{transition:none!important}
+}
