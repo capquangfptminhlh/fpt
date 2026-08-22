@@ -82,6 +82,19 @@ def main() -> None:
             except ValueError: errors.append(f'{rel}: link escapes site root: {href}'); continue
             if not target.exists(): errors.append(f'{rel}: broken internal link: {href}')
 
+    home=site/'index.html'; neo_css=site/'assets/css/home-neo.css'; neo_js=site/'assets/js/home-neo.js'
+    if not home.exists(): errors.append('Missing homepage index.html')
+    else:
+        home_text=home.read_text(encoding='utf-8')
+        for required in ('class="fpt-neo"','assets/css/home-neo.css','assets/js/home-neo.js','>Khu vực</a>','neo-hero','neo-plans','neo-bento','neo-tech'):
+            if required not in home_text: errors.append(f'homepage missing FPT Neo marker: {required}')
+    if not neo_css.exists(): errors.append('Missing assets/css/home-neo.css')
+    if not neo_js.exists(): errors.append('Missing assets/js/home-neo.js')
+    else:
+        neo_js_text=neo_js.read_text(encoding='utf-8')
+        for required in ('IntersectionObserver','neo-ripple','neo-progress','prefers-reduced-motion: reduce'):
+            if required not in neo_js_text: errors.append(f'home-neo.js missing interaction: {required}')
+
     contact_js=site/'assets/js/contact-dock.js'
     if not contact_js.exists(): errors.append('Missing assets/js/contact-dock.js')
     else:
@@ -130,6 +143,6 @@ def main() -> None:
 
     if errors:
         print('FUNCTIONAL QA FAIL'); [print(f'- {item}') for item in errors[:100]]; raise SystemExit(1)
-    print(f'FUNCTIONAL QA PASS: pages={len(pages)}, internal_links={checked_links}, legacy_redirects={legacy_redirects}, ui_reset=ready, contact_actions=3, lead_form=ready, modem_transition=ready')
+    print(f'FUNCTIONAL QA PASS: pages={len(pages)}, internal_links={checked_links}, legacy_redirects={legacy_redirects}, ui_reset=ready, neo_home=ready, contact_actions=3, lead_form=ready, modem_transition=ready')
 
 if __name__=='__main__': main()
