@@ -61,23 +61,16 @@ jobs:
           python3 scripts/inject-contact-dock.py --site _site
           python3 scripts/sync-sitemap.py --site _site --origin https://capquangfptminhlh.github.io/fpt
 
-          # Preserve the previously passing 56-offer layer as a regression gate.
           python3 scripts/qa-local-pages.py --site _site
           python3 scripts/qa-local-silos.py --site _site
           python3 scripts/qa-local-commerce.py --site _site
           python3 scripts/qa-local-commerce-full.py --site _site
           python3 scripts/qa-local-current-offerings.py --site _site
           python3 scripts/qa-local-keywords.py --site _site
-
-          # Expand from the legacy 56 offers to the current official catalog snapshot.
           python3 scripts/complete-official-catalog.py --site _site
           python3 scripts/qa-official-catalog.py --site _site
-
-          # Replace thin province copy with substantial local buying guides.
           python3 scripts/enrich-local-editorial.py --site _site
           python3 scripts/qa-local-editorial.py --site _site
-
-          # Final presentation layer: premium cards + inline details + conversion CTA.
           python3 scripts/premiumize-local-catalog.py --site _site
           python3 scripts/qa-local-catalog-premium.py --site _site
           python3 scripts/qa-search-quality.py --site _site
@@ -132,6 +125,7 @@ jobs:
 
           node --check _site/assets/js/main.js
           node --check _site/assets/js/home-v2.js
+          node --check _site/assets/js/home-neo.js
           node --check _site/assets/js/lead-form.js
           node --check _site/assets/js/contact-dock.js
           node --check _site/assets/js/page-transition.js
