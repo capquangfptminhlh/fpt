@@ -6,7 +6,12 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PORT = Number(process.env.PORT || 3000);
-const ROOT = path.resolve(__dirname);
+
+// If _site exists, use it as public root (built production site), otherwise use project root
+const getRoot = () => {
+  const siteDir = path.resolve(__dirname, '_site');
+  return fs.existsSync(siteDir) ? siteDir : path.resolve(__dirname);
+};
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -27,18 +32,26 @@ const MIME_TYPES = {
 
 const server = http.createServer((req, res) => {
   try {
+    const root = getRoot();
     const rawUrl = req.url || '/';
     const parsedUrl = new URL(rawUrl, `http://${req.headers.host || 'localhost'}`);
     let reqPath = decodeURIComponent(parsedUrl.pathname);
 
-    // Normalize safe path inside root
-    let filePath = path.join(ROOT, reqPath);
-    if (!filePath.startsWith(ROOT)) {
+    // Strip /fpt base prefix if present (for GitHub Pages routing compatibility)
+    if (reqPath === '/fpt' || reqPath === '/fpt/') {
+      reqPath = '/';
+    } else if (reqPath.startsWith('/fpt/')) {
+      reqPath = reqPath.slice(4);
+    }
+
+    // Normalize safe file path inside root
+    let filePath = path.join(root, reqPath);
+    if (!filePath.startsWith(root)) {
       res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
       return res.end('403 Forbidden');
     }
 
-    // Check if path is a directory or file
+    // Resolve directory index.html
     if (fs.existsSync(filePath)) {
       const stat = fs.statSync(filePath);
       if (stat.isDirectory()) {
@@ -48,7 +61,6 @@ const server = http.createServer((req, res) => {
         }
       }
     } else {
-      // Try appending .html or /index.html if missing
       if (fs.existsSync(filePath + '.html')) {
         filePath = filePath + '.html';
       } else if (fs.existsSync(path.join(filePath, 'index.html'))) {
@@ -78,5 +90,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`FPT SEO Site running at http://localhost:${PORT}`);
+  console.log(`FPT Site running at http://localhost:${PORT}`);
 });
