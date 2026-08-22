@@ -4,27 +4,10 @@
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const header = document.querySelector('.topbar');
-  const mobileToggle = document.querySelector('.mobile-toggle');
-  const nav = document.querySelector('.nav-links');
 
   const syncHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 10);
   syncHeader();
   window.addEventListener('scroll', syncHeader, { passive: true });
-
-  if (mobileToggle && nav) {
-    mobileToggle.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      mobileToggle.setAttribute('aria-expanded', String(open));
-      mobileToggle.setAttribute('aria-label', open ? 'Đóng menu' : 'Mở menu');
-      mobileToggle.textContent = open ? '×' : '☰';
-    });
-    nav.addEventListener('click', (event) => {
-      if (!event.target.closest('a')) return;
-      nav.classList.remove('open');
-      mobileToggle.setAttribute('aria-expanded', 'false');
-      mobileToggle.textContent = '☰';
-    });
-  }
 
   document.querySelectorAll('.fpt-btn, .header-register').forEach((button) => {
     button.addEventListener('pointerdown', (event) => {
