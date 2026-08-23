@@ -52,6 +52,7 @@ jobs:
             --exclude='/deployment-status.json'
 
           test -f _site/assets/css/match-v2.css
+          test -f _site/assets/css/site-footer-v2.css
           test -f _site/assets/js/home-match.js
 
           pages=(
@@ -94,12 +95,15 @@ jobs:
             grep -q 'm2-core-grid' "_site/$page/index.html"
           done
 
+          grep -q 'data-hm-footer' _site/assets/js/home-match.js
+          grep -q 'site-footer-v2.css' _site/assets/js/home-match.js
+          grep -q '.hm-footer' _site/assets/css/site-footer-v2.css
           node --check _site/assets/js/home-match.js
 
-          printf '{"sha":"%s","run_id":"%s","layout":"match-v2-all-primary-pages-cache-busted"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
+          printf '{"sha":"%s","run_id":"%s","layout":"match-v2-footer-v2"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
           touch _site/.nojekyll
 
-          echo 'BUILD GATE PASS: homepage + 8 primary pages = match-v2; zero legacy layers; assets cache-busted'
+          echo 'BUILD GATE PASS: match-v2 + compact footer v2 assets present'
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
@@ -131,7 +135,7 @@ jobs:
             echo 'LIVE HANDOFF FAIL: production build-version.json is not the current SHA'
             exit 1
           }
-          printf '%s' "$marker" | grep -q 'match-v2-all-primary-pages-cache-busted' || {
+          printf '%s' "$marker" | grep -q 'match-v2-footer-v2' || {
             echo 'LIVE HANDOFF FAIL: wrong production layout marker'
             exit 1
           }
@@ -160,17 +164,32 @@ jobs:
               echo "LIVE HANDOFF FAIL: $path still exposes legacy UI"
               exit 1
             fi
-            echo "LIVE PASS $path"
+            echo "LIVE SOURCE PASS $path"
           done
 
-          echo "LIVE HANDOFF PASS: SHA=${GITHUB_SHA}; homepage + 8 primary pages verified on GitHub Pages"
+          live_js="$(curl -fsSL --retry 3 --retry-delay 2 -H 'Cache-Control: no-cache' "${base}/assets/js/home-match.js?verify=${GITHUB_SHA}")"
+          printf '%s' "$live_js" | grep -q 'data-hm-footer' || { echo 'LIVE HANDOFF FAIL: footer runtime missing'; exit 1; }
+          printf '%s' "$live_js" | grep -q 'site-footer-v2.css' || { echo 'LIVE HANDOFF FAIL: footer stylesheet hook missing'; exit 1; }
+          live_footer_css="$(curl -fsSL --retry 3 --retry-delay 2 -H 'Cache-Control: no-cache' "${base}/assets/css/site-footer-v2.css?verify=${GITHUB_SHA}")"
+          printf '%s' "$live_footer_css" | grep -q '.hm-footer' || { echo 'LIVE HANDOFF FAIL: footer stylesheet missing'; exit 1; }
+
+          chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$chrome" || { echo 'LIVE HANDOFF FAIL: no headless Chrome available for rendered footer QA'; exit 1; }
+          for path in "${paths[@]}"; do
+            dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --virtual-time-budget=1800 --dump-dom "${base}${path}?renderverify=${GITHUB_SHA}" 2>/dev/null)"
+            printf '%s' "$dom" | grep -q 'data-hm-footer="true"' || { echo "LIVE HANDOFF FAIL: rendered footer missing on $path"; exit 1; }
+            printf '%s' "$dom" | grep -q 'class="hm-footer"' || { echo "LIVE HANDOFF FAIL: footer DOM class missing on $path"; exit 1; }
+            echo "LIVE RENDER FOOTER PASS $path"
+          done
+
+          echo "LIVE HANDOFF PASS: SHA=${GITHUB_SHA}; 9 primary pages + rendered footer verified"
 
       - name: Record verified deployment
         shell: bash
         run: |
           set -euo pipefail
           verified_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-          printf '{"status":"PASS","deployed_sha":"%s","run_id":"%s","verified_at":"%s","layout":"match-v2-all-primary-pages-cache-busted","live_pages":9}\n' \
+          printf '{"status":"PASS","deployed_sha":"%s","run_id":"%s","verified_at":"%s","layout":"match-v2-footer-v2","live_pages":9,"footer":"PASS"}\n' \
             "$GITHUB_SHA" "$GITHUB_RUN_ID" "$verified_at" > deployment-status.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
