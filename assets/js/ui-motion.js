@@ -4,10 +4,10 @@
   if (!body) return;
 
   const reveal = Array.from(document.querySelectorAll(
-    '.m-plan,.package,.solution-card,.use-card,.content-card,.contact-step,.contact-info,.contact-callout,.lead-card,.article,.promo'
+    '.m-plan,.package,.solution-card,.use-card,.content-card,.contact-step,.contact-info,.contact-callout,.lead-card,.article,.promo,.core-neo-card,.core-neo-content .owner-link,.core-neo-cta-box'
   ));
   const media = Array.from(document.querySelectorAll(
-    '.m-hero-media img,.subpage-hero img,.seo-hero>img,.solution-card img,.use-card img,.package-media img,.m-plan-media img'
+    '.m-hero-media img,.subpage-hero img,.seo-hero>img,.solution-card img,.use-card img,.package-media img,.m-plan-media img,.core-neo-photo img'
   ));
 
   reveal.forEach((node) => node.classList.add('ui-reveal'));
