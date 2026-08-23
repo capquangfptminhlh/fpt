@@ -6,6 +6,10 @@ from pathlib import Path
 
 SITE_BASE = "/fpt"
 STYLE_TAG = '<link rel="stylesheet" href="/fpt/assets/css/site-shell.css?v=20260823-1" data-site-shell-style="true"/>'
+NAV_RE = re.compile(
+    r'<nav\b[^>]*class=["\'][^"\']*nav-links[^"\']*["\'][^>]*>.*?</nav>',
+    flags=re.I | re.S,
+)
 
 MENU = (
     ("Internet", "/fpt/internet-fpt/", "internet"),
@@ -54,18 +58,11 @@ def build_nav(active: str | None) -> str:
 
 def normalize_html(text: str, rel: str) -> str:
     active = active_key(rel)
-
-    # One canonical navigation on every page.
     nav = build_nav(active)
-    text, nav_count = re.subn(
-        r'<nav\b[^>]*class=["\'][^"\']*nav-links[^"\']*["\'][^>]*>.*?</nav>',
-        nav,
-        text,
-        count=1,
-        flags=re.I | re.S,
-    )
+    text, nav_count = NAV_RE.subn(nav, text, count=1)
+    if nav_count == 0:
+        raise RuntimeError(f"missing nav-links in {rel}")
 
-    # One canonical contact area on every page.
     cta = (
         '<div class="nav-cta">'
         '<a class="header-call" href="tel:19006600">1900 6600</a>'
@@ -80,7 +77,6 @@ def normalize_html(text: str, rel: str) -> str:
         flags=re.I | re.S,
     )
 
-    # Home link is identical across all depths.
     text = re.sub(
         r'(<a\b[^>]*class=["\'][^"\']*brand[^"\']*["\'][^>]*href=)["\'][^"\']*["\']',
         r'\1"/fpt/"',
@@ -89,7 +85,6 @@ def normalize_html(text: str, rel: str) -> str:
         flags=re.I,
     )
 
-    # Add a stable shell marker to body for QA/debugging.
     if re.search(r'<body\b[^>]*class=', text, flags=re.I):
         text = re.sub(
             r'<body\b([^>]*?)class=["\']([^"\']*)["\']([^>]*)>',
@@ -101,12 +96,8 @@ def normalize_html(text: str, rel: str) -> str:
     else:
         text = re.sub(r'<body\b([^>]*)>', r'<body class="site-shell"\1>', text, count=1, flags=re.I)
 
-    # Always load after reset/motion so it is the final visual authority.
     if 'data-site-shell-style=' not in text:
         text = text.replace('</head>', STYLE_TAG + '</head>', 1)
-
-    if nav_count == 0:
-        raise RuntimeError(f"missing nav-links in {rel}")
     return text
 
 
@@ -122,8 +113,9 @@ def main() -> int:
     for page in pages:
         rel = page.relative_to(site).as_posix()
         original = page.read_text(encoding='utf-8')
-        # Redirect stubs may intentionally have no site navigation.
-        if 'nav-links' not in original:
+        # Redirect/utility stubs may contain the string "nav-links" in scripts or comments
+        # but no actual navigation element. Only normalize real nav markup.
+        if not NAV_RE.search(original):
             continue
         try:
             updated = normalize_html(original, rel)
@@ -138,7 +130,6 @@ def main() -> int:
     if not shell.exists():
         errors.append('missing assets/css/site-shell.css')
 
-    # Core pages must all carry the same shell after normalization.
     core = [
         'index.html','internet-fpt/index.html','goi-cuoc-fpt/index.html','combo-fpt/index.html',
         'wifi-7/index.html','camera-fpt/index.html','fpt-play/index.html','khu-vuc/index.html','ho-tro/index.html'
