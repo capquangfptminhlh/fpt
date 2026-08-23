@@ -51,7 +51,8 @@ jobs:
           python3 scripts/prepare-pages.py --site _site
           python3 scripts/inject-trust-footer.py --site _site
           python3 scripts/inject-contact-dock.py --site _site
-          python3 scripts/rebuild-core-neo.py --site _site
+
+          # Primary menu pages are committed directly in Neo markup. Build only normalizes the shared shell.
           python3 scripts/normalize-site-shell.py --site _site
           python3 scripts/remove-legacy-runtime.py --site _site
           python3 scripts/sync-sitemap.py --site _site --origin https://capquangfptminhlh.github.io/fpt
@@ -81,6 +82,8 @@ jobs:
               for token in ('neo-core-page','data-core-neo-style=','data-core-neo-hero="true"','data-site-shell-style='):
                   if token not in html:
                       errors.append(f'{rel}: missing {token}')
+              if html.count('data-core-neo-hero="true"') != 1:
+                  errors.append(f'{rel}: core hero must appear exactly once')
               nav = re.search(r'<nav\b[^>]*class=["\'][^"\']*nav-links[^"\']*["\'][^>]*>(.*?)</nav>', html, flags=re.I|re.S)
               if not nav:
                   errors.append(f'{rel}: missing nav')
@@ -104,7 +107,7 @@ jobs:
                   print('-', error)
               raise SystemExit(1)
 
-          print(f'PRODUCTION UI GATE PASS: html={len(pages)}, core=8, nav=unified, layout=neo')
+          print(f'PRODUCTION UI GATE PASS: html={len(pages)}, core=8, nav=unified, layout=neo-direct')
           PY
 
           node --check _site/assets/js/main.js
@@ -113,7 +116,7 @@ jobs:
           node --check _site/assets/js/ui-motion.js
           node --check _site/assets/js/contact-dock.js
 
-          printf '{"sha":"%s","run_id":"%s","layout":"neo-unified-v3"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
+          printf '{"sha":"%s","run_id":"%s","layout":"neo-direct-v4"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
           touch _site/.nojekyll
 
       - name: Upload Pages artifact
