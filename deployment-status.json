@@ -1,1 +1,1 @@
-{"status":"PASS","deployed_sha":"612cec2dfbdfc427364df94792c82d27d21530ea","run_id":"32634865041","verified_at":"2026-08-23T10:51:02Z","layout":"match-v2-all-primary-pages-cache-busted","live_pages":9}
+{"status":"PASS","deployed_sha":"03358e7e911167c1128a44bad9d49be91f9062ee","run_id":"32634891961","verified_at":"2026-08-23T10:52:01Z","layout":"match-v2-footer-v2","live_pages":9,"footer":"PASS"}
