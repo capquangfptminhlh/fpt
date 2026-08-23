@@ -1,1 +1,1 @@
-{"status":"RUNNING","deployed_sha":"4e8fc1b6e784998071526f87f1fb3183c814ba14","run_id":"32642098627","layout":"motion-2026-full-site-v1"}
+{"status":"PASS","deployed_sha":"4e8fc1b6e784998071526f87f1fb3183c814ba14","run_id":"32642098627","verified_at":"2026-08-23T13:22:28Z","layout":"motion-2026-full-site-v1","live_pages":9,"footer":"PASS","font":"PASS","font_stack":"Space Grotesk + Manrope","motion":"PASS","motion_version":"2026.1","motion_coverage":"144/144","mobile_motion":"PASS","reduced_motion":"PASS"}
