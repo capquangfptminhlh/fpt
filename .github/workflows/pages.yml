@@ -50,8 +50,6 @@ jobs:
 
           python3 scripts/prepare-pages.py --site _site
           python3 scripts/inject-trust-footer.py --site _site
-
-          # Normalize the common shell first; the premium mobile authority is injected last.
           python3 scripts/normalize-site-shell.py --site _site
           python3 scripts/inject-contact-dock.py --site _site
           python3 scripts/remove-legacy-runtime.py --site _site
@@ -73,11 +71,17 @@ jobs:
           if len(pages) < 100:
               errors.append(f'HTML page count too low: {len(pages)}')
 
-          homepage = (site / 'index.html').read_text(encoding='utf-8') if (site / 'index.html').exists() else ''
+          home_path = site / 'index.html'
+          homepage = home_path.read_text(encoding='utf-8') if home_path.exists() else ''
+          for token in ('fpt-match','data-home-match-style="true"','hm-hero-grid','hm-plan-grid','hm-solution-grid','hm-faq-list','hm-dock'):
+              if token not in homepage:
+                  errors.append(f'homepage: missing approved layout token {token}')
+          if 'home-neo.css' in homepage or 'home-tone-white.css' in homepage:
+              errors.append('homepage: legacy Neo homepage styles still loaded')
           if 'data-mobile-premium-style="true"' not in homepage:
               errors.append('homepage: missing premium mobile style')
-          if homepage.rfind('data-mobile-premium-style="true"') < homepage.rfind('data-site-shell-style="true"'):
-              errors.append('homepage: premium mobile style must load after site shell')
+          if homepage.rfind('data-home-match-style="true"') < homepage.rfind('data-mobile-premium-style="true"'):
+              errors.append('homepage: home-match.css must be the final visual stylesheet')
 
           for rel in core:
               path = site / rel
@@ -105,7 +109,10 @@ jobs:
               if 'mobile-v3.css' in html or 'apple-polish.css' in html or 'mobile-nav-final.css' in html:
                   errors.append(f'{rel}: legacy visual layer still loaded')
 
-          for asset in ('assets/css/core-neo.css','assets/css/site-shell.css','assets/css/mobile-premium.css','assets/js/main.js','assets/js/page-transition.js'):
+          for asset in (
+              'assets/css/home-match.css','assets/js/home-match.js','assets/css/core-neo.css',
+              'assets/css/site-shell.css','assets/css/mobile-premium.css','assets/js/main.js','assets/js/page-transition.js'
+          ):
               if not (site / asset).exists():
                   errors.append(f'missing production asset {asset}')
 
@@ -115,16 +122,16 @@ jobs:
                   print('-', error)
               raise SystemExit(1)
 
-          print(f'PRODUCTION UI GATE PASS: html={len(pages)}, core=8, nav=unified, mobile=premium-v1')
+          print(f'PRODUCTION UI GATE PASS: html={len(pages)}, homepage=approved-match, core=8')
           PY
 
           node --check _site/assets/js/main.js
-          node --check _site/assets/js/home-neo.js
+          node --check _site/assets/js/home-match.js
           node --check _site/assets/js/page-transition.js
           node --check _site/assets/js/ui-motion.js
           node --check _site/assets/js/contact-dock.js
 
-          printf '{"sha":"%s","run_id":"%s","layout":"neo-mobile-premium-v5"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
+          printf '{"sha":"%s","run_id":"%s","layout":"approved-home-match-v1"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
           touch _site/.nojekyll
 
       - name: Upload Pages artifact
