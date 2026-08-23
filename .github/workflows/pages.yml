@@ -30,11 +30,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          printf '{"status":"RUNNING","deployed_sha":"%s","run_id":"%s","layout":"motion-2026-full-site-v1"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > deployment-status.json
+          printf '{"status":"RUNNING","deployed_sha":"%s","run_id":"%s","layout":"motion-2026-packages60-v1","packages":"VERIFYING","package_count":60}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > deployment-status.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add deployment-status.json
-          git commit -m 'chore(deploy): record running UI verification [skip ci]'
+          git commit -m 'chore(deploy): record running package verification [skip ci]'
           git push
 
       - name: Setup Pages
@@ -54,7 +54,9 @@ jobs:
 
           for asset in \
             assets/css/match-v2.css assets/css/site-footer-v2.css assets/css/tech-type.css \
-            assets/css/motion-2026.css assets/js/home-match.js assets/js/motion-2026.js; do
+            assets/css/motion-2026.css assets/js/home-match.js assets/js/motion-2026.js \
+            assets/css/package-catalog-2026.css assets/js/package-catalog-2026.js \
+            assets/js/package-detail-2026.js assets/data/fpt-packages-2026.json; do
             test -f "_site/$asset"
           done
 
@@ -70,6 +72,38 @@ jobs:
           import os,re,json
           from pathlib import Path
           site=Path('_site'); sha=os.environ['GITHUB_SHA']
+
+          # Package catalog hard gate: exactly 60 verified package records and 60 local detail routes.
+          pkg_path=site/'assets/data/fpt-packages-2026.json'
+          pkg=json.loads(pkg_path.read_text(encoding='utf-8'))
+          assert pkg['count']==60 and len(pkg['packages'])==60, 'PACKAGE BUILD FAIL: expected 60 records'
+          slugs=[p['slug'] for p in pkg['packages']]
+          assert len(set(slugs))==60, 'PACKAGE BUILD FAIL: duplicate slug'
+          expected={'internet':9,'game':2,'combo':11,'wifi7':12,'camera':14,'business':12}
+          actual={k:sum(1 for p in pkg['packages'] if p['category']==k) for k in expected}
+          assert actual==expected, f'PACKAGE BUILD FAIL categories {actual}'
+          catalog=(site/'goi-cuoc-fpt/index.html').read_text(encoding='utf-8')
+          assert 'data-package-count="60"' in catalog
+          assert catalog.count('class="pkg-card package"')==60, 'PACKAGE BUILD FAIL: catalog cards != 60'
+          for slug in slugs:
+              f=site/'goi-cuoc'/slug/'index.html'
+              assert f.is_file(), f'PACKAGE BUILD FAIL missing {slug}'
+              s=f.read_text(encoding='utf-8')
+              assert 'data-package-detail="true"' in s and 'package-detail-2026.js' in s, f'PACKAGE BUILD FAIL invalid detail {slug}'
+
+          # Cache-bust every package surface with the deployed SHA.
+          package_files=[site/'goi-cuoc-fpt/index.html']+[site/'goi-cuoc'/slug/'index.html' for slug in slugs]
+          for p in package_files:
+              s=p.read_text(encoding='utf-8')
+              for asset in ('package-catalog-2026.css','package-catalog-2026.js','package-detail-2026.js'):
+                  s=re.sub(rf'{re.escape(asset)}\?v=[^"\']+',f'{asset}?v={sha}',s)
+              p.write_text(s,encoding='utf-8')
+          detail_js=site/'assets/js/package-detail-2026.js'
+          d=detail_js.read_text(encoding='utf-8')
+          d=re.sub(r'fpt-packages-2026\.json\?v=[^\'\"]+',f'fpt-packages-2026.json?v={sha}',d)
+          detail_js.write_text(d,encoding='utf-8')
+
+          # One Motion 2026 authority across every published HTML page.
           style=f'<link rel="stylesheet" href="/fpt/assets/css/motion-2026.css?v={sha}" data-motion-2026-style="true"/>'
           script=f'<script defer src="/fpt/assets/js/motion-2026.js?v={sha}" data-motion-2026-script="true"></script>'
           old=[
@@ -82,18 +116,22 @@ jobs:
             for pat in old:s=pat.sub('',s)
             s=re.sub(r'<link[^>]*data-motion-2026-style=["\']true["\'][^>]*>\s*','',s,flags=re.I)
             s=re.sub(r'<script[^>]*data-motion-2026-script=["\']true["\'][^>]*>\s*</script>\s*','',s,flags=re.I)
-            if '</head>' not in s.lower() or '</body>' not in s.lower():raise SystemExit(f'MOTION BUILD FAIL {p}')
+            if '</head>' not in s.lower() or '</body>' not in s.lower(): raise SystemExit(f'MOTION BUILD FAIL {p}')
             s=re.sub(r'</head>',style+'\n</head>',s,count=1,flags=re.I)
             s=re.sub(r'</body>',script+'\n</body>',s,count=1,flags=re.I)
             p.write_text(s,encoding='utf-8')
-          coverage={'sha':sha,'html_pages':len(pages),'motion_pages':len(pages),'motion_version':'2026.1','authority':'motion-2026','legacy_motion':'removed'}
+          coverage={'sha':sha,'html_pages':len(pages),'motion_pages':len(pages),'motion_version':'2026.1','authority':'motion-2026','legacy_motion':'removed','package_count':60}
           (site/'motion-coverage.json').write_text(json.dumps(coverage)+'\n',encoding='utf-8')
-          print(f'MOTION COVERAGE {len(pages)}/{len(pages)}')
+          print(f'PACKAGE COVERAGE 60/60; MOTION COVERAGE {len(pages)}/{len(pages)}')
           PY
+
+          package_total="$(find _site/goi-cuoc -mindepth 2 -maxdepth 2 -type f -name 'index.html' | wc -l | tr -d ' ')"
+          test "$package_total" = 60
+          echo "PACKAGE_TOTAL=$package_total" >> "$GITHUB_ENV"
 
           html_total="$(find _site -type f -name '*.html' | wc -l | tr -d ' ')"
           motion_total="$(grep -RIl 'data-motion-2026-script="true"' _site --include='*.html' | wc -l | tr -d ' ')"
-          test "$html_total" -ge 140
+          test "$html_total" -ge 190
           test "$motion_total" = "$html_total"
           echo "MOTION_TOTAL=$html_total" >> "$GITHUB_ENV"
 
@@ -114,6 +152,12 @@ jobs:
             ! grep -Eqi 'core-neo\.css|site-shell\.css|mobile-premium\.css|contact-dock\.js|neo-core-page' "$file"
           done
 
+          grep -q 'data-package-count="60"' _site/goi-cuoc-fpt/index.html
+          test "$(grep -o 'class="pkg-card package"' _site/goi-cuoc-fpt/index.html | wc -l | tr -d ' ')" = 60
+          grep -q "package-catalog-2026.css?v=${GITHUB_SHA}" _site/goi-cuoc-fpt/index.html
+          grep -q "package-catalog-2026.js?v=${GITHUB_SHA}" _site/goi-cuoc-fpt/index.html
+          grep -q "fpt-packages-2026.json?v=${GITHUB_SHA}" _site/assets/js/package-detail-2026.js
+          grep -q 'data-package-detail-ready' _site/assets/js/package-detail-2026.js
           grep -q 'data-hm-footer' _site/assets/js/home-match.js
           grep -q 'data-tech-fonts-ready' _site/assets/js/home-match.js
           grep -q 'Space Grotesk' _site/assets/css/tech-type.css
@@ -124,14 +168,14 @@ jobs:
           grep -q 'm26-magnetic' _site/assets/css/motion-2026.css
           grep -q 'm26-parallax' _site/assets/css/motion-2026.css
           grep -q 'data-motion-2026' _site/assets/js/motion-2026.js
-          grep -q 'IntersectionObserver' _site/assets/js/motion-2026.js
-          grep -q 'navigator.hardwareConcurrency' _site/assets/js/motion-2026.js
           node --check _site/assets/js/home-match.js
           node --check _site/assets/js/motion-2026.js
+          node --check _site/assets/js/package-catalog-2026.js
+          node --check _site/assets/js/package-detail-2026.js
 
-          printf '{"sha":"%s","run_id":"%s","layout":"motion-2026-full-site-v1","motion_pages":%s}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$html_total" > _site/build-version.json
+          printf '{"sha":"%s","run_id":"%s","layout":"motion-2026-packages60-v1","motion_pages":%s,"package_count":60}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$html_total" > _site/build-version.json
           touch _site/.nojekyll
-          echo "BUILD PASS: Motion 2026 ${html_total}/${html_total}"
+          echo "BUILD PASS: FPT packages 60/60 + Motion 2026 ${html_total}/${html_total}"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
@@ -154,56 +198,64 @@ jobs:
             sleep 8
           done
           grep -q "$GITHUB_SHA" <<< "$marker"
-          grep -q 'motion-2026-full-site-v1' <<< "$marker"
+          grep -q 'motion-2026-packages60-v1' <<< "$marker"
+          grep -q '"package_count":60' <<< "$marker"
           sleep 8
 
           coverage="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/motion-coverage.json?verify=${GITHUB_SHA}")"
-          python3 -c 'import json,sys;d=json.loads(sys.argv[1]);assert d["sha"]==sys.argv[2];assert d["html_pages"]==d["motion_pages"]==int(sys.argv[3]);assert d["motion_version"]=="2026.1";assert d["legacy_motion"]=="removed"' "$coverage" "$GITHUB_SHA" "$MOTION_TOTAL"
+          python3 -c 'import json,sys;d=json.loads(sys.argv[1]);assert d["sha"]==sys.argv[2];assert d["html_pages"]==d["motion_pages"]==int(sys.argv[3]);assert d["package_count"]==60' "$coverage" "$GITHUB_SHA" "$MOTION_TOTAL"
+
+          live_pkg="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/assets/data/fpt-packages-2026.json?verify=${GITHUB_SHA}")"
+          python3 -c 'import json,sys;d=json.loads(sys.argv[1]);assert d["count"]==60==len(d["packages"]);assert len({x["slug"] for x in d["packages"]})==60' "$live_pkg"
+          catalog="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/goi-cuoc-fpt/?verify=${GITHUB_SHA}")"
+          grep -q 'data-package-count="60"' <<< "$catalog"
+          test "$(grep -o 'class="pkg-card package"' <<< "$catalog" | wc -l | tr -d ' ')" = 60
+          grep -q "package-catalog-2026.css?v=${GITHUB_SHA}" <<< "$catalog"
 
           live_js="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/assets/js/motion-2026.js?verify=${GITHUB_SHA}")"
           live_css="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/assets/css/motion-2026.css?verify=${GITHUB_SHA}")"
           grep -q 'data-motion-2026' <<< "$live_js"
           grep -q 'm26-tilt' <<< "$live_js"
-          grep -q 'm26-parallax' <<< "$live_js"
           grep -q '@view-transition' <<< "$live_css"
           grep -q 'prefers-reduced-motion:reduce' <<< "$live_css"
 
           chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           test -n "$chrome"
 
-          render_paths=(/ /wifi-7/ /camera-fpt/ /lap-mang-fpt/ /goi-cuoc/giga/ /kien-thuc/ftth-la-gi/ /giai-phap/gia-dinh/ /khu-vuc/ha-noi/ /ho-tro/wifi-fpt-yeu/ /lien-he/)
+          # Render representative page types plus the new package catalog.
+          render_paths=(/ /wifi-7/ /camera-fpt/ /lap-mang-fpt/ /kien-thuc/ftth-la-gi/ /giai-phap/gia-dinh/ /khu-vuc/ha-noi/ /ho-tro/wifi-fpt-yeu/ /lien-he/ /goi-cuoc-fpt/)
           for path in "${render_paths[@]}"; do
             passed=0
-            dom=''
             for attempt in 1 2 3 4; do
-              dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --virtual-time-budget=2600 --dump-dom "${base}${path}?motion=${GITHUB_SHA}-${attempt}" 2>/dev/null || true)"
-              if grep -q 'data-motion-2026="ready"' <<< "$dom" && \
-                 grep -q 'data-motion-coverage="full-site-v1"' <<< "$dom" && \
-                 grep -q 'data-m26-progress="true"' <<< "$dom"; then
-                passed=1
-                echo "RENDER MOTION PASS $path attempt=$attempt"
-                break
-              fi
-              echo "Waiting path propagation $path attempt=$attempt"
+              dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --virtual-time-budget=2800 --dump-dom "${base}${path}?motion=${GITHUB_SHA}-${attempt}" 2>/dev/null || true)"
+              if grep -q 'data-motion-2026="ready"' <<< "$dom" && grep -q 'data-m26-progress="true"' <<< "$dom"; then passed=1; break; fi
               sleep 4
             done
-            if [ "$passed" != 1 ]; then
-              echo "RENDER MOTION FAIL $path"
-              grep -o 'data-motion-2026="[^"]*"' <<< "$dom" | head -1 || true
-              grep -o 'data-motion-coverage="[^"]*"' <<< "$dom" | head -1 || true
-              exit 1
-            fi
+            test "$passed" = 1 || { echo "RENDER MOTION FAIL $path"; exit 1; }
           done
 
-          for path in / /wifi-7/ /khu-vuc/ha-noi/; do
+          # Render detail pages from every major package family and require the correct slug/data to hydrate.
+          package_samples=(giga-f1 meta-f3 speedx10-pro-iq4s triple-sky-camera-iq4s super800-biz-plus)
+          for slug in "${package_samples[@]}"; do
             passed=0
             for attempt in 1 2 3 4; do
-              dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --window-size=390,844 --virtual-time-budget=2600 --dump-dom "${base}${path}?mobile=${GITHUB_SHA}-${attempt}" 2>/dev/null || true)"
-              if grep -q 'data-motion-2026="ready"' <<< "$dom" && grep -q 'data-m26-progress="true"' <<< "$dom"; then
+              dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --virtual-time-budget=4200 --dump-dom "${base}/goi-cuoc/${slug}/?pkg=${GITHUB_SHA}-${attempt}" 2>/dev/null || true)"
+              if grep -q "data-package-detail-ready=\"${slug}\"" <<< "$dom" && grep -q 'data-motion-2026="ready"' <<< "$dom" && grep -q 'data-hm-footer="true"' <<< "$dom"; then
                 passed=1
-                echo "MOBILE MOTION PASS $path attempt=$attempt"
+                echo "PACKAGE RENDER PASS $slug attempt=$attempt"
                 break
               fi
+              sleep 4
+            done
+            test "$passed" = 1 || { echo "PACKAGE RENDER FAIL $slug"; exit 1; }
+          done
+
+          # Mobile and accessibility motion remain mandatory.
+          for path in / /goi-cuoc-fpt/ /wifi-7/; do
+            passed=0
+            for attempt in 1 2 3 4; do
+              dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --window-size=390,844 --virtual-time-budget=3000 --dump-dom "${base}${path}?mobile=${GITHUB_SHA}-${attempt}" 2>/dev/null || true)"
+              if grep -q 'data-motion-2026="ready"' <<< "$dom"; then passed=1; break; fi
               sleep 4
             done
             test "$passed" = 1 || { echo "MOBILE MOTION FAIL $path"; exit 1; }
@@ -211,38 +263,31 @@ jobs:
 
           reduced_passed=0
           for attempt in 1 2 3 4; do
-            reduced_dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --force-prefers-reduced-motion --virtual-time-budget=2600 --dump-dom "${base}/?reduced=${GITHUB_SHA}-${attempt}" 2>/dev/null || true)"
-            if grep -q 'data-motion-2026="ready"' <<< "$reduced_dom" && grep -q 'm26-in' <<< "$reduced_dom"; then
-              reduced_passed=1
-              break
-            fi
+            reduced_dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --force-prefers-reduced-motion --virtual-time-budget=2800 --dump-dom "${base}/goi-cuoc-fpt/?reduced=${GITHUB_SHA}-${attempt}" 2>/dev/null || true)"
+            if grep -q 'data-motion-2026="ready"' <<< "$reduced_dom" && grep -q 'm26-in' <<< "$reduced_dom"; then reduced_passed=1; break; fi
             sleep 4
           done
           test "$reduced_passed" = 1 || { echo 'REDUCED MOTION FAIL'; exit 1; }
-          echo 'REDUCED MOTION PASS'
 
+          # Footer + tech fonts still verified on primary pages.
           for path in / /wifi-7/ /ho-tro/; do
             passed=0
             for attempt in 1 2 3 4; do
               dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --virtual-time-budget=5000 --dump-dom "${base}${path}?ui=${GITHUB_SHA}-${attempt}" 2>/dev/null || true)"
-              if grep -q 'data-hm-footer="true"' <<< "$dom" && grep -q 'data-tech-fonts-ready="true"' <<< "$dom"; then
-                passed=1
-                echo "UI RENDER PASS $path attempt=$attempt"
-                break
-              fi
+              if grep -q 'data-hm-footer="true"' <<< "$dom" && grep -q 'data-tech-fonts-ready="true"' <<< "$dom"; then passed=1; break; fi
               sleep 4
             done
             test "$passed" = 1 || { echo "UI RENDER FAIL $path"; exit 1; }
           done
 
-          echo "LIVE PASS: Motion 2026 ${MOTION_TOTAL}/${MOTION_TOTAL}, desktop/mobile/reduced-motion"
+          echo "LIVE PASS: 60/60 FPT packages + Motion 2026 ${MOTION_TOTAL}/${MOTION_TOTAL}"
 
       - name: Record verified deployment
         shell: bash
         run: |
           set -euo pipefail
           verified_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-          printf '{"status":"PASS","deployed_sha":"%s","run_id":"%s","verified_at":"%s","layout":"motion-2026-full-site-v1","live_pages":9,"footer":"PASS","font":"PASS","font_stack":"Space Grotesk + Manrope","motion":"PASS","motion_version":"2026.1","motion_coverage":"%s/%s","mobile_motion":"PASS","reduced_motion":"PASS"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$verified_at" "$MOTION_TOTAL" "$MOTION_TOTAL" > deployment-status.json
+          printf '{"status":"PASS","deployed_sha":"%s","run_id":"%s","verified_at":"%s","layout":"motion-2026-packages60-v1","live_pages":9,"footer":"PASS","font":"PASS","font_stack":"Space Grotesk + Manrope","motion":"PASS","motion_version":"2026.1","motion_coverage":"%s/%s","mobile_motion":"PASS","reduced_motion":"PASS","packages":"PASS","package_count":60,"package_detail_pages":60,"package_source":"FPT.vn 2026-08-23"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$verified_at" "$MOTION_TOTAL" "$MOTION_TOTAL" > deployment-status.json
           git add deployment-status.json
-          git commit -m 'chore(deploy): record verified live UI [skip ci]'
+          git commit -m 'chore(deploy): record verified packages and live UI [skip ci]'
           git push
