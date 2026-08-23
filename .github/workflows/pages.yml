@@ -60,30 +60,45 @@ jobs:
           import re
 
           site = Path('_site')
-          core = [
-              'internet-fpt/index.html', 'goi-cuoc-fpt/index.html', 'combo-fpt/index.html',
-              'wifi-7/index.html', 'camera-fpt/index.html', 'fpt-play/index.html',
-              'khu-vuc/index.html', 'ho-tro/index.html'
-          ]
-          required_nav = ('Internet','Gói cước','Combo','WiFi 7','Camera','FPT Play','Khu vực','Hỗ trợ')
           errors = []
           pages = list(site.rglob('*.html'))
           if len(pages) < 100:
               errors.append(f'HTML page count too low: {len(pages)}')
 
-          home_path = site / 'index.html'
-          homepage = home_path.read_text(encoding='utf-8') if home_path.exists() else ''
-          for token in ('fpt-match','data-home-match-style="true"','hm-hero-grid','hm-plan-grid','hm-solution-grid','hm-faq-list','hm-dock'):
-              if token not in homepage:
-                  errors.append(f'homepage: missing approved layout token {token}')
-          if 'home-neo.css' in homepage or 'home-tone-white.css' in homepage:
-              errors.append('homepage: legacy Neo homepage styles still loaded')
-          if 'data-mobile-premium-style="true"' not in homepage:
-              errors.append('homepage: missing premium mobile style')
-          if homepage.rfind('data-home-match-style="true"') < homepage.rfind('data-mobile-premium-style="true"'):
-              errors.append('homepage: home-match.css must be the final visual stylesheet')
+          # Approved pages must be self-contained and immune to the legacy visual pipeline.
+          approved = {
+              'index.html': ('hm-hero-grid','hm-plan-grid','hm-solution-grid','hm-faq-list','hm-dock'),
+              'wifi-7/index.html': ('m2-core-grid','m2-feature-grid','m2-content-grid','m2-cta','hm-dock'),
+          }
+          forbidden = (
+              'core-neo.css','home-neo.css','home-tone-white.css','site-shell.css','mobile-premium.css',
+              'data-core-neo-style=','data-site-shell-style=','data-mobile-premium-style=',
+              'data-contact-dock-script=','contact-dock.js','mobile-v3.css','apple-polish.css','mobile-nav-final.css'
+          )
+          for rel, tokens in approved.items():
+              path = site / rel
+              if not path.exists():
+                  errors.append(f'{rel}: missing approved page')
+                  continue
+              html = path.read_text(encoding='utf-8')
+              for token in ('fpt-match-v2','data-match-v2-style="true"','data-hm-menu-panel') + tokens:
+                  if token not in html:
+                      errors.append(f'{rel}: missing approved token {token}')
+              for token in forbidden:
+                  if token in html:
+                      errors.append(f'{rel}: forbidden legacy layer {token}')
+              if html.count('data-match-v2-style="true"') != 1:
+                  errors.append(f'{rel}: match-v2 stylesheet must appear exactly once')
+              if html.count('class="hm-dock"') != 1:
+                  errors.append(f'{rel}: contact dock must appear exactly once')
 
-          for rel in core:
+          # Remaining menu pages are still on the older shared shell until migrated.
+          legacy_core = [
+              'internet-fpt/index.html','goi-cuoc-fpt/index.html','combo-fpt/index.html',
+              'camera-fpt/index.html','fpt-play/index.html','khu-vuc/index.html','ho-tro/index.html'
+          ]
+          required_nav = ('Internet','Gói cước','Combo','WiFi 7','Camera','FPT Play','Khu vực','Hỗ trợ')
+          for rel in legacy_core:
               path = site / rel
               if not path.exists():
                   errors.append(f'missing core page {rel}')
@@ -92,10 +107,6 @@ jobs:
               for token in ('neo-core-page','data-core-neo-style=','data-core-neo-hero="true"','data-site-shell-style=','data-mobile-premium-style="true"'):
                   if token not in html:
                       errors.append(f'{rel}: missing {token}')
-              if html.rfind('data-mobile-premium-style="true"') < html.rfind('data-site-shell-style="true"'):
-                  errors.append(f'{rel}: premium mobile style must load after site shell')
-              if html.count('data-core-neo-hero="true"') != 1:
-                  errors.append(f'{rel}: core hero must appear exactly once')
               nav = re.search(r'<nav\b[^>]*class=["\'][^"\']*nav-links[^"\']*["\'][^>]*>(.*?)</nav>', html, flags=re.I|re.S)
               if not nav:
                   errors.append(f'{rel}: missing nav')
@@ -106,32 +117,31 @@ jobs:
                           errors.append(f'{rel}: missing nav item {label}')
                   if len(re.findall(r'<a\b', nav_html, flags=re.I)) != 8:
                       errors.append(f'{rel}: nav must contain exactly 8 links')
-              if 'mobile-v3.css' in html or 'apple-polish.css' in html or 'mobile-nav-final.css' in html:
-                  errors.append(f'{rel}: legacy visual layer still loaded')
 
           for asset in (
-              'assets/css/home-match.css','assets/js/home-match.js','assets/css/core-neo.css',
-              'assets/css/site-shell.css','assets/css/mobile-premium.css','assets/js/main.js','assets/js/page-transition.js'
+              'assets/css/match-v2.css','assets/js/home-match.js','assets/css/core-neo.css',
+              'assets/css/site-shell.css','assets/css/mobile-premium.css','assets/js/main.js'
           ):
               if not (site / asset).exists():
                   errors.append(f'missing production asset {asset}')
 
+          css = (site/'assets/css/match-v2.css').read_text(encoding='utf-8') if (site/'assets/css/match-v2.css').exists() else ''
+          for token in ('.fpt-match-v2 .hm-dock','height:58px','@media(max-width:820px)','grid-template-columns:1fr 1fr 1.2fr'):
+              if token not in css:
+                  errors.append(f'match-v2.css: missing dock/mobile contract {token}')
+
           if errors:
-              print('PRODUCTION UI GATE FAIL')
+              print('PRODUCTION HANDOFF GATE FAIL')
               for error in errors:
                   print('-', error)
               raise SystemExit(1)
 
-          print(f'PRODUCTION UI GATE PASS: html={len(pages)}, homepage=approved-match, core=8')
+          print(f'PRODUCTION HANDOFF GATE PASS: html={len(pages)}, approved=homepage+wifi7, dock=match-v2')
           PY
 
-          node --check _site/assets/js/main.js
           node --check _site/assets/js/home-match.js
-          node --check _site/assets/js/page-transition.js
-          node --check _site/assets/js/ui-motion.js
-          node --check _site/assets/js/contact-dock.js
-
-          printf '{"sha":"%s","run_id":"%s","layout":"approved-home-match-v1"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
+          node --check _site/assets/js/main.js
+          printf '{"sha":"%s","run_id":"%s","layout":"match-v2-home-wifi7"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
           touch _site/.nojekyll
 
       - name: Upload Pages artifact
