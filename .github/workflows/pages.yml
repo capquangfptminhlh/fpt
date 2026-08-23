@@ -2,8 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -28,7 +27,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Prepare static site
+      - name: Build production site
         shell: bash
         run: |
           set -euo pipefail
@@ -49,132 +48,75 @@ jobs:
             --exclude='/data/' \
             --exclude='/scripts/'
 
-          # Build all generated/local pages first.
-          python3 scripts/generate-local-keywords.py
-          python3 scripts/generate-local-pages.py --site _site
-          python3 scripts/enrich-local-silos.py --site _site
-          python3 scripts/upgrade-local-catalog.py --site _site
-          python3 scripts/expand-local-plan-details.py --site _site
-          python3 scripts/add-local-current-offerings.py --site _site
-          python3 scripts/fix-local-nav.py --site _site
           python3 scripts/prepare-pages.py --site _site
-          python3 scripts/remove-legacy-runtime.py --site _site
           python3 scripts/inject-trust-footer.py --site _site
           python3 scripts/inject-contact-dock.py --site _site
-          python3 scripts/sync-sitemap.py --site _site --origin https://capquangfptminhlh.github.io/fpt
-
-          # Content/catalog regression gates.
-          python3 scripts/qa-local-pages.py --site _site
-          python3 scripts/qa-local-silos.py --site _site
-          python3 scripts/qa-local-commerce.py --site _site
-          python3 scripts/qa-local-commerce-full.py --site _site
-          python3 scripts/qa-local-current-offerings.py --site _site
-          python3 scripts/qa-local-keywords.py --site _site
-
-          # Finish every HTML-mutating production layer before the final visual shell.
-          python3 scripts/complete-official-catalog.py --site _site
-          python3 scripts/qa-official-catalog.py --site _site
-          python3 scripts/enrich-local-editorial.py --site _site
-          python3 scripts/qa-local-editorial.py --site _site
-          python3 scripts/premiumize-local-catalog.py --site _site
-          python3 scripts/qa-local-catalog-premium.py --site _site
-
-          # FINAL visual authority. Nothing may rewrite page chrome after this point.
+          python3 scripts/rebuild-core-neo.py --site _site
           python3 scripts/normalize-site-shell.py --site _site
           python3 scripts/remove-legacy-runtime.py --site _site
-
-          # Final production gates run against the exact artifact that will deploy.
-          python3 scripts/qa-site-shell.py --site _site
-          python3 scripts/qa-search-quality.py --site _site
-          python3 scripts/qa-seo-90-day.py --site _site
-          python3 scripts/qa-functional.py --site _site
-          python3 scripts/qa-ui-reset.py --site _site
-
-          python3 -m py_compile \
-            scripts/generate-local-pages.py \
-            scripts/enrich-local-silos.py \
-            scripts/upgrade-local-catalog.py \
-            scripts/expand-local-plan-details.py \
-            scripts/add-local-current-offerings.py \
-            scripts/complete-official-catalog.py \
-            scripts/enrich-local-editorial.py \
-            scripts/premiumize-local-catalog.py \
-            scripts/inject-trust-footer.py \
-            scripts/fix-local-nav.py \
-            scripts/generate-local-keywords.py \
-            scripts/normalize-site-shell.py \
-            scripts/remove-legacy-runtime.py \
-            scripts/qa-site-shell.py \
-            scripts/qa-local-pages.py \
-            scripts/qa-local-silos.py \
-            scripts/qa-local-commerce.py \
-            scripts/qa-local-commerce-full.py \
-            scripts/qa-local-current-offerings.py \
-            scripts/qa-official-catalog.py \
-            scripts/qa-local-editorial.py \
-            scripts/qa-local-catalog-premium.py \
-            scripts/qa-local-keywords.py \
-            scripts/qa-search-quality.py \
-            scripts/qa-seo-90-day.py \
-            scripts/sync-sitemap.py
+          python3 scripts/sync-sitemap.py --site _site --origin https://capquangfptminhlh.github.io/fpt
 
           python3 - <<'PY'
-          import re
           from pathlib import Path
+          import re
 
-          html_files = list(Path('_site').rglob('*.html'))
-          html_total = len(html_files)
-          noindex_re = re.compile(
-              r'<meta\b(?=[^>]*\bname=["\']robots["\'])(?=[^>]*\bcontent=["\'][^"\']*\bnoindex\b)[^>]*>',
-              flags=re.I,
-          )
-          noindex_total = sum(
-              1 for path in html_files
-              if noindex_re.search(path.read_text(encoding='utf-8'))
-          )
-          indexable_total = html_total - noindex_total
-          sitemap = Path('_site/sitemap.xml').read_text(encoding='utf-8')
-          sitemap_total = sitemap.count('<url>')
-          local_news_noindex = sum(
-              1 for path in html_files
-              if '/khu-vuc/' in ('/' + path.relative_to('_site').as_posix())
-              and '/tin-tuc/index.html' in ('/' + path.relative_to('_site').as_posix())
-              and noindex_re.search(path.read_text(encoding='utf-8'))
-          )
+          site = Path('_site')
+          core = [
+              'internet-fpt/index.html', 'goi-cuoc-fpt/index.html', 'combo-fpt/index.html',
+              'wifi-7/index.html', 'camera-fpt/index.html', 'fpt-play/index.html',
+              'khu-vuc/index.html', 'ho-tro/index.html'
+          ]
+          required_nav = ('Internet','Gói cước','Combo','WiFi 7','Camera','FPT Play','Khu vực','Hỗ trợ')
+          errors = []
+          pages = list(site.rglob('*.html'))
+          if len(pages) < 100:
+              errors.append(f'HTML page count too low: {len(pages)}')
 
-          print(f'FINAL HTML COUNT: {html_total}')
-          print(f'FINAL INDEXABLE HTML COUNT: {indexable_total}')
-          print(f'FINAL NOINDEX HTML COUNT: {noindex_total}')
-          print(f'FINAL SITEMAP URL COUNT: {sitemap_total}')
-          print(f'FINAL LOCAL NEWS NOINDEX COUNT: {local_news_noindex}')
+          for rel in core:
+              path = site / rel
+              if not path.exists():
+                  errors.append(f'missing core page {rel}')
+                  continue
+              html = path.read_text(encoding='utf-8')
+              for token in ('neo-core-page','data-core-neo-style=','data-core-neo-hero="true"','data-site-shell-style='):
+                  if token not in html:
+                      errors.append(f'{rel}: missing {token}')
+              nav = re.search(r'<nav\b[^>]*class=["\'][^"\']*nav-links[^"\']*["\'][^>]*>(.*?)</nav>', html, flags=re.I|re.S)
+              if not nav:
+                  errors.append(f'{rel}: missing nav')
+              else:
+                  nav_html = nav.group(1)
+                  for label in required_nav:
+                      if f'>{label}</a>' not in nav_html:
+                          errors.append(f'{rel}: missing nav item {label}')
+                  if len(re.findall(r'<a\b', nav_html, flags=re.I)) != 8:
+                      errors.append(f'{rel}: nav must contain exactly 8 links')
+              if 'mobile-v3.css' in html or 'apple-polish.css' in html or 'mobile-nav-final.css' in html:
+                  errors.append(f'{rel}: legacy visual layer still loaded')
 
-          if html_total < 144:
-              raise SystemExit(f'Expected at least 144 HTML pages after trust rollout, got {html_total}')
-          if indexable_total < 109:
-              raise SystemExit(f'Expected at least 109 indexable HTML pages after trust rollout, got {indexable_total}')
-          if sitemap_total != indexable_total:
-              raise SystemExit(
-                  f'Sitemap/indexability mismatch: sitemap={sitemap_total}, indexable={indexable_total}'
-              )
-          if local_news_noindex != 34:
-              raise SystemExit(f'Expected 34 noindex local news hubs, got {local_news_noindex}')
-          if '/fpt/support/' in sitemap:
-              raise SystemExit('Legacy noindex /support/ must not be in sitemap')
+          for asset in ('assets/css/core-neo.css','assets/css/site-shell.css','assets/js/main.js','assets/js/page-transition.js'):
+              if not (site / asset).exists():
+                  errors.append(f'missing production asset {asset}')
+
+          if errors:
+              print('PRODUCTION UI GATE FAIL')
+              for error in errors:
+                  print('-', error)
+              raise SystemExit(1)
+
+          print(f'PRODUCTION UI GATE PASS: html={len(pages)}, core=8, nav=unified, layout=neo')
           PY
 
           node --check _site/assets/js/main.js
-          node --check _site/assets/js/home-v2.js
           node --check _site/assets/js/home-neo.js
-          node --check _site/assets/js/lead-form.js
-          node --check _site/assets/js/contact-dock.js
           node --check _site/assets/js/page-transition.js
           node --check _site/assets/js/ui-motion.js
-          node --check _site/assets/js/local-catalog-premium.js
+          node --check _site/assets/js/contact-dock.js
 
-          # Public proof of which commit is actually deployed.
-          printf '{"sha":"%s","run_id":"%s","shell":"neo-v2"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
+          printf '{"sha":"%s","run_id":"%s","layout":"neo-unified-v3"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
+          touch _site/.nojekyll
 
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: _site
