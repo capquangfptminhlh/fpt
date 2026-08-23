@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* Tech typography layer — premium, geometric, Vietnamese-friendly. */
+.fpt-match-v2{
+  --font-ui:"Manrope","Segoe UI Variable","Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,Arial,sans-serif;
+  --font-display:"Space Grotesk","Manrope","Segoe UI Variable","Segoe UI",system-ui,sans-serif;
+  font-family:var(--font-ui)!important;
+  font-feature-settings:"kern" 1,"liga" 1;
+  font-variant-numeric:tabular-nums;
+}
+
+.fpt-match-v2 h1,
+.fpt-match-v2 h2,
+.fpt-match-v2 h3,
+.fpt-match-v2 .hm-plan-speed,
+.fpt-match-v2 .hm-plan-price,
+.fpt-match-v2 .hm-stat strong,
+.fpt-match-v2 .hm-phone,
+.fpt-match-v2 .m2-core-mini strong,
+.fpt-match-v2 .hm-footer-phone{
+  font-family:var(--font-display)!important;
+  letter-spacing:-.035em;
+}
+
+.fpt-match-v2 h1{
+  font-weight:700!important;
+  letter-spacing:-.055em!important;
+}
+
+.fpt-match-v2 h2,
+.fpt-match-v2 h3{
+  font-weight:650!important;
+}
+
+.fpt-match-v2 p,
+.fpt-match-v2 li,
+.fpt-match-v2 a,
+.fpt-match-v2 button,
+.fpt-match-v2 summary,
+.fpt-match-v2 small,
+.fpt-match-v2 span{
+  font-family:var(--font-ui);
+}
+
+.fpt-match-v2 .hm-chip,
+.fpt-match-v2 .hm-btn,
+.fpt-match-v2 .hm-menu-panel a,
+.fpt-match-v2 .hm-plan-link,
+.fpt-match-v2 .hm-footer-register{
+  letter-spacing:-.012em;
+}
+
+.fpt-match-v2 .hm-stat strong,
+.fpt-match-v2 .hm-plan-speed,
+.fpt-match-v2 .hm-plan-price{
+  font-weight:650!important;
+}
+
+@media(max-width:820px){
+  .fpt-match-v2 h1{letter-spacing:-.05em!important}
+  .fpt-match-v2 h2,.fpt-match-v2 h3{letter-spacing:-.03em!important}
+}
