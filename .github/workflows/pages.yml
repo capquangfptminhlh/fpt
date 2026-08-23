@@ -48,31 +48,50 @@ jobs:
             --exclude='/data/' \
             --exclude='/scripts/'
 
-          # Handoff pages are deployed byte-for-byte from source. No HTML/CSS rewrite step is allowed here.
-          test -f _site/index.html
-          test -f _site/wifi-7/index.html
           test -f _site/assets/css/match-v2.css
           test -f _site/assets/js/home-match.js
 
-          grep -q 'fpt-match-v2' _site/index.html
-          grep -q 'fpt-match-v2' _site/wifi-7/index.html
-          grep -q 'data-match-v2-style="true"' _site/index.html
-          grep -q 'data-match-v2-style="true"' _site/wifi-7/index.html
-          grep -q 'class="hm-dock"' _site/index.html
-          grep -q 'class="hm-dock"' _site/wifi-7/index.html
-          grep -q 'm2-core-grid' _site/wifi-7/index.html
+          pages=(
+            index.html
+            internet-fpt/index.html
+            goi-cuoc-fpt/index.html
+            combo-fpt/index.html
+            wifi-7/index.html
+            camera-fpt/index.html
+            fpt-play/index.html
+            khu-vuc/index.html
+            ho-tro/index.html
+          )
 
-          if grep -Eqi 'core-neo\.css|home-neo\.css|home-tone-white\.css|site-shell\.css|mobile-premium\.css|contact-dock\.js|mobile-v3\.css' _site/index.html _site/wifi-7/index.html; then
-            echo 'HANDOFF GATE FAIL: legacy visual layer found in approved page'
-            exit 1
-          fi
+          for page in "${pages[@]}"; do
+            file="_site/$page"
+            test -f "$file"
+            grep -q 'fpt-match-v2' "$file"
+            grep -q 'data-match-v2-style="true"' "$file"
+            grep -q 'data-hm-menu-panel' "$file"
+            grep -q 'class="hm-dock"' "$file"
+            if grep -Eqi 'core-neo\.css|home-neo\.css|home-tone-white\.css|site-shell\.css|mobile-premium\.css|contact-dock\.js|mobile-v3\.css|neo-core-page|data-core-neo-style=' "$file"; then
+              echo "HANDOFF GATE FAIL: legacy visual layer found in $page"
+              exit 1
+            fi
+          done
+
+          grep -q 'hm-hero-grid' _site/index.html
+          grep -q 'm2-core-grid' _site/internet-fpt/index.html
+          grep -q 'm2-core-grid' _site/goi-cuoc-fpt/index.html
+          grep -q 'm2-core-grid' _site/combo-fpt/index.html
+          grep -q 'm2-core-grid' _site/wifi-7/index.html
+          grep -q 'm2-core-grid' _site/camera-fpt/index.html
+          grep -q 'm2-core-grid' _site/fpt-play/index.html
+          grep -q 'm2-core-grid' _site/khu-vuc/index.html
+          grep -q 'm2-core-grid' _site/ho-tro/index.html
 
           node --check _site/assets/js/home-match.js
 
-          printf '{"sha":"%s","run_id":"%s","layout":"match-v2-direct-source"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
+          printf '{"sha":"%s","run_id":"%s","layout":"match-v2-all-primary-pages"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
           touch _site/.nojekyll
 
-          echo 'HANDOFF GATE PASS: direct source artifact; homepage + wifi7 = match-v2'
+          echo 'HANDOFF GATE PASS: homepage + 8 primary pages use match-v2 with zero legacy visual layers'
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
