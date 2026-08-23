@@ -33,6 +33,36 @@
   }
   document.documentElement.setAttribute('data-tech-type', 'space-grotesk-manrope-v1');
 
+  // Remove public-facing fpt.vn references while keeping the identity disclaimer.
+  const scrubFptVnReferences = () => {
+    document.querySelectorAll('a[href*="fpt.vn"]').forEach((link) => {
+      const text = (link.textContent || '').trim();
+      if (/fpt\.vn/i.test(text)) link.remove();
+    });
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta?.content) {
+      meta.content = meta.content
+        .replace(/\s*(?:đối chiếu|cập nhật)\s+từ\s+FPT\.vn[:,]?\s*/gi, ' ')
+        .replace(/FPT\.vn/gi, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+    }
+    const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach((node) => {
+      if (!/fpt\.vn/i.test(node.nodeValue || '')) return;
+      node.nodeValue = node.nodeValue
+        .replace(/Đối chiếu\s+FPT\.vn\s*·?\s*/gi, 'Cập nhật ')
+        .replace(/(?:được\s+)?FPT\.vn\s+hiển thị/gi, 'được cập nhật')
+        .replace(/(?:đối chiếu|cập nhật)\s+từ\s+FPT\.vn/gi, 'đã cập nhật')
+        .replace(/FPT\.vn/gi, '')
+        .replace(/\s{2,}/g, ' ');
+    });
+    document.documentElement.setAttribute('data-fptvn-public', 'removed');
+  };
+  scrubFptVnReferences();
+
   // Advertising / identity transparency. This is intentionally prominent on every Match page.
   if (!document.getElementById('hm-sales-disclosure-style')) {
     const disclosureStyle = document.createElement('style');
@@ -41,10 +71,8 @@
       .hm-sales-disclosure{position:relative;z-index:40;background:#fff7ed;border-top:1px solid #fed7aa;border-bottom:1px solid #fed7aa;color:#7c2d12;font:650 12px/1.55 Manrope,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
       .hm-sales-disclosure-inner{max-width:1180px;margin:0 auto;padding:9px 22px;display:flex;align-items:center;justify-content:center;gap:7px;text-align:center}
       .hm-sales-disclosure strong{font-weight:850;color:#9a3412}
-      .hm-sales-disclosure a{color:#c2410c;text-decoration:underline;text-underline-offset:2px;font-weight:800}
       .hm-footer-disclosure{margin-top:12px;padding-top:12px;border-top:1px solid rgba(15,35,63,.10);font-size:12px;line-height:1.65;color:#667085}
       .hm-footer-disclosure strong{color:#344054}
-      .hm-footer-disclosure a{color:#c2410c;font-weight:800;text-decoration:underline;text-underline-offset:2px}
       @media(max-width:820px){.hm-sales-disclosure-inner{padding:8px 14px;font-size:11px;line-height:1.5}.hm-sales-disclosure{position:relative}.hm-footer-disclosure{font-size:11px}}
     `;
     document.head.appendChild(disclosureStyle);
@@ -55,7 +83,7 @@
     disclosure.className = 'hm-sales-disclosure';
     disclosure.setAttribute('data-sales-disclosure', 'true');
     disclosure.setAttribute('aria-label', 'Thông tin minh bạch về website');
-    disclosure.innerHTML = '<div class="hm-sales-disclosure-inner"><span><strong>Trang tư vấn của nhân viên kinh doanh FPT Telecom.</strong> Đây không phải website chính thức của Công ty Cổ phần Viễn thông FPT. Thông tin và chính sách chính thức tại <a href="https://fpt.vn/" rel="noopener" data-no-transition>fpt.vn</a>.</span></div>';
+    disclosure.innerHTML = '<div class="hm-sales-disclosure-inner"><span><strong>Trang tư vấn của nhân viên kinh doanh FPT Telecom.</strong> Đây không phải website chính thức của Công ty Cổ phần Viễn thông FPT.</span></div>';
     const main = document.querySelector('main');
     const menu = document.querySelector('[data-hm-menu-panel]');
     if (main) main.before(disclosure);
@@ -111,7 +139,7 @@
           <p>© 2026 Trang tư vấn Internet FPT · Kênh tư vấn nhân viên kinh doanh.</p>
           <p><a href="/fpt/chinh-sach-cap-nhat/">Chính sách cập nhật</a></p>
         </div>
-        <div class="hm-footer-disclosure"><strong>Tuyên bố minh bạch:</strong> Website này là trang tư vấn bán hàng do nhân viên kinh doanh FPT Telecom vận hành và <strong>không phải website chính thức của Công ty Cổ phần Viễn thông FPT</strong>. Nội dung về giá, ưu đãi, thiết bị và phạm vi cung cấp cần được xác nhận tại thời điểm đăng ký. Website chính thức của FPT Telecom: <a href="https://fpt.vn/" rel="noopener" data-no-transition>fpt.vn</a>.</div>
+        <div class="hm-footer-disclosure"><strong>Tuyên bố minh bạch:</strong> Website này là trang tư vấn bán hàng do nhân viên kinh doanh FPT Telecom vận hành và <strong>không phải website chính thức của Công ty Cổ phần Viễn thông FPT</strong>. Nội dung về giá, ưu đãi, thiết bị và phạm vi cung cấp cần được xác nhận tại thời điểm đăng ký.</div>
       </div>`;
 
     const dock = document.querySelector('.hm-dock');
