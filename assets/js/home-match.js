@@ -11,6 +11,14 @@
     document.head.appendChild(techTypeStyle);
   }
   document.documentElement.setAttribute('data-tech-type', 'space-grotesk-manrope-v1');
+  if ('fonts' in document) {
+    document.fonts.ready.then(() => {
+      const fontsReady = document.fonts.check('16px "Space Grotesk"') && document.fonts.check('16px "Manrope"');
+      document.documentElement.setAttribute('data-tech-fonts-ready', String(fontsReady));
+    });
+  } else {
+    document.documentElement.setAttribute('data-tech-fonts-ready', 'unsupported');
+  }
 
   // Footer v2: compact, light, shared by homepage + 8 primary pages.
   if (!document.querySelector('[data-hm-footer-style]')) {
