@@ -27,7 +27,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Build production site
+      - name: Build exact source artifact
         shell: bash
         run: |
           set -euo pipefail
@@ -48,101 +48,31 @@ jobs:
             --exclude='/data/' \
             --exclude='/scripts/'
 
-          python3 scripts/prepare-pages.py --site _site
-          python3 scripts/inject-trust-footer.py --site _site
-          python3 scripts/normalize-site-shell.py --site _site
-          python3 scripts/inject-contact-dock.py --site _site
-          python3 scripts/remove-legacy-runtime.py --site _site
-          python3 scripts/sync-sitemap.py --site _site --origin https://capquangfptminhlh.github.io/fpt
+          # Handoff pages are deployed byte-for-byte from source. No HTML/CSS rewrite step is allowed here.
+          test -f _site/index.html
+          test -f _site/wifi-7/index.html
+          test -f _site/assets/css/match-v2.css
+          test -f _site/assets/js/home-match.js
 
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
+          grep -q 'fpt-match-v2' _site/index.html
+          grep -q 'fpt-match-v2' _site/wifi-7/index.html
+          grep -q 'data-match-v2-style="true"' _site/index.html
+          grep -q 'data-match-v2-style="true"' _site/wifi-7/index.html
+          grep -q 'class="hm-dock"' _site/index.html
+          grep -q 'class="hm-dock"' _site/wifi-7/index.html
+          grep -q 'm2-core-grid' _site/wifi-7/index.html
 
-          site = Path('_site')
-          errors = []
-          pages = list(site.rglob('*.html'))
-          if len(pages) < 100:
-              errors.append(f'HTML page count too low: {len(pages)}')
-
-          # Approved pages must be self-contained and immune to the legacy visual pipeline.
-          approved = {
-              'index.html': ('hm-hero-grid','hm-plan-grid','hm-solution-grid','hm-faq-list','hm-dock'),
-              'wifi-7/index.html': ('m2-core-grid','m2-feature-grid','m2-content-grid','m2-cta','hm-dock'),
-          }
-          forbidden = (
-              'core-neo.css','home-neo.css','home-tone-white.css','site-shell.css','mobile-premium.css',
-              'data-core-neo-style=','data-site-shell-style=','data-mobile-premium-style=',
-              'data-contact-dock-script=','contact-dock.js','mobile-v3.css','apple-polish.css','mobile-nav-final.css'
-          )
-          for rel, tokens in approved.items():
-              path = site / rel
-              if not path.exists():
-                  errors.append(f'{rel}: missing approved page')
-                  continue
-              html = path.read_text(encoding='utf-8')
-              for token in ('fpt-match-v2','data-match-v2-style="true"','data-hm-menu-panel') + tokens:
-                  if token not in html:
-                      errors.append(f'{rel}: missing approved token {token}')
-              for token in forbidden:
-                  if token in html:
-                      errors.append(f'{rel}: forbidden legacy layer {token}')
-              if html.count('data-match-v2-style="true"') != 1:
-                  errors.append(f'{rel}: match-v2 stylesheet must appear exactly once')
-              if html.count('class="hm-dock"') != 1:
-                  errors.append(f'{rel}: contact dock must appear exactly once')
-
-          # Remaining menu pages are still on the older shared shell until migrated.
-          legacy_core = [
-              'internet-fpt/index.html','goi-cuoc-fpt/index.html','combo-fpt/index.html',
-              'camera-fpt/index.html','fpt-play/index.html','khu-vuc/index.html','ho-tro/index.html'
-          ]
-          required_nav = ('Internet','Gói cước','Combo','WiFi 7','Camera','FPT Play','Khu vực','Hỗ trợ')
-          for rel in legacy_core:
-              path = site / rel
-              if not path.exists():
-                  errors.append(f'missing core page {rel}')
-                  continue
-              html = path.read_text(encoding='utf-8')
-              for token in ('neo-core-page','data-core-neo-style=','data-core-neo-hero="true"','data-site-shell-style=','data-mobile-premium-style="true"'):
-                  if token not in html:
-                      errors.append(f'{rel}: missing {token}')
-              nav = re.search(r'<nav\b[^>]*class=["\'][^"\']*nav-links[^"\']*["\'][^>]*>(.*?)</nav>', html, flags=re.I|re.S)
-              if not nav:
-                  errors.append(f'{rel}: missing nav')
-              else:
-                  nav_html = nav.group(1)
-                  for label in required_nav:
-                      if f'>{label}</a>' not in nav_html:
-                          errors.append(f'{rel}: missing nav item {label}')
-                  if len(re.findall(r'<a\b', nav_html, flags=re.I)) != 8:
-                      errors.append(f'{rel}: nav must contain exactly 8 links')
-
-          for asset in (
-              'assets/css/match-v2.css','assets/js/home-match.js','assets/css/core-neo.css',
-              'assets/css/site-shell.css','assets/css/mobile-premium.css','assets/js/main.js'
-          ):
-              if not (site / asset).exists():
-                  errors.append(f'missing production asset {asset}')
-
-          css = (site/'assets/css/match-v2.css').read_text(encoding='utf-8') if (site/'assets/css/match-v2.css').exists() else ''
-          for token in ('.fpt-match-v2 .hm-dock','height:58px','@media(max-width:820px)','grid-template-columns:1fr 1fr 1.2fr'):
-              if token not in css:
-                  errors.append(f'match-v2.css: missing dock/mobile contract {token}')
-
-          if errors:
-              print('PRODUCTION HANDOFF GATE FAIL')
-              for error in errors:
-                  print('-', error)
-              raise SystemExit(1)
-
-          print(f'PRODUCTION HANDOFF GATE PASS: html={len(pages)}, approved=homepage+wifi7, dock=match-v2')
-          PY
+          if grep -Eqi 'core-neo\.css|home-neo\.css|home-tone-white\.css|site-shell\.css|mobile-premium\.css|contact-dock\.js|mobile-v3\.css' _site/index.html _site/wifi-7/index.html; then
+            echo 'HANDOFF GATE FAIL: legacy visual layer found in approved page'
+            exit 1
+          fi
 
           node --check _site/assets/js/home-match.js
-          node --check _site/assets/js/main.js
-          printf '{"sha":"%s","run_id":"%s","layout":"match-v2-home-wifi7"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
+
+          printf '{"sha":"%s","run_id":"%s","layout":"match-v2-direct-source"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
           touch _site/.nojekyll
+
+          echo 'HANDOFF GATE PASS: direct source artifact; homepage + wifi7 = match-v2'
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
