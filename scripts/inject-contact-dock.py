@@ -7,7 +7,7 @@ from pathlib import Path
 TRANSITION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/page-transition.css?v=20260817-1" data-page-transition-style="true"/>'
 UI_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/ui-reset.css?v=20260817-1" data-ui-reset-style="true"/>'
 UI_MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/ui-motion.css?v=20260817-1" data-ui-motion-style="true"/>'
-MOBILE_PREMIUM_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/mobile-premium.css?v=20260823-1" data-mobile-premium-style="true"/>'
+MOBILE_PREMIUM_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/mobile-premium.css?v=20260823-2" data-mobile-premium-style="true"/>'
 
 TRANSITION_SCRIPT = '<script defer src="/fpt/assets/js/page-transition.js?v=20260817-2" data-page-transition-script="true"></script>'
 UI_MOTION_SCRIPT = '<script defer src="/fpt/assets/js/ui-motion.js?v=20260817-1" data-ui-motion-script="true"></script>'
@@ -29,9 +29,10 @@ LEGACY_MARKERS = (
 
 
 def strip_legacy_runtime_layers(html: str) -> str:
-    # prepare-pages historically injects mobile-v3.css. Remove it from the final artifact
-    # before the new single-authority visual layer is appended.
     html = re.sub(r'<link\b[^>]*data-mobile-v3=["\'][^"\']*["\'][^>]*/?>', '', html, flags=re.I)
+    # Mobile premium is always removed and re-appended so it is the final CSS authority
+    # and its cache-busting version is guaranteed to be current.
+    html = re.sub(r'<link\b[^>]*data-mobile-premium-style=["\'][^"\']*["\'][^>]*/?>', '', html, flags=re.I)
     return html
 
 
@@ -52,10 +53,8 @@ def inject(html: str) -> str:
         head_assets.append(UI_STYLE)
     if 'data-ui-motion-style=' not in html:
         head_assets.append(UI_MOTION_STYLE)
-    if 'data-mobile-premium-style=' not in html:
-        head_assets.append(MOBILE_PREMIUM_STYLE)
-    if head_assets:
-        html = html.replace('</head>', ''.join(head_assets) + '</head>', 1)
+    head_assets.append(MOBILE_PREMIUM_STYLE)
+    html = html.replace('</head>', ''.join(head_assets) + '</head>', 1)
 
     body_assets: list[str] = []
     if 'data-page-transition-script=' not in html:
