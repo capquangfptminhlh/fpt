@@ -23,11 +23,13 @@
 
 .m26-tilt{position:relative;transform:perspective(1100px) rotateX(var(--m26-rx,0deg)) rotateY(var(--m26-ry,0deg)) translate3d(0,var(--m26-lift,0),0);transform-style:preserve-3d;transition:transform .18s ease-out,box-shadow .32s ease;will-change:transform}
 .m26-tilt:hover{--m26-lift:-3px}
+.motion-2026.fpt-match-v2 .m26-tilt{transform:perspective(1100px) rotateX(var(--m26-rx,0deg)) rotateY(var(--m26-ry,0deg)) translate3d(0,var(--m26-lift,0),0)}
 .m26-spotlight{position:relative;isolation:isolate;overflow:hidden}
 .m26-spotlight::before{content:"";position:absolute;z-index:3;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(260px circle at var(--m26-cx,50%) var(--m26-cy,50%),rgba(255,255,255,.22),rgba(255,255,255,.055) 34%,transparent 70%);opacity:0;transition:opacity .28s ease;mix-blend-mode:soft-light}
 .m26-spotlight:hover::before{opacity:1}
 
 .m26-magnetic{--m26-mx:0px;--m26-my:0px;transform:translate3d(var(--m26-mx),var(--m26-my),0);transition:transform .24s var(--m26-ease),box-shadow .24s ease;will-change:transform}
+.motion-2026.fpt-match-v2 .m26-magnetic{transform:translate3d(var(--m26-mx),var(--m26-my),0)}
 .m26-press{position:relative;overflow:hidden;isolation:isolate}
 .m26-press:active{transform:translate3d(var(--m26-mx,0px),var(--m26-my,0px),0) scale(.975)!important;transition-duration:.08s!important}
 .m26-ripple{position:absolute;z-index:0;width:14px;height:14px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.62),rgba(255,255,255,.2) 45%,transparent 72%);transform:translate(-50%,-50%) scale(0);animation:m26-ripple .62s var(--m26-ease) forwards}
@@ -58,9 +60,9 @@
   .m26-section::after{inset:-4% -14px;border-radius:28px;opacity:.38}
   .m26-reveal{transform:translate3d(0,14px,0) scale(.996);filter:blur(3px);transition-duration:.56s}
   .m26-reveal[data-m26-direction="left"],.m26-reveal[data-m26-direction="right"]{transform:translate3d(0,14px,0) scale(.996)}
-  .m26-tilt{transform:none!important}
+  .m26-tilt,.motion-2026.fpt-match-v2 .m26-tilt{transform:none!important}
   .m26-spotlight::before{display:none}
-  .m26-magnetic{transform:none!important}
+  .m26-magnetic,.motion-2026.fpt-match-v2 .m26-magnetic{transform:none!important}
   .m26-float{animation-duration:7s}
 }
 
