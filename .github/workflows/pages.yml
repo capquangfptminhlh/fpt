@@ -84,6 +84,7 @@ jobs:
           python3 scripts/remove-legacy-runtime.py --site _site
 
           # Final production gates run against the exact artifact that will deploy.
+          python3 scripts/qa-site-shell.py --site _site
           python3 scripts/qa-search-quality.py --site _site
           python3 scripts/qa-seo-90-day.py --site _site
           python3 scripts/qa-functional.py --site _site
@@ -103,6 +104,7 @@ jobs:
             scripts/generate-local-keywords.py \
             scripts/normalize-site-shell.py \
             scripts/remove-legacy-runtime.py \
+            scripts/qa-site-shell.py \
             scripts/qa-local-pages.py \
             scripts/qa-local-silos.py \
             scripts/qa-local-commerce.py \
@@ -168,6 +170,9 @@ jobs:
           node --check _site/assets/js/page-transition.js
           node --check _site/assets/js/ui-motion.js
           node --check _site/assets/js/local-catalog-premium.js
+
+          # Public proof of which commit is actually deployed.
+          printf '{"sha":"%s","run_id":"%s","shell":"neo-v2"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
