@@ -2,6 +2,16 @@
   const body = document.body;
   if (!body?.classList.contains('fpt-match')) return;
 
+  // Tech typography: Space Grotesk for display + Manrope for UI/body.
+  if (!document.querySelector('[data-tech-type-style]')) {
+    const techTypeStyle = document.createElement('link');
+    techTypeStyle.rel = 'stylesheet';
+    techTypeStyle.href = '/fpt/assets/css/tech-type.css?v=20260823-1';
+    techTypeStyle.setAttribute('data-tech-type-style', 'true');
+    document.head.appendChild(techTypeStyle);
+  }
+  document.documentElement.setAttribute('data-tech-type', 'space-grotesk-manrope-v1');
+
   // Footer v2: compact, light, shared by homepage + 8 primary pages.
   if (!document.querySelector('[data-hm-footer-style]')) {
     const footerStyle = document.createElement('link');
