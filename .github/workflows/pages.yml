@@ -3,10 +3,12 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'deployment-status.json'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -46,7 +48,8 @@ jobs:
             --exclude='/QA_REPORT.md' \
             --exclude='/seo/' \
             --exclude='/data/' \
-            --exclude='/scripts/'
+            --exclude='/scripts/' \
+            --exclude='/deployment-status.json'
 
           test -f _site/assets/css/match-v2.css
           test -f _site/assets/js/home-match.js
@@ -63,7 +66,6 @@ jobs:
             ho-tro/index.html
           )
 
-          # Every deploy gets unique visual asset URLs so browsers/CDNs cannot reuse stale UI assets.
           for page in "${pages[@]}"; do
             file="_site/$page"
             test -f "$file"
@@ -115,14 +117,13 @@ jobs:
           base='https://capquangfptminhlh.github.io/fpt'
           marker=''
 
-          # Pages/CDN may need a short propagation window. Never pass handoff until the live marker is this run's SHA.
-          for attempt in $(seq 1 18); do
+          for attempt in $(seq 1 24); do
             marker="$(curl -fsSL --connect-timeout 10 --max-time 20 -H 'Cache-Control: no-cache' "${base}/build-version.json?verify=${GITHUB_SHA}-${attempt}" 2>/dev/null || true)"
             if printf '%s' "$marker" | grep -q "${GITHUB_SHA}"; then
               echo "Live build marker reached ${GITHUB_SHA} on attempt ${attempt}"
               break
             fi
-            echo "Waiting for live Pages propagation (${attempt}/18)..."
+            echo "Waiting for live Pages propagation (${attempt}/24)..."
             sleep 10
           done
 
@@ -163,3 +164,16 @@ jobs:
           done
 
           echo "LIVE HANDOFF PASS: SHA=${GITHUB_SHA}; homepage + 8 primary pages verified on GitHub Pages"
+
+      - name: Record verified deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          verified_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          printf '{"status":"PASS","deployed_sha":"%s","run_id":"%s","verified_at":"%s","layout":"match-v2-all-primary-pages-cache-busted","live_pages":9}\n' \
+            "$GITHUB_SHA" "$GITHUB_RUN_ID" "$verified_at" > deployment-status.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add deployment-status.json
+          git commit -m 'chore(deploy): record verified live UI [skip ci]'
+          git push
