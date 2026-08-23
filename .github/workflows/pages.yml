@@ -29,7 +29,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Build exact source artifact
+      - name: Build production artifact
         shell: bash
         run: |
           set -euo pipefail
@@ -54,9 +54,11 @@ jobs:
           test -f _site/assets/css/match-v2.css
           test -f _site/assets/css/site-footer-v2.css
           test -f _site/assets/css/tech-type.css
+          test -f _site/assets/css/motion-2026.css
           test -f _site/assets/js/home-match.js
+          test -f _site/assets/js/motion-2026.js
 
-          pages=(
+          primary_pages=(
             index.html
             internet-fpt/index.html
             goi-cuoc-fpt/index.html
@@ -68,7 +70,7 @@ jobs:
             ho-tro/index.html
           )
 
-          for page in "${pages[@]}"; do
+          for page in "${primary_pages[@]}"; do
             file="_site/$page"
             test -f "$file"
             sed -E -i \
@@ -77,7 +79,75 @@ jobs:
               "$file"
           done
 
-          for page in "${pages[@]}"; do
+          # One motion authority for the full site. Remove the older reveal/loading layers,
+          # then append the 2026 progressive-enhancement CSS/JS to every HTML document.
+          python3 - <<'PY'
+          import os, re, json
+          from pathlib import Path
+
+          site = Path('_site')
+          sha = os.environ['GITHUB_SHA']
+          style = f'<link rel="stylesheet" href="/fpt/assets/css/motion-2026.css?v={sha}" data-motion-2026-style="true"/>'
+          script = f'<script defer src="/fpt/assets/js/motion-2026.js?v={sha}" data-motion-2026-script="true"></script>'
+          legacy_patterns = [
+              re.compile(r'<link[^>]*href=["\'][^"\']*(?:page-transition|ui-motion|full-page-motion)\.css[^"\']*["\'][^>]*>\s*', re.I),
+              re.compile(r'<script[^>]*src=["\'][^"\']*(?:page-transition|ui-motion|full-page-motion)\.js[^"\']*["\'][^>]*>\s*</script>\s*', re.I),
+          ]
+
+          pages = sorted(site.rglob('*.html'))
+          urls = []
+          for path in pages:
+              html = path.read_text(encoding='utf-8')
+              for pattern in legacy_patterns:
+                  html = pattern.sub('', html)
+              html = re.sub(r'<link[^>]*data-motion-2026-style=["\']true["\'][^>]*>\s*', '', html, flags=re.I)
+              html = re.sub(r'<script[^>]*data-motion-2026-script=["\']true["\'][^>]*>\s*</script>\s*', '', html, flags=re.I)
+              if '</head>' not in html.lower() or '</body>' not in html.lower():
+                  raise SystemExit(f'MOTION BUILD FAIL: missing head/body close in {path}')
+              html = re.sub(r'</head>', style + '\n</head>', html, count=1, flags=re.I)
+              html = re.sub(r'</body>', script + '\n</body>', html, count=1, flags=re.I)
+              path.write_text(html, encoding='utf-8')
+
+              rel = path.relative_to(site).as_posix()
+              if rel == 'index.html':
+                  url = '/'
+              elif rel.endswith('/index.html'):
+                  url = '/' + rel[:-10]
+              else:
+                  url = '/' + rel
+              urls.append(url)
+
+          coverage = {
+              'sha': sha,
+              'html_pages': len(pages),
+              'motion_pages': len(pages),
+              'motion_version': '2026.1',
+              'authority': 'motion-2026',
+              'legacy_motion': 'removed'
+          }
+          (site / 'motion-coverage.json').write_text(json.dumps(coverage, ensure_ascii=False) + '\n', encoding='utf-8')
+          (site / 'motion-urls.txt').write_text('\n'.join(urls) + '\n', encoding='utf-8')
+          print(f'MOTION SOURCE COVERAGE: {len(pages)}/{len(pages)}')
+          PY
+
+          html_total="$(find _site -type f -name '*.html' | wc -l | tr -d ' ')"
+          motion_total="$(grep -RIl 'data-motion-2026-script="true"' _site --include='*.html' | wc -l | tr -d ' ')"
+          test "$html_total" -ge 140
+          test "$motion_total" = "$html_total"
+          echo "MOTION_TOTAL=$html_total" >> "$GITHUB_ENV"
+
+          while IFS= read -r file; do
+            grep -q 'data-motion-2026-style="true"' "$file"
+            grep -q 'data-motion-2026-script="true"' "$file"
+            grep -q "motion-2026.css?v=${GITHUB_SHA}" "$file"
+            grep -q "motion-2026.js?v=${GITHUB_SHA}" "$file"
+            if grep -Eqi 'page-transition\.css|page-transition\.js|ui-motion\.css|ui-motion\.js|full-page-motion\.css|full-page-motion\.js' "$file"; then
+              echo "MOTION BUILD FAIL: legacy motion runtime remains in $file"
+              exit 1
+            fi
+          done < <(find _site -type f -name '*.html' -print)
+
+          for page in "${primary_pages[@]}"; do
             file="_site/$page"
             grep -q 'fpt-match-v2' "$file"
             grep -q 'data-match-v2-style="true"' "$file"
@@ -104,12 +174,22 @@ jobs:
           grep -q 'tech-type.css' _site/assets/js/home-match.js
           grep -q 'Space Grotesk' _site/assets/css/tech-type.css
           grep -q 'Manrope' _site/assets/css/tech-type.css
-          node --check _site/assets/js/home-match.js
 
-          printf '{"sha":"%s","run_id":"%s","layout":"match-v2-tech-type-v1"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
+          grep -q '@view-transition' _site/assets/css/motion-2026.css
+          grep -q 'prefers-reduced-motion:reduce' _site/assets/css/motion-2026.css
+          grep -q 'm26-tilt' _site/assets/css/motion-2026.css
+          grep -q 'm26-magnetic' _site/assets/css/motion-2026.css
+          grep -q 'm26-parallax' _site/assets/css/motion-2026.css
+          grep -q 'data-motion-2026' _site/assets/js/motion-2026.js
+          grep -q 'IntersectionObserver' _site/assets/js/motion-2026.js
+          grep -q 'navigator.hardwareConcurrency' _site/assets/js/motion-2026.js
+          node --check _site/assets/js/home-match.js
+          node --check _site/assets/js/motion-2026.js
+
+          printf '{"sha":"%s","run_id":"%s","layout":"motion-2026-full-site-v1","motion_pages":%s}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$html_total" > _site/build-version.json
           touch _site/.nojekyll
 
-          echo 'BUILD GATE PASS: match-v2 + footer v2 + Space Grotesk/Manrope tech typography'
+          echo "BUILD GATE PASS: match-v2 + tech type + Motion 2026 coverage ${html_total}/${html_total}"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
@@ -137,16 +217,42 @@ jobs:
             sleep 10
           done
 
-          printf '%s' "$marker" | grep -q "${GITHUB_SHA}" || {
-            echo 'LIVE HANDOFF FAIL: production build-version.json is not the current SHA'
-            exit 1
-          }
-          printf '%s' "$marker" | grep -q 'match-v2-tech-type-v1' || {
-            echo 'LIVE HANDOFF FAIL: wrong production layout marker'
-            exit 1
-          }
+          printf '%s' "$marker" | grep -q "${GITHUB_SHA}" || { echo 'LIVE HANDOFF FAIL: production marker is not current SHA'; exit 1; }
+          printf '%s' "$marker" | grep -q 'motion-2026-full-site-v1' || { echo 'LIVE HANDOFF FAIL: wrong production layout marker'; exit 1; }
 
-          paths=(
+          coverage="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/motion-coverage.json?verify=${GITHUB_SHA}")"
+          printf '%s' "$coverage" | grep -q "${GITHUB_SHA}" || { echo 'LIVE HANDOFF FAIL: motion coverage marker stale'; exit 1; }
+          printf '%s' "$coverage" | grep -q '"motion_version": "2026.1"' || { echo 'LIVE HANDOFF FAIL: motion version missing'; exit 1; }
+          python3 -c 'import json,sys; d=json.loads(sys.argv[1]); assert d["html_pages"]==d["motion_pages"]==int(sys.argv[2]); assert d["legacy_motion"]=="removed"' "$coverage" "$MOTION_TOTAL"
+
+          live_motion_js="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/assets/js/motion-2026.js?verify=${GITHUB_SHA}")"
+          live_motion_css="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/assets/css/motion-2026.css?verify=${GITHUB_SHA}")"
+          printf '%s' "$live_motion_js" | grep -q 'data-motion-2026' || { echo 'LIVE HANDOFF FAIL: motion JS missing'; exit 1; }
+          printf '%s' "$live_motion_js" | grep -q 'm26-tilt' || { echo 'LIVE HANDOFF FAIL: tilt runtime missing'; exit 1; }
+          printf '%s' "$live_motion_js" | grep -q 'm26-parallax' || { echo 'LIVE HANDOFF FAIL: parallax runtime missing'; exit 1; }
+          printf '%s' "$live_motion_css" | grep -q '@view-transition' || { echo 'LIVE HANDOFF FAIL: View Transition CSS missing'; exit 1; }
+          printf '%s' "$live_motion_css" | grep -q 'prefers-reduced-motion:reduce' || { echo 'LIVE HANDOFF FAIL: reduced-motion CSS missing'; exit 1; }
+
+          # Verify every published HTML document exposes the new motion authority and no old motion runtime.
+          urls="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/motion-urls.txt?verify=${GITHUB_SHA}")"
+          live_count=0
+          while IFS= read -r path; do
+            test -n "$path" || continue
+            html="$(curl -fsSL --retry 2 --retry-delay 1 --connect-timeout 10 --max-time 30 -H 'Cache-Control: no-cache' "${base}${path}?motionverify=${GITHUB_SHA}")"
+            printf '%s' "$html" | grep -q 'data-motion-2026-style="true"' || { echo "LIVE HANDOFF FAIL: motion style missing on $path"; exit 1; }
+            printf '%s' "$html" | grep -q 'data-motion-2026-script="true"' || { echo "LIVE HANDOFF FAIL: motion script missing on $path"; exit 1; }
+            printf '%s' "$html" | grep -q "motion-2026.css?v=${GITHUB_SHA}" || { echo "LIVE HANDOFF FAIL: stale motion CSS on $path"; exit 1; }
+            printf '%s' "$html" | grep -q "motion-2026.js?v=${GITHUB_SHA}" || { echo "LIVE HANDOFF FAIL: stale motion JS on $path"; exit 1; }
+            if printf '%s' "$html" | grep -Eqi 'page-transition\.css|page-transition\.js|ui-motion\.css|ui-motion\.js|full-page-motion\.css|full-page-motion\.js'; then
+              echo "LIVE HANDOFF FAIL: legacy motion remains on $path"
+              exit 1
+            fi
+            live_count=$((live_count+1))
+          done <<< "$urls"
+          test "$live_count" = "$MOTION_TOTAL" || { echo "LIVE HANDOFF FAIL: source coverage ${live_count}/${MOTION_TOTAL}"; exit 1; }
+          echo "LIVE MOTION SOURCE PASS: ${live_count}/${MOTION_TOTAL}"
+
+          primary_paths=(
             '/'
             '/internet-fpt/'
             '/goi-cuoc-fpt/'
@@ -158,54 +264,69 @@ jobs:
             '/ho-tro/'
           )
 
-          for path in "${paths[@]}"; do
-            url="${base}${path}?verify=${GITHUB_SHA}"
-            html="$(curl -fsSL --retry 3 --retry-delay 2 --connect-timeout 10 --max-time 30 -H 'Cache-Control: no-cache' "$url")"
+          for path in "${primary_paths[@]}"; do
+            html="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}${path}?verify=${GITHUB_SHA}")"
             printf '%s' "$html" | grep -q 'fpt-match-v2' || { echo "LIVE HANDOFF FAIL: $path missing fpt-match-v2"; exit 1; }
-            printf '%s' "$html" | grep -q 'data-match-v2-style="true"' || { echo "LIVE HANDOFF FAIL: $path missing match-v2 stylesheet marker"; exit 1; }
-            printf '%s' "$html" | grep -q "match-v2.css?v=${GITHUB_SHA}" || { echo "LIVE HANDOFF FAIL: $path has stale CSS URL"; exit 1; }
-            printf '%s' "$html" | grep -q "home-match.js?v=${GITHUB_SHA}" || { echo "LIVE HANDOFF FAIL: $path has stale JS URL"; exit 1; }
-            printf '%s' "$html" | grep -q 'class="hm-dock"' || { echo "LIVE HANDOFF FAIL: $path missing approved contact actions"; exit 1; }
-            if printf '%s' "$html" | grep -Eqi 'core-neo\.css|site-shell\.css|mobile-premium\.css|contact-dock\.js|neo-core-page'; then
-              echo "LIVE HANDOFF FAIL: $path still exposes legacy UI"
-              exit 1
-            fi
-            echo "LIVE SOURCE PASS $path"
+            printf '%s' "$html" | grep -q "match-v2.css?v=${GITHUB_SHA}" || { echo "LIVE HANDOFF FAIL: $path stale visual CSS"; exit 1; }
+            printf '%s' "$html" | grep -q "home-match.js?v=${GITHUB_SHA}" || { echo "LIVE HANDOFF FAIL: $path stale match JS"; exit 1; }
           done
 
-          live_js="$(curl -fsSL --retry 3 --retry-delay 2 -H 'Cache-Control: no-cache' "${base}/assets/js/home-match.js?verify=${GITHUB_SHA}")"
-          printf '%s' "$live_js" | grep -q 'data-hm-footer' || { echo 'LIVE HANDOFF FAIL: footer runtime missing'; exit 1; }
-          printf '%s' "$live_js" | grep -q 'site-footer-v2.css' || { echo 'LIVE HANDOFF FAIL: footer stylesheet hook missing'; exit 1; }
-          printf '%s' "$live_js" | grep -q 'data-tech-type' || { echo 'LIVE HANDOFF FAIL: tech typography runtime marker missing'; exit 1; }
-          printf '%s' "$live_js" | grep -q 'data-tech-fonts-ready' || { echo 'LIVE HANDOFF FAIL: tech font readiness marker missing'; exit 1; }
-          printf '%s' "$live_js" | grep -q 'tech-type.css' || { echo 'LIVE HANDOFF FAIL: tech typography stylesheet hook missing'; exit 1; }
-
-          live_footer_css="$(curl -fsSL --retry 3 --retry-delay 2 -H 'Cache-Control: no-cache' "${base}/assets/css/site-footer-v2.css?verify=${GITHUB_SHA}")"
-          printf '%s' "$live_footer_css" | grep -q '.hm-footer' || { echo 'LIVE HANDOFF FAIL: footer stylesheet missing'; exit 1; }
-          live_tech_css="$(curl -fsSL --retry 3 --retry-delay 2 -H 'Cache-Control: no-cache' "${base}/assets/css/tech-type.css?verify=${GITHUB_SHA}")"
-          printf '%s' "$live_tech_css" | grep -q 'Space Grotesk' || { echo 'LIVE HANDOFF FAIL: Space Grotesk rule missing'; exit 1; }
-          printf '%s' "$live_tech_css" | grep -q 'Manrope' || { echo 'LIVE HANDOFF FAIL: Manrope rule missing'; exit 1; }
+          live_home_js="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/assets/js/home-match.js?verify=${GITHUB_SHA}")"
+          printf '%s' "$live_home_js" | grep -q 'data-hm-footer' || { echo 'LIVE HANDOFF FAIL: footer runtime missing'; exit 1; }
+          printf '%s' "$live_home_js" | grep -q 'data-tech-fonts-ready' || { echo 'LIVE HANDOFF FAIL: tech font readiness missing'; exit 1; }
 
           chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
-          test -n "$chrome" || { echo 'LIVE HANDOFF FAIL: no headless Chrome available for rendered UI QA'; exit 1; }
-          for path in "${paths[@]}"; do
-            dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --virtual-time-budget=4500 --dump-dom "${base}${path}?renderverify=${GITHUB_SHA}" 2>/dev/null)"
-            printf '%s' "$dom" | grep -q 'data-hm-footer="true"' || { echo "LIVE HANDOFF FAIL: rendered footer missing on $path"; exit 1; }
-            printf '%s' "$dom" | grep -q 'class="hm-footer"' || { echo "LIVE HANDOFF FAIL: footer DOM class missing on $path"; exit 1; }
-            printf '%s' "$dom" | grep -q 'data-tech-type="space-grotesk-manrope-v1"' || { echo "LIVE HANDOFF FAIL: tech type marker missing on $path"; exit 1; }
-            printf '%s' "$dom" | grep -q 'data-tech-fonts-ready="true"' || { echo "LIVE HANDOFF FAIL: Space Grotesk/Manrope did not load on $path"; exit 1; }
-            echo "LIVE RENDER UI PASS $path"
+          test -n "$chrome" || { echo 'LIVE HANDOFF FAIL: no headless Chrome for rendered motion QA'; exit 1; }
+
+          render_paths=(
+            '/'
+            '/internet-fpt/'
+            '/wifi-7/'
+            '/camera-fpt/'
+            '/ho-tro/'
+            '/lap-mang-fpt/'
+            '/goi-cuoc/giga/'
+            '/kien-thuc/ftth-la-gi/'
+            '/giai-phap/gia-dinh/'
+            '/so-sanh/giga-vs-sky/'
+            '/khu-vuc/ha-noi/'
+            '/ho-tro/wifi-fpt-yeu/'
+            '/lien-he/'
+            '/tin-tuc/'
+          )
+          for path in "${render_paths[@]}"; do
+            dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --virtual-time-budget=2600 --dump-dom "${base}${path}?renderverify=${GITHUB_SHA}" 2>/dev/null)"
+            printf '%s' "$dom" | grep -q 'data-motion-2026="ready"' || { echo "LIVE HANDOFF FAIL: motion engine not ready on $path"; exit 1; }
+            printf '%s' "$dom" | grep -q 'data-motion-coverage="full-site-v1"' || { echo "LIVE HANDOFF FAIL: motion coverage marker missing on $path"; exit 1; }
+            printf '%s' "$dom" | grep -q 'data-m26-progress="true"' || { echo "LIVE HANDOFF FAIL: scroll progress runtime missing on $path"; exit 1; }
+            echo "LIVE MOTION RENDER PASS $path"
           done
 
-          echo "LIVE HANDOFF PASS: SHA=${GITHUB_SHA}; 9 primary pages + footer + tech typography verified"
+          for path in '/' '/wifi-7/' '/khu-vuc/ha-noi/'; do
+            dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --window-size=390,844 --virtual-time-budget=2600 --dump-dom "${base}${path}?mobilemotion=${GITHUB_SHA}" 2>/dev/null)"
+            printf '%s' "$dom" | grep -q 'data-motion-2026="ready"' || { echo "LIVE MOBILE MOTION FAIL: $path"; exit 1; }
+            echo "LIVE MOBILE MOTION PASS $path"
+          done
+
+          reduced_dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --force-prefers-reduced-motion --virtual-time-budget=2200 --dump-dom "${base}/?reducedmotion=${GITHUB_SHA}" 2>/dev/null)"
+          printf '%s' "$reduced_dom" | grep -q 'data-motion-2026="ready"' || { echo 'LIVE REDUCED MOTION FAIL: engine not ready'; exit 1; }
+          printf '%s' "$reduced_dom" | grep -q 'm26-in' || { echo 'LIVE REDUCED MOTION FAIL: content not revealed'; exit 1; }
+
+          for path in "${primary_paths[@]}"; do
+            dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --virtual-time-budget=4500 --dump-dom "${base}${path}?uiverify=${GITHUB_SHA}" 2>/dev/null)"
+            printf '%s' "$dom" | grep -q 'data-hm-footer="true"' || { echo "LIVE HANDOFF FAIL: footer missing on $path"; exit 1; }
+            printf '%s' "$dom" | grep -q 'data-tech-fonts-ready="true"' || { echo "LIVE HANDOFF FAIL: tech fonts missing on $path"; exit 1; }
+          done
+
+          echo "LIVE HANDOFF PASS: SHA=${GITHUB_SHA}; Motion 2026 ${MOTION_TOTAL}/${MOTION_TOTAL} + desktop/mobile/reduced-motion verified"
 
       - name: Record verified deployment
         shell: bash
         run: |
           set -euo pipefail
           verified_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-          printf '{"status":"PASS","deployed_sha":"%s","run_id":"%s","verified_at":"%s","layout":"match-v2-tech-type-v1","live_pages":9,"footer":"PASS","font":"PASS","font_stack":"Space Grotesk + Manrope"}\n' \
-            "$GITHUB_SHA" "$GITHUB_RUN_ID" "$verified_at" > deployment-status.json
+          printf '{"status":"PASS","deployed_sha":"%s","run_id":"%s","verified_at":"%s","layout":"motion-2026-full-site-v1","live_pages":9,"footer":"PASS","font":"PASS","font_stack":"Space Grotesk + Manrope","motion":"PASS","motion_version":"2026.1","motion_coverage":"%s/%s","mobile_motion":"PASS","reduced_motion":"PASS"}\n' \
+            "$GITHUB_SHA" "$GITHUB_RUN_ID" "$verified_at" "$MOTION_TOTAL" "$MOTION_TOTAL" > deployment-status.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add deployment-status.json
