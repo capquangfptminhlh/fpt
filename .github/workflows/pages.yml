@@ -63,13 +63,25 @@ jobs:
             ho-tro/index.html
           )
 
+          # Every deploy gets unique visual asset URLs. This prevents browsers/CDNs from
+          # reusing an earlier CSS/JS render after a UI change.
           for page in "${pages[@]}"; do
             file="_site/$page"
             test -f "$file"
+            sed -E -i \
+              -e "s#match-v2\\.css\\?v=[^\"']+#match-v2.css?v=${GITHUB_SHA}#g" \
+              -e "s#home-match\\.js\\?v=[^\"']+#home-match.js?v=${GITHUB_SHA}#g" \
+              "$file"
+          done
+
+          for page in "${pages[@]}"; do
+            file="_site/$page"
             grep -q 'fpt-match-v2' "$file"
             grep -q 'data-match-v2-style="true"' "$file"
             grep -q 'data-hm-menu-panel' "$file"
             grep -q 'class="hm-dock"' "$file"
+            grep -q "match-v2.css?v=${GITHUB_SHA}" "$file"
+            grep -q "home-match.js?v=${GITHUB_SHA}" "$file"
             if grep -Eqi 'core-neo\.css|home-neo\.css|home-tone-white\.css|site-shell\.css|mobile-premium\.css|contact-dock\.js|mobile-v3\.css|neo-core-page|data-core-neo-style=' "$file"; then
               echo "HANDOFF GATE FAIL: legacy visual layer found in $page"
               exit 1
@@ -88,10 +100,10 @@ jobs:
 
           node --check _site/assets/js/home-match.js
 
-          printf '{"sha":"%s","run_id":"%s","layout":"match-v2-all-primary-pages"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
+          printf '{"sha":"%s","run_id":"%s","layout":"match-v2-all-primary-pages-cache-busted"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
           touch _site/.nojekyll
 
-          echo 'HANDOFF GATE PASS: homepage + 8 primary pages use match-v2 with zero legacy visual layers'
+          echo 'HANDOFF GATE PASS: homepage + 8 primary pages use match-v2; zero legacy visual layers; CSS/JS cache-busted by SHA'
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
