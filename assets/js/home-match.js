@@ -2,6 +2,60 @@
   const body = document.body;
   if (!body?.classList.contains('fpt-match')) return;
 
+  // Footer v2: compact, light, shared by homepage + 8 primary pages.
+  if (!document.querySelector('[data-hm-footer-style]')) {
+    const footerStyle = document.createElement('link');
+    footerStyle.rel = 'stylesheet';
+    footerStyle.href = '/fpt/assets/css/site-footer-v2.css?v=20260823-1';
+    footerStyle.setAttribute('data-hm-footer-style', 'true');
+    document.head.appendChild(footerStyle);
+  }
+
+  if (!document.querySelector('[data-hm-footer]')) {
+    const footer = document.createElement('footer');
+    footer.className = 'hm-footer';
+    footer.setAttribute('data-hm-footer', 'true');
+    footer.innerHTML = `
+      <div class="hm-shell">
+        <div class="hm-footer-top">
+          <div class="hm-footer-brand">
+            <a href="/fpt/" aria-label="FPT Telecom - Trang chủ"><img src="/fpt/assets/images/logo-fpt.svg" width="154" height="41" alt="FPT Telecom"/></a>
+            <p>Internet, WiFi, Camera và FPT Play cho gia đình. Giá, thiết bị và ưu đãi được xác nhận theo khu vực trước khi đăng ký.</p>
+          </div>
+          <div class="hm-footer-links">
+            <section class="hm-footer-group" aria-labelledby="hm-footer-services">
+              <h2 id="hm-footer-services">Dịch vụ</h2>
+              <a href="/fpt/internet-fpt/">Internet FPT</a>
+              <a href="/fpt/goi-cuoc-fpt/">Gói cước</a>
+              <a href="/fpt/wifi-7/">WiFi 7 & Mesh</a>
+              <a href="/fpt/camera-fpt/">Camera FPT</a>
+            </section>
+            <section class="hm-footer-group" aria-labelledby="hm-footer-support">
+              <h2 id="hm-footer-support">Hỗ trợ</h2>
+              <a href="/fpt/khu-vuc/">Kiểm tra khu vực</a>
+              <a href="/fpt/ho-tro/">Trung tâm hỗ trợ</a>
+              <a href="/fpt/fpt-play/">FPT Play</a>
+              <a href="/fpt/combo-fpt/">Combo FPT</a>
+            </section>
+            <section class="hm-footer-group" aria-labelledby="hm-footer-contact">
+              <h2 id="hm-footer-contact">Liên hệ</h2>
+              <a class="hm-footer-phone" href="tel:19006600"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.1 3.7 10 7.4 8.4 9c1.12 2.08 2.38 3.34 4.46 4.46l1.62-1.62 3.78 2.77-.9 3.08c-.22.75-.9 1.25-1.69 1.2C9.69 18.54 5.34 14.2 4.99 8.28c-.05-.79.45-1.47 1.2-1.69l.91-2.89Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>1900 6600</a>
+              <a href="https://zalo.me/fpttelecom" data-no-transition>Chat Zalo</a>
+              <a class="hm-footer-register" href="/fpt/lien-he/">Đăng ký tư vấn</a>
+            </section>
+          </div>
+        </div>
+        <div class="hm-footer-bottom">
+          <p>© 2026 FPT Telecom · Thông tin tham khảo theo khu vực.</p>
+          <p><a href="/fpt/chinh-sach-cap-nhat/">Chính sách cập nhật</a></p>
+        </div>
+      </div>`;
+
+    const dock = document.querySelector('.hm-dock');
+    if (dock) dock.before(footer);
+    else document.body.appendChild(footer);
+  }
+
   // Dock v3: three independent floating actions, no bulky white tray.
   if (!document.getElementById('hm-dock-v3-style')) {
     const style = document.createElement('style');
