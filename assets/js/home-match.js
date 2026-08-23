@@ -3,22 +3,35 @@
   if (!body?.classList.contains('fpt-match')) return;
 
   // Tech typography: Space Grotesk for display + Manrope for UI/body.
-  if (!document.querySelector('[data-tech-type-style]')) {
-    const techTypeStyle = document.createElement('link');
+  const verifyTechFonts = () => {
+    if (!('fonts' in document)) {
+      document.documentElement.setAttribute('data-tech-fonts-ready', 'unsupported');
+      return;
+    }
+    Promise.all([
+      document.fonts.load('700 32px "Space Grotesk"'),
+      document.fonts.load('400 16px "Manrope"')
+    ]).then(() => {
+      const fontsReady = document.fonts.check('700 32px "Space Grotesk"') && document.fonts.check('400 16px "Manrope"');
+      document.documentElement.setAttribute('data-tech-fonts-ready', String(fontsReady));
+    }).catch(() => document.documentElement.setAttribute('data-tech-fonts-ready', 'false'));
+  };
+
+  let techTypeStyle = document.querySelector('[data-tech-type-style]');
+  if (!techTypeStyle) {
+    techTypeStyle = document.createElement('link');
     techTypeStyle.rel = 'stylesheet';
     techTypeStyle.href = '/fpt/assets/css/tech-type.css?v=20260823-1';
     techTypeStyle.setAttribute('data-tech-type-style', 'true');
+    techTypeStyle.addEventListener('load', verifyTechFonts, { once: true });
+    techTypeStyle.addEventListener('error', () => document.documentElement.setAttribute('data-tech-fonts-ready', 'false'), { once: true });
     document.head.appendChild(techTypeStyle);
+  } else if (techTypeStyle.sheet) {
+    verifyTechFonts();
+  } else {
+    techTypeStyle.addEventListener('load', verifyTechFonts, { once: true });
   }
   document.documentElement.setAttribute('data-tech-type', 'space-grotesk-manrope-v1');
-  if ('fonts' in document) {
-    document.fonts.ready.then(() => {
-      const fontsReady = document.fonts.check('16px "Space Grotesk"') && document.fonts.check('16px "Manrope"');
-      document.documentElement.setAttribute('data-tech-fonts-ready', String(fontsReady));
-    });
-  } else {
-    document.documentElement.setAttribute('data-tech-fonts-ready', 'unsupported');
-  }
 
   // Footer v2: compact, light, shared by homepage + 8 primary pages.
   if (!document.querySelector('[data-hm-footer-style]')) {
