@@ -7,6 +7,7 @@ from pathlib import Path
 TRANSITION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/page-transition.css?v=20260817-1" data-page-transition-style="true"/>'
 UI_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/ui-reset.css?v=20260817-1" data-ui-reset-style="true"/>'
 UI_MOTION_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/ui-motion.css?v=20260817-1" data-ui-motion-style="true"/>'
+MOBILE_PREMIUM_STYLE = '<link rel="stylesheet" href="/fpt/assets/css/mobile-premium.css?v=20260823-1" data-mobile-premium-style="true"/>'
 
 TRANSITION_SCRIPT = '<script defer src="/fpt/assets/js/page-transition.js?v=20260817-2" data-page-transition-script="true"></script>'
 UI_MOTION_SCRIPT = '<script defer src="/fpt/assets/js/ui-motion.js?v=20260817-1" data-ui-motion-script="true"></script>'
@@ -51,6 +52,8 @@ def inject(html: str) -> str:
         head_assets.append(UI_STYLE)
     if 'data-ui-motion-style=' not in html:
         head_assets.append(UI_MOTION_STYLE)
+    if 'data-mobile-premium-style=' not in html:
+        head_assets.append(MOBILE_PREMIUM_STYLE)
     if head_assets:
         html = html.replace('</head>', ''.join(head_assets) + '</head>', 1)
 
