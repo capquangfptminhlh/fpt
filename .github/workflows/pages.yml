@@ -50,10 +50,10 @@ jobs:
 
           python3 scripts/prepare-pages.py --site _site
           python3 scripts/inject-trust-footer.py --site _site
-          python3 scripts/inject-contact-dock.py --site _site
 
-          # Primary menu pages are committed directly in Neo markup. Build only normalizes the shared shell.
+          # Normalize the common shell first; the premium mobile authority is injected last.
           python3 scripts/normalize-site-shell.py --site _site
+          python3 scripts/inject-contact-dock.py --site _site
           python3 scripts/remove-legacy-runtime.py --site _site
           python3 scripts/sync-sitemap.py --site _site --origin https://capquangfptminhlh.github.io/fpt
 
@@ -76,6 +76,8 @@ jobs:
           homepage = (site / 'index.html').read_text(encoding='utf-8') if (site / 'index.html').exists() else ''
           if 'data-mobile-premium-style="true"' not in homepage:
               errors.append('homepage: missing premium mobile style')
+          if homepage.rfind('data-mobile-premium-style="true"') < homepage.rfind('data-site-shell-style="true"'):
+              errors.append('homepage: premium mobile style must load after site shell')
 
           for rel in core:
               path = site / rel
@@ -86,6 +88,8 @@ jobs:
               for token in ('neo-core-page','data-core-neo-style=','data-core-neo-hero="true"','data-site-shell-style=','data-mobile-premium-style="true"'):
                   if token not in html:
                       errors.append(f'{rel}: missing {token}')
+              if html.rfind('data-mobile-premium-style="true"') < html.rfind('data-site-shell-style="true"'):
+                  errors.append(f'{rel}: premium mobile style must load after site shell')
               if html.count('data-core-neo-hero="true"') != 1:
                   errors.append(f'{rel}: core hero must appear exactly once')
               nav = re.search(r'<nav\b[^>]*class=["\'][^"\']*nav-links[^"\']*["\'][^>]*>(.*?)</nav>', html, flags=re.I|re.S)
