@@ -63,8 +63,7 @@ jobs:
             ho-tro/index.html
           )
 
-          # Every deploy gets unique visual asset URLs. This prevents browsers/CDNs from
-          # reusing an earlier CSS/JS render after a UI change.
+          # Every deploy gets unique visual asset URLs so browsers/CDNs cannot reuse stale UI assets.
           for page in "${pages[@]}"; do
             file="_site/$page"
             test -f "$file"
@@ -89,21 +88,16 @@ jobs:
           done
 
           grep -q 'hm-hero-grid' _site/index.html
-          grep -q 'm2-core-grid' _site/internet-fpt/index.html
-          grep -q 'm2-core-grid' _site/goi-cuoc-fpt/index.html
-          grep -q 'm2-core-grid' _site/combo-fpt/index.html
-          grep -q 'm2-core-grid' _site/wifi-7/index.html
-          grep -q 'm2-core-grid' _site/camera-fpt/index.html
-          grep -q 'm2-core-grid' _site/fpt-play/index.html
-          grep -q 'm2-core-grid' _site/khu-vuc/index.html
-          grep -q 'm2-core-grid' _site/ho-tro/index.html
+          for page in internet-fpt goi-cuoc-fpt combo-fpt wifi-7 camera-fpt fpt-play khu-vuc ho-tro; do
+            grep -q 'm2-core-grid' "_site/$page/index.html"
+          done
 
           node --check _site/assets/js/home-match.js
 
           printf '{"sha":"%s","run_id":"%s","layout":"match-v2-all-primary-pages-cache-busted"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > _site/build-version.json
           touch _site/.nojekyll
 
-          echo 'HANDOFF GATE PASS: homepage + 8 primary pages use match-v2; zero legacy visual layers; CSS/JS cache-busted by SHA'
+          echo 'BUILD GATE PASS: homepage + 8 primary pages = match-v2; zero legacy layers; assets cache-busted'
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
@@ -113,3 +107,59 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify live Pages before handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://capquangfptminhlh.github.io/fpt'
+          marker=''
+
+          # Pages/CDN may need a short propagation window. Never pass handoff until the live marker is this run's SHA.
+          for attempt in $(seq 1 18); do
+            marker="$(curl -fsSL --connect-timeout 10 --max-time 20 -H 'Cache-Control: no-cache' "${base}/build-version.json?verify=${GITHUB_SHA}-${attempt}" 2>/dev/null || true)"
+            if printf '%s' "$marker" | grep -q "${GITHUB_SHA}"; then
+              echo "Live build marker reached ${GITHUB_SHA} on attempt ${attempt}"
+              break
+            fi
+            echo "Waiting for live Pages propagation (${attempt}/18)..."
+            sleep 10
+          done
+
+          printf '%s' "$marker" | grep -q "${GITHUB_SHA}" || {
+            echo 'LIVE HANDOFF FAIL: production build-version.json is not the current SHA'
+            exit 1
+          }
+          printf '%s' "$marker" | grep -q 'match-v2-all-primary-pages-cache-busted' || {
+            echo 'LIVE HANDOFF FAIL: wrong production layout marker'
+            exit 1
+          }
+
+          paths=(
+            '/'
+            '/internet-fpt/'
+            '/goi-cuoc-fpt/'
+            '/combo-fpt/'
+            '/wifi-7/'
+            '/camera-fpt/'
+            '/fpt-play/'
+            '/khu-vuc/'
+            '/ho-tro/'
+          )
+
+          for path in "${paths[@]}"; do
+            url="${base}${path}?verify=${GITHUB_SHA}"
+            html="$(curl -fsSL --retry 3 --retry-delay 2 --connect-timeout 10 --max-time 30 -H 'Cache-Control: no-cache' "$url")"
+            printf '%s' "$html" | grep -q 'fpt-match-v2' || { echo "LIVE HANDOFF FAIL: $path missing fpt-match-v2"; exit 1; }
+            printf '%s' "$html" | grep -q 'data-match-v2-style="true"' || { echo "LIVE HANDOFF FAIL: $path missing match-v2 stylesheet marker"; exit 1; }
+            printf '%s' "$html" | grep -q "match-v2.css?v=${GITHUB_SHA}" || { echo "LIVE HANDOFF FAIL: $path has stale CSS URL"; exit 1; }
+            printf '%s' "$html" | grep -q "home-match.js?v=${GITHUB_SHA}" || { echo "LIVE HANDOFF FAIL: $path has stale JS URL"; exit 1; }
+            printf '%s' "$html" | grep -q 'class="hm-dock"' || { echo "LIVE HANDOFF FAIL: $path missing approved contact actions"; exit 1; }
+            if printf '%s' "$html" | grep -Eqi 'core-neo\.css|site-shell\.css|mobile-premium\.css|contact-dock\.js|neo-core-page'; then
+              echo "LIVE HANDOFF FAIL: $path still exposes legacy UI"
+              exit 1
+            fi
+            echo "LIVE PASS $path"
+          done
+
+          echo "LIVE HANDOFF PASS: SHA=${GITHUB_SHA}; homepage + 8 primary pages verified on GitHub Pages"
