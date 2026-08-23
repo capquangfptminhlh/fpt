@@ -150,48 +150,48 @@ jobs:
           marker=''
           for attempt in $(seq 1 24); do
             marker="$(curl -fsSL --connect-timeout 10 --max-time 20 -H 'Cache-Control: no-cache' "${base}/build-version.json?verify=${GITHUB_SHA}-${attempt}" 2>/dev/null || true)"
-            printf '%s' "$marker" | grep -q "$GITHUB_SHA" && break
+            if grep -q "$GITHUB_SHA" <<< "$marker"; then break; fi
             sleep 8
           done
-          printf '%s' "$marker" | grep -q "$GITHUB_SHA"
-          printf '%s' "$marker" | grep -q 'motion-2026-full-site-v1'
+          grep -q "$GITHUB_SHA" <<< "$marker"
+          grep -q 'motion-2026-full-site-v1' <<< "$marker"
 
           coverage="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/motion-coverage.json?verify=${GITHUB_SHA}")"
           python3 -c 'import json,sys;d=json.loads(sys.argv[1]);assert d["sha"]==sys.argv[2];assert d["html_pages"]==d["motion_pages"]==int(sys.argv[3]);assert d["motion_version"]=="2026.1";assert d["legacy_motion"]=="removed"' "$coverage" "$GITHUB_SHA" "$MOTION_TOTAL"
 
           live_js="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/assets/js/motion-2026.js?verify=${GITHUB_SHA}")"
           live_css="$(curl -fsSL --retry 3 -H 'Cache-Control: no-cache' "${base}/assets/css/motion-2026.css?verify=${GITHUB_SHA}")"
-          printf '%s' "$live_js" | grep -q 'data-motion-2026'
-          printf '%s' "$live_js" | grep -q 'm26-tilt'
-          printf '%s' "$live_js" | grep -q 'm26-parallax'
-          printf '%s' "$live_css" | grep -q '@view-transition'
-          printf '%s' "$live_css" | grep -q 'prefers-reduced-motion:reduce'
+          grep -q 'data-motion-2026' <<< "$live_js"
+          grep -q 'm26-tilt' <<< "$live_js"
+          grep -q 'm26-parallax' <<< "$live_js"
+          grep -q '@view-transition' <<< "$live_css"
+          grep -q 'prefers-reduced-motion:reduce' <<< "$live_css"
 
           chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           test -n "$chrome"
           render_paths=(/ /wifi-7/ /camera-fpt/ /lap-mang-fpt/ /goi-cuoc/giga/ /kien-thuc/ftth-la-gi/ /giai-phap/gia-dinh/ /khu-vuc/ha-noi/ /ho-tro/wifi-fpt-yeu/ /lien-he/)
           for path in "${render_paths[@]}"; do
             dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --virtual-time-budget=2300 --dump-dom "${base}${path}?motion=${GITHUB_SHA}" 2>/dev/null)"
-            printf '%s' "$dom" | grep -q 'data-motion-2026="ready"'
-            printf '%s' "$dom" | grep -q 'data-motion-coverage="full-site-v1"'
-            printf '%s' "$dom" | grep -q 'data-m26-progress="true"'
+            grep -q 'data-motion-2026="ready"' <<< "$dom"
+            grep -q 'data-motion-coverage="full-site-v1"' <<< "$dom"
+            grep -q 'data-m26-progress="true"' <<< "$dom"
             echo "RENDER MOTION PASS $path"
           done
 
           for path in / /wifi-7/ /khu-vuc/ha-noi/; do
             dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --window-size=390,844 --virtual-time-budget=2300 --dump-dom "${base}${path}?mobile=${GITHUB_SHA}" 2>/dev/null)"
-            printf '%s' "$dom" | grep -q 'data-motion-2026="ready"'
+            grep -q 'data-motion-2026="ready"' <<< "$dom"
             echo "MOBILE MOTION PASS $path"
           done
 
           reduced_dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --force-prefers-reduced-motion --virtual-time-budget=2300 --dump-dom "${base}/?reduced=${GITHUB_SHA}" 2>/dev/null)"
-          printf '%s' "$reduced_dom" | grep -q 'data-motion-2026="ready"'
-          printf '%s' "$reduced_dom" | grep -q 'm26-in'
+          grep -q 'data-motion-2026="ready"' <<< "$reduced_dom"
+          grep -q 'm26-in' <<< "$reduced_dom"
 
           for path in / /wifi-7/ /ho-tro/; do
             dom="$("$chrome" --headless=new --disable-gpu --no-sandbox --virtual-time-budget=4500 --dump-dom "${base}${path}?ui=${GITHUB_SHA}" 2>/dev/null)"
-            printf '%s' "$dom" | grep -q 'data-hm-footer="true"'
-            printf '%s' "$dom" | grep -q 'data-tech-fonts-ready="true"'
+            grep -q 'data-hm-footer="true"' <<< "$dom"
+            grep -q 'data-tech-fonts-ready="true"' <<< "$dom"
           done
           echo "LIVE PASS: Motion 2026 ${MOTION_TOTAL}/${MOTION_TOTAL}, desktop/mobile/reduced-motion"
 
