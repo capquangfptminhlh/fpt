@@ -1,0 +1,49 @@
+name: SEO Alpha source-read contract (not publication)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.website-os.yml'
+      - '.website-os/evidence/**'
+      - '.github/workflows/seo-alpha-read-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify current central read snapshot (release gate intentionally separate)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          from datetime import datetime, timezone, timedelta
+          import re
+          root=Path('.website-os.yml').read_text(encoding='utf-8')
+          att=Path('.website-os/evidence/seo-alpha-bootstrap.yml').read_text(encoding='utf-8')
+          def field(text, key):
+              m=re.search(r'^'+re.escape(key)+r':\s*(.*?)\s*$',text,re.M)
+              assert m, f'Missing {key}'
+              return m.group(1).strip().strip('"' + "'")
+          sha='6d0b7c7c4d8458746f552704ce8d6fe517d9c847'
+          standard='83ff1a97369a1f24e853bf4e532e066699e76929d889987fff435e912df70ec5'
+          policy='ce515755872d914e28389590d6f51dec833c36920a135dd4cc7bdde260d25472'
+          assert field(root,'source_commit_sha') == sha
+          assert field(root,'bootstrap_decision') == 'PASS'
+          assert field(root,'seo_publication_status') == 'HOLD'
+          assert field(att,'central_source_commit_sha') == sha
+          assert field(att,'seo_alpha_standard_sha256') == standard
+          assert field(att,'seo_alpha_policy_sha256') == policy
+          assert field(att,'mandatory_read_order_complete') == 'true'
+          assert field(att,'seo_alpha_status') == 'PASS'
+          assert field(att,'read_verification_scope') == 'central_docs_only'
+          assert field(att,'production_publication_status') == 'HOLD'
+          at=datetime.fromisoformat(field(att,'observed_at').replace('Z','+00:00'))
+          delta=datetime.now(timezone.utc)-at.astimezone(timezone.utc)
+          assert timedelta(minutes=-5) <= delta <= timedelta(hours=24), 'Source-read evidence expired: update after live re-read'
+          print('SOURCE_READ_SNAPSHOT_PASS; central engine and production release NOT_VERIFIED')
+          PY
